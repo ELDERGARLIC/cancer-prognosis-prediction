@@ -1,0 +1,19 @@
+
+# Ignore the virtual environment
+.venv/
+
+# Ignore the environment variables
+.env
+
+# Ignore the macOS system files
+.DS_Store
+
+# Ignore the Python cache
+__pycache__
+
+# Ignore the data directory
+/data
+/documents
+
+# Any Files that start with ._ should be ignored
+._*
