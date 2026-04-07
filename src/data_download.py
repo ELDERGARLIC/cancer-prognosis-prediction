@@ -16,9 +16,7 @@ import gzip
 import logging
 import requests
 import pandas as pd
-import numpy as np
 import yaml
-from pathlib import Path
 from io import BytesIO
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -28,6 +26,7 @@ GDC_FILES_ENDPOINT = "https://api.gdc.cancer.gov/files"
 GDC_DATA_ENDPOINT = "https://api.gdc.cancer.gov/data"
 GDC_CASES_ENDPOINT = "https://api.gdc.cancer.gov/cases"
 XENA_HUB = "https://tcga-xena-hub.s3.us-east-1.amazonaws.com"
+DISGENET_API_BASE = "https://api.disgenet.com/api/v1"
 
 
 def load_config(config_path: str = "configs/config.yaml") -> dict:
@@ -50,7 +49,7 @@ def download_tcga_expression_xena(output_dir: str) -> str:
 
     # TCGA-BRCA gene expression (HiSeqV2, log2(norm_count+1))
     url = f"{XENA_HUB}/download/TCGA.BRCA.sampleMap/HiSeqV2.gz"
-    logger.info(f"Downloading TCGA-BRCA expression from UCSC Xena...")
+    logger.info("Downloading TCGA-BRCA expression from UCSC Xena...")
 
     response = requests.get(url, stream=True, timeout=300)
     response.raise_for_status()
@@ -360,11 +359,92 @@ def download_string_id_mapping(output_dir: str, species: int = 9606) -> str:
     return mapping_file
 
 
-def download_disgenet(output_dir: str) -> str:
-    """Provide instructions for DisGeNET download (requires registration).
+def _query_disgenet_gda(
+    headers: dict,
+    disease_id: str,
+    source: str = "ALL",
+) -> list[dict]:
+    """Query a single disease from the DisGeNET GDA summary endpoint with pagination."""
+    records = []
+    page = 0
 
-    DisGeNET requires user registration at https://www.disgenet.org/downloads.
-    This function checks if the file exists and provides instructions if not.
+    while page < 100:
+        params = {
+            "disease": disease_id,
+            "source": source,
+            "type": "disease",
+            "page_number": page,
+        }
+        try:
+            resp = requests.get(
+                f"{DISGENET_API_BASE}/gda/summary",
+                params=params,
+                headers=headers,
+                timeout=60,
+            )
+            if resp.status_code in (401, 403, 429):
+                logger.warning(f"DisGeNET API returned {resp.status_code} for {disease_id}")
+                break
+            resp.raise_for_status()
+            data = resp.json()
+            payload = data.get("payload", data if isinstance(data, list) else [])
+            if not payload:
+                break
+
+            for item in payload:
+                semantic_types = item.get("diseaseClasses_UMLS_ST", [])
+                raw_dtype = item.get("diseaseType", "disease")
+                dtype = raw_dtype.strip("[]") if isinstance(raw_dtype, str) else "disease"
+                records.append({
+                    "geneSymbol": item.get("symbolOfGene", ""),
+                    "geneNcbiID": item.get("geneNcbiID", ""),
+                    "diseaseName": item.get("diseaseName", ""),
+                    "diseaseId": item.get("diseaseUMLSCUI", ""),
+                    "diseaseType": dtype,
+                    "diseaseSemanticType": "; ".join(semantic_types) if semantic_types else "Neoplastic Process",
+                    "score": item.get("score", 0),
+                    "ei": item.get("ei", 0),
+                    "el": item.get("el", ""),
+                    "numPMIDs": item.get("numPMIDs", 0),
+                    "source": "DisGeNET_API",
+                })
+
+            if len(payload) < 100:
+                break
+            page += 1
+
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"DisGeNET API request failed for {disease_id} page {page}: {e}")
+            break
+
+    return records
+
+
+# Related breast cancer UMLS CUIs for broader gene coverage
+_BREAST_CANCER_CUIS = [
+    "UMLS_C0006142",  # Malignant neoplasm of breast
+    "UMLS_C0678222",  # Breast Carcinoma
+    "UMLS_C1458155",  # Invasive Breast Carcinoma
+    "UMLS_C0279605",  # In-situ Breast Carcinoma
+    "UMLS_C0007104",  # Female Breast Carcinoma
+]
+
+
+def download_disgenet(
+    output_dir: str,
+    api_key: str = None,
+    disease_id: str = "UMLS_C0006142",
+) -> str:
+    """Download gene-disease associations from the DisGeNET REST API.
+
+    Queries multiple breast cancer-related CUIs via the GDA summary endpoint
+    to maximize gene coverage (TRIAL accounts return max 30 results per query).
+    Supplements API results with a curated literature-based gene list.
+
+    Args:
+        output_dir: Directory to save the output file.
+        api_key: DisGeNET API key. Falls back to DISGENET_API_KEY env var.
+        disease_id: Primary disease identifier (default: breast cancer C0006142).
     """
     os.makedirs(output_dir, exist_ok=True)
     disgenet_file = os.path.join(output_dir, "disgenet_gene_disease.tsv")
@@ -373,36 +453,75 @@ def download_disgenet(output_dir: str) -> str:
         logger.info(f"DisGeNET file already exists: {disgenet_file}")
         return disgenet_file
 
-    # DisGeNET requires API key or manual download
-    # Try the public curated subset via their REST API
-    logger.info("Attempting to download DisGeNET curated gene-disease associations...")
+    api_key = api_key or os.environ.get("DISGENET_API_KEY")
+    if not api_key:
+        logger.warning("No DisGeNET API key provided. Set DISGENET_API_KEY env var.")
+        return _disgenet_fallback(disgenet_file)
 
-    # Use the publicly available curated data from DisGeNET
-    # (No API key needed for the SQLite dump approach)
-    try:
-        url = "https://www.disgenet.org/static/disgenet_ap1/files/downloads/curated_gene_disease_associations.tsv.gz"
-        response = requests.get(url, timeout=120, headers={"User-Agent": "Mozilla/5.0"})
-        if response.status_code == 200:
-            raw = gzip.decompress(response.content)
-            df = pd.read_csv(BytesIO(raw), sep="\t")
-            df.to_csv(disgenet_file, sep="\t", index=False)
-            logger.info(f"Saved DisGeNET data: {len(df)} associations")
-            return disgenet_file
-    except Exception as e:
-        logger.warning(f"Direct download failed: {e}")
+    logger.info("Downloading gene-disease associations from DisGeNET REST API...")
+    headers = {"Authorization": f"Bearer {api_key}", "Accept": "application/json"}
 
-    # If direct download fails, create a minimal breast cancer gene set
-    # from well-known breast cancer genes as a fallback
-    logger.warning(
-        "DisGeNET requires registration. Please download manually from:\n"
-        "  https://www.disgenet.org/downloads\n"
-        "  Place 'curated_gene_disease_associations.tsv' in: %s\n"
-        "Using curated breast cancer gene fallback list instead.",
-        output_dir,
-    )
+    # Query multiple related CUIs for broader coverage
+    disease_ids = [disease_id] if disease_id in _BREAST_CANCER_CUIS else [disease_id] + _BREAST_CANCER_CUIS
+    if disease_id not in disease_ids:
+        disease_ids = [disease_id] + _BREAST_CANCER_CUIS
+    else:
+        disease_ids = _BREAST_CANCER_CUIS
 
-    # Curated breast cancer genes from literature
-    bc_genes = [
+    all_records = []
+    seen_genes = set()
+
+    for did in disease_ids:
+        records = _query_disgenet_gda(headers, did)
+        new_count = 0
+        for r in records:
+            gene = r["geneSymbol"]
+            if gene not in seen_genes:
+                seen_genes.add(gene)
+                new_count += 1
+            all_records.append(r)
+        logger.info(f"  {did}: {len(records)} associations ({new_count} new genes)")
+        if not records:
+            continue
+
+    # Merge: keep highest score per gene (across all disease queries)
+    if all_records:
+        df = pd.DataFrame(all_records)
+        df = df.sort_values("score", ascending=False).drop_duplicates(subset="geneSymbol", keep="first")
+        api_genes = set(df["geneSymbol"].str.upper())
+        logger.info(f"DisGeNET API: {len(df)} unique gene associations")
+
+        # Supplement with curated fallback genes not already from the API
+        fallback_genes = _get_fallback_genes()
+        supplemental = [g for g in fallback_genes if g.upper() not in api_genes]
+        if supplemental:
+            supp_df = pd.DataFrame({
+                "geneSymbol": supplemental,
+                "geneNcbiID": "",
+                "diseaseName": "Breast Carcinoma",
+                "diseaseId": "C0006142",
+                "diseaseType": "disease",
+                "diseaseSemanticType": "Neoplastic Process",
+                "score": 0.5,
+                "ei": 0,
+                "el": "",
+                "numPMIDs": 0,
+                "source": "curated_supplement",
+            })
+            df = pd.concat([df, supp_df], ignore_index=True)
+            logger.info(f"  Added {len(supplemental)} supplemental genes from curated list")
+
+        df.to_csv(disgenet_file, sep="\t", index=False)
+        logger.info(f"Saved DisGeNET data: {len(df)} total associations ({df['geneSymbol'].nunique()} unique genes)")
+        return disgenet_file
+
+    logger.warning("No data retrieved from DisGeNET API. Using fallback gene list.")
+    return _disgenet_fallback(disgenet_file)
+
+
+def _get_fallback_genes() -> list[str]:
+    """Curated breast cancer gene list from literature."""
+    return [
         "BRCA1", "BRCA2", "TP53", "ERBB2", "ESR1", "PGR", "PTEN", "PIK3CA",
         "AKT1", "CDH1", "GATA3", "MAP3K1", "RB1", "CDKN2A", "MYC", "CCND1",
         "FOXA1", "KMT2C", "TBX3", "RUNX1", "CBFB", "SF3B1", "NCOR1", "AFF2",
@@ -413,6 +532,11 @@ def download_disgenet(output_dir: str) -> str:
         "WNT1", "APC", "AXIN1", "GSK3B", "LEF1", "TCF7L2", "KRAS", "BRAF",
         "MAP2K1", "MAPK1", "JAK2", "STAT3", "IL6", "TNF", "TGFB1", "SMAD4",
     ]
+
+
+def _disgenet_fallback(disgenet_file: str) -> str:
+    """Create a fallback breast cancer gene list from literature."""
+    bc_genes = _get_fallback_genes()
     fallback_df = pd.DataFrame({
         "geneSymbol": bc_genes,
         "diseaseName": "Breast Carcinoma",
@@ -559,7 +683,13 @@ def run_data_download(config: dict) -> dict:
     logger.info("=" * 60)
     logger.info("Stage 4: Downloading DisGeNET associations")
     logger.info("=" * 60)
-    file_paths["disgenet"] = download_disgenet(kg_dir)
+    disease_cui = config.get("data", {}).get("disease_cui", "C0006142")
+    disgenet_api_key = os.environ.get("DISGENET_API_KEY")
+    file_paths["disgenet"] = download_disgenet(
+        kg_dir,
+        api_key=disgenet_api_key,
+        disease_id=f"UMLS_{disease_cui}",
+    )
 
     logger.info("=" * 60)
     logger.info("All data downloads complete!")
