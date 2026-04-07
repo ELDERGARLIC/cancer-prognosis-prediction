@@ -1,0 +1,49 @@
+# Breast Cancer Prognosis Prediction - Configuration
+# Knowledge Graph-Enhanced GAT + Calibrated Random Forest
+
+data:
+  tcga_project: TCGA-BRCA
+  # Gene filtering
+  min_total_counts: 1000
+  n_genes_lasso: 1500
+  # STRING PPI threshold
+  string_confidence_threshold: 700
+  # Survival discretization bins (days)
+  survival_bins: [365, 1095, 1825]  # 1yr, 3yr, 5yr
+  survival_labels: ["<1yr", "1-3yr", "3-5yr", ">5yr"]
+  # SMOTE
+  smote_strategy: auto
+  # DisGeNET
+  disease_cui: "C0006142"  # Breast cancer
+  disease_semantic_type: "Neoplastic Process"
+
+model:
+  gat_layers: 3
+  gat_heads: [8, 4, 1]
+  hidden_dim: 128
+  dropout: 0.4
+  llm_embedding_dim: 768
+  llm_model: "dmis-lab/biobert-base-cased-v1.2"
+
+training:
+  lr: 0.001
+  weight_decay: 1.0e-4
+  epochs: 200
+  patience: 20
+  batch_size: 32
+  cv_folds: 5
+  aux_loss_weight: 0.3
+  seed: 42
+
+hybrid:
+  rf_n_estimators: 500
+  rf_calibrated: true
+  rf_max_depth: null
+  rf_min_samples_split: 5
+
+paths:
+  raw_data: "data/raw"
+  processed_data: "data/processed"
+  knowledge_graph: "data/knowledge_graph"
+  embeddings: "data/embeddings"
+  results: "results"
