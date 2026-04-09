@@ -21,7 +21,6 @@ import torch
 import yaml
 import shap
 import matplotlib.pyplot as plt
-from collections import defaultdict
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)

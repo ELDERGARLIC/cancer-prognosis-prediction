@@ -5,7 +5,7 @@ data:
   tcga_project: TCGA-BRCA
   # Gene filtering
   min_total_counts: 1000
-  n_genes_lasso: 1500
+  n_genes_lasso: 200
   # STRING PPI threshold
   string_confidence_threshold: 700
   # Survival discretization bins (days)

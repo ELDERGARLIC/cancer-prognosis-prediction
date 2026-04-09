@@ -21,7 +21,6 @@ import numpy as np
 import pandas as pd
 import torch
 import yaml
-from collections import defaultdict
 from sklearn.metrics import (
     accuracy_score,
     precision_score,
@@ -29,15 +28,13 @@ from sklearn.metrics import (
     f1_score,
     roc_auc_score,
     confusion_matrix,
-    classification_report,
     roc_curve,
     auc,
 )
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.calibration import CalibratedClassifierCV
 from sklearn.preprocessing import label_binarize
-from lifelines import CoxPHFitter, KaplanMeierFitter
+from lifelines import CoxPHFitter
 from lifelines.utils import concordance_index
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -69,13 +66,17 @@ def compute_full_metrics(
     metrics["recall_macro"] = recall_score(y_true, y_pred, average="macro", zero_division=0)
     metrics["f1_macro"] = f1_score(y_true, y_pred, average="macro", zero_division=0)
 
-    # Per-class metrics
+    # Per-class metrics (compute once, index per class)
+    per_class_precision = precision_score(y_true, y_pred, average=None, zero_division=0)
+    per_class_recall = recall_score(y_true, y_pred, average=None, zero_division=0)
+    per_class_f1 = f1_score(y_true, y_pred, average=None, zero_division=0)
+
     for cls in range(num_classes):
         cls_mask = y_true == cls
-        if cls_mask.sum() > 0:
-            metrics[f"precision_class_{cls}"] = precision_score(y_true, y_pred, average=None, zero_division=0)[cls] if cls < len(precision_score(y_true, y_pred, average=None, zero_division=0)) else 0
-            metrics[f"recall_class_{cls}"] = recall_score(y_true, y_pred, average=None, zero_division=0)[cls] if cls < len(recall_score(y_true, y_pred, average=None, zero_division=0)) else 0
-            metrics[f"f1_class_{cls}"] = f1_score(y_true, y_pred, average=None, zero_division=0)[cls] if cls < len(f1_score(y_true, y_pred, average=None, zero_division=0)) else 0
+        if cls_mask.sum() > 0 and cls < len(per_class_precision):
+            metrics[f"precision_class_{cls}"] = per_class_precision[cls]
+            metrics[f"recall_class_{cls}"] = per_class_recall[cls]
+            metrics[f"f1_class_{cls}"] = per_class_f1[cls]
 
     # AUC-ROC (multi-class, one-vs-rest)
     try:

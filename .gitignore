@@ -17,3 +17,27 @@ __pycache__
 
 # Any Files that start with ._ should be ignored
 ._*
+
+# Ignore the logs directory
+logs/
+
+# Ignore the results directory
+results/
+
+# Ignore the models directory
+models/
+
+# Ignore the notebooks directory
+notebooks/
+
+# Ignore the tests directory
+tests/
+
+# Ignore the .hf_cache directory
+.hf_cache/
+
+# Ignore resources directory
+resources/
+
+# Ignore the pipeline.log file
+pipeline.log

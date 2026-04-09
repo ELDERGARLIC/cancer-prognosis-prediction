@@ -15,19 +15,19 @@ Pipeline:
 import os
 import logging
 import gzip
+import warnings
+
 import numpy as np
 import pandas as pd
 import yaml
-from io import BytesIO
-from pathlib import Path
 from sklearn.linear_model import LassoCV
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.impute import KNNImputer
 from sklearn.feature_selection import RFE
 from sklearn.ensemble import RandomForestClassifier
-import warnings
 
-warnings.filterwarnings("ignore")
+warnings.filterwarnings("ignore", category=FutureWarning)
+warnings.filterwarnings("ignore", category=UserWarning, module="sklearn")
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -118,8 +118,22 @@ def impute_clinical_data(clinical_df: pd.DataFrame) -> pd.DataFrame:
     if numeric_cols:
         n_missing_before = clinical_df[numeric_cols].isnull().sum().sum()
         if n_missing_before > 0:
-            imputer = KNNImputer(n_neighbors=5)
-            clinical_df[numeric_cols] = imputer.fit_transform(clinical_df[numeric_cols])
+            imputable_cols = [c for c in numeric_cols if clinical_df[c].notna().any()]
+            all_nan_cols = [c for c in numeric_cols if c not in imputable_cols]
+
+            if imputable_cols:
+                imputer = KNNImputer(n_neighbors=5)
+                imputed = pd.DataFrame(
+                    imputer.fit_transform(clinical_df[imputable_cols]),
+                    columns=imputable_cols,
+                    index=clinical_df.index,
+                )
+                clinical_df[imputable_cols] = imputed
+
+            for col in all_nan_cols:
+                clinical_df[col] = 0
+                logger.warning(f"Column '{col}' is entirely NaN — filled with 0")
+
             logger.info(f"KNN-imputed {n_missing_before} missing numeric values")
 
     return clinical_df

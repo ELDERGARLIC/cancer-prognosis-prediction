@@ -16,13 +16,11 @@ References:
 import os
 import json
 import logging
-import numpy as np
 import pandas as pd
 import yaml
 import torch
 import requests
 from collections import defaultdict
-from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -143,7 +141,6 @@ def load_disgenet_edges(
 
     gene_col = "geneSymbol" if "geneSymbol" in disgenet.columns else "gene_symbol"
     disease_col = "diseaseName" if "diseaseName" in disgenet.columns else "disease_name"
-    disease_id_col = "diseaseId" if "diseaseId" in disgenet.columns else "disease_id"
 
     disgenet["gene_upper"] = disgenet[gene_col].str.upper()
     filtered = disgenet[disgenet["gene_upper"].isin(gene_set_upper)]
@@ -195,8 +192,6 @@ def fetch_kegg_pathways(gene_list: list) -> dict:
                 pname = parts[1].split(" - ")[0].strip()
                 pathway_ids[pid] = pname
 
-        # For each gene, find which pathways it belongs to
-        gene_set_upper = set(g.upper() for g in gene_list)
         batch_size = 10
         gene_batch = list(gene_list)[:100]  # Limit to avoid too many API calls
 

@@ -35,6 +35,7 @@ from src.dataset import (
     BreastCancerGraphDataset,
     get_dataloaders,
     build_dataset,
+    compute_class_weights,
 )
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -72,6 +73,7 @@ def train_one_epoch(
     optimizer,
     device,
     aux_loss_weight: float = 0.3,
+    class_weights: torch.Tensor = None,
 ) -> dict:
     """Train for one epoch.
 
@@ -84,7 +86,7 @@ def train_one_epoch(
     correct = 0
     total = 0
 
-    main_criterion = nn.CrossEntropyLoss()
+    main_criterion = nn.CrossEntropyLoss(weight=class_weights)
     aux_criterion = nn.CrossEntropyLoss(ignore_index=-1)
 
     for batch in loader:
@@ -300,7 +302,7 @@ def train_fold(
     """
     train_cfg = config["training"]
 
-    # Create data loaders (SMOTE on training set only)
+    # Create data loaders (SMOTE on training set only -- skipped if dims too large)
     train_loader, val_loader = get_dataloaders(
         dataset, train_idx, val_idx,
         batch_size=train_cfg["batch_size"],
@@ -309,13 +311,19 @@ def train_fold(
         seed=train_cfg["seed"],
     )
 
+    # Compute class weights for balanced loss (always used, critical when SMOTE is skipped)
+    train_labels = dataset.survival_labels[train_idx]
+    cw = compute_class_weights(train_labels)
+    class_weights = torch.tensor(cw, dtype=torch.float, device=device)
+    logger.info(f"  Class weights: {dict(enumerate(cw.tolist()))}")
+
     optimizer = torch.optim.Adam(
         model.parameters(),
         lr=train_cfg["lr"],
         weight_decay=train_cfg["weight_decay"],
     )
     scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
-        optimizer, mode="min", factor=0.5, patience=10, verbose=True
+        optimizer, mode="min", factor=0.5, patience=10
     )
 
     best_val_loss = float("inf")
@@ -330,6 +338,7 @@ def train_fold(
         train_metrics = train_one_epoch(
             model, train_loader, optimizer, device,
             aux_loss_weight=train_cfg["aux_loss_weight"],
+            class_weights=class_weights,
         )
 
         # Validate

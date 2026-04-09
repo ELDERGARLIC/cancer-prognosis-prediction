@@ -14,14 +14,13 @@ References:
 """
 
 import os
-import json
 import logging
 import numpy as np
 import pandas as pd
 import torch
 import yaml
 from torch.utils.data import Dataset
-from torch_geometric.data import Data, Batch
+from torch_geometric.data import Data
 from torch_geometric.loader import DataLoader
 from sklearn.model_selection import StratifiedKFold
 from imblearn.over_sampling import SMOTE
@@ -90,8 +89,8 @@ class BreastCancerGraphDataset(Dataset):
         # Survival label
         y = torch.tensor(self.survival_labels[idx], dtype=torch.long)
 
-        # Clinical features
-        clinical = torch.tensor(self.clinical_features[idx], dtype=torch.float)
+        # Clinical features -- stored as [1, n_features] so PyG batches to [batch, n_features]
+        clinical = torch.tensor(self.clinical_features[idx], dtype=torch.float).unsqueeze(0)
 
         # Build PyG Data object with shared topology
         data = Data(
@@ -115,6 +114,22 @@ class BreastCancerGraphDataset(Dataset):
         return data
 
 
+MAX_SMOTE_FEATURES = 50_000
+
+
+def compute_class_weights(labels: np.ndarray) -> np.ndarray:
+    """Compute inverse-frequency class weights for balanced loss."""
+    from collections import Counter
+    valid = labels[~np.isnan(labels)].astype(int)
+    counts = Counter(valid)
+    n_samples = len(valid)
+    n_classes = len(counts)
+    weights = np.zeros(max(counts.keys()) + 1, dtype=np.float32)
+    for cls, count in counts.items():
+        weights[cls] = n_samples / (n_classes * count)
+    return weights
+
+
 def apply_smote(
     embeddings: np.ndarray,
     labels: np.ndarray,
@@ -127,6 +142,9 @@ def apply_smote(
     Reference: Vaida et al., 2025; Palmal et al., 2024
     IMPORTANT: Only apply on training data, never on validation/test.
 
+    If the flattened feature dimension exceeds MAX_SMOTE_FEATURES, SMOTE is
+    skipped to avoid OOM. The caller should use class-weighted loss instead.
+
     Args:
         embeddings: [num_patients, num_genes, embedding_dim]
         labels: [num_patients]
@@ -137,19 +155,23 @@ def apply_smote(
         (resampled_embeddings, resampled_labels, resampled_clinical)
     """
     n_patients, n_genes, emb_dim = embeddings.shape
+    total_features = n_genes * emb_dim + clinical_features.shape[1]
 
-    # Flatten embeddings for SMOTE: [n_patients, n_genes * emb_dim]
-    flat_emb = embeddings.reshape(n_patients, -1)
-
-    # Combine with clinical features
-    combined = np.hstack([flat_emb, clinical_features])
-
-    # Remove NaN labels
     valid_mask = ~np.isnan(labels)
-    combined = combined[valid_mask]
     labels_valid = labels[valid_mask].astype(int)
 
-    # Check minimum class size
+    if total_features > MAX_SMOTE_FEATURES:
+        logger.warning(
+            f"Feature dim too large for SMOTE ({total_features:,} > {MAX_SMOTE_FEATURES:,}). "
+            "Skipping SMOTE; use class-weighted loss instead."
+        )
+        return embeddings[valid_mask], labels_valid, clinical_features[valid_mask]
+
+    flat_emb = embeddings.reshape(n_patients, -1)
+    combined = np.hstack([flat_emb, clinical_features])
+
+    combined = combined[valid_mask]
+
     from collections import Counter
     class_counts = Counter(labels_valid)
     min_count = min(class_counts.values())
@@ -162,7 +184,6 @@ def apply_smote(
     smote = SMOTE(sampling_strategy=strategy, random_state=seed, k_neighbors=n_neighbors)
     combined_resampled, labels_resampled = smote.fit_resample(combined, labels_valid)
 
-    # Split back into embeddings and clinical features
     emb_resampled = combined_resampled[:, : n_genes * emb_dim].reshape(-1, n_genes, emb_dim)
     clinical_resampled = combined_resampled[:, n_genes * emb_dim :]
 

@@ -14,10 +14,14 @@ References:
     - Hybrid GNN+RF: Palmal et al., 2024
 """
 
+import logging
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch_geometric.nn import GATConv, global_mean_pool, global_max_pool, global_add_pool
+
+logger = logging.getLogger(__name__)
 
 
 class BioKG_GAT(nn.Module):
@@ -249,9 +253,6 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
 
     return model
 
-
-import logging
-logger = logging.getLogger(__name__)
 
 if __name__ == "__main__":
     import yaml

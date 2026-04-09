@@ -191,6 +191,9 @@ def main():
     if args.stage is None or args.stage == 2:
         run_stage2(config)
 
+    if args.stage is None or args.stage == 3:
+        run_stage3(config)
+
     training_results = None
     if args.stage is None or args.stage == 4:
         training_results = run_stage4(config)
