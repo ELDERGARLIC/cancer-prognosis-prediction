@@ -6,27 +6,20 @@ This document describes each stage of the breast cancer prognosis prediction pip
 
 ## End-to-End Flow
 
-```
-                          ┌──────────────────┐
-                          │   main.py        │
-                          │   (Orchestrator) │
-                          └────────┬─────────┘
-                                   │
-          ┌────────────────────────┼────────────────────────┐
-          ▼                        ▼                        ▼
-   ┌──────────────┐      ┌──────────────┐      ┌──────────────────┐
-   │   Stage 1    │      │   Stage 2    │      │   Stage 3        │
-   │   Data Acq.  │─────▶│   KG + LLM   │─────▶│   Dataset Build  │
-   │   & Preproc  │      │   Embeddings │      │   (PyG + CV)     │
-   └──────────────┘      └──────────────┘      └────────┬─────────┘
-                                                        │
-                                   ┌────────────────────┤
-                                   ▼                    ▼
-                          ┌──────────────┐      ┌──────────────────┐
-                          │   Stage 4    │      │   Stage 5        │
-                          │   Training   │─────▶│   Evaluation &   │
-                          │   (5-Fold CV)│      │   Explainability │
-                          └──────────────┘      └──────────────────┘
+```mermaid
+flowchart TD
+    MAIN["main.py<br/>(Orchestrator)"] --> S1 & S2 & S3
+
+    S1["Stage 1<br/>Data Acq. & Preproc"] --> S2["Stage 2<br/>KG + LLM Embeddings"]
+    S2 --> S3["Stage 3<br/>Dataset Build (PyG + CV)"]
+    S3 --> S4["Stage 4<br/>Training (5-Fold CV)"]
+    S4 --> S5["Stage 5<br/>Evaluation & Explainability"]
+
+    style S1 fill:#e8f5e9,stroke:#2e7d32
+    style S2 fill:#e3f2fd,stroke:#1565c0
+    style S3 fill:#fff3e0,stroke:#e65100
+    style S4 fill:#fce4ec,stroke:#c62828
+    style S5 fill:#f3e5f5,stroke:#6a1b9a
 ```
 
 ---
@@ -37,83 +30,34 @@ This document describes each stage of the breast cancer prognosis prediction pip
 
 ### 1a. Data Download (`src/data_download.py`)
 
-```
-┌─────────────┐     ┌──────────────────────────────────────────────┐
-│ GDC REST API │────▶│ TCGA-BRCA RNA-Seq (HiSeqV2, 20530 genes)   │
-│ (or Xena)   │     │ → data/raw/tcga_brca_expression.tsv.gz       │
-└─────────────┘     └──────────────────────────────────────────────┘
-
-┌─────────────┐     ┌──────────────────────────────────────────────┐
-│ GDC Cases   │────▶│ Clinical data (1098 patients, 11 columns)    │
-│ (or Xena)   │     │ → data/raw/tcga_brca_clinical.tsv            │
-└─────────────┘     └──────────────────────────────────────────────┘
-
-┌─────────────┐     ┌──────────────────────────────────────────────┐
-│ STRING v12  │────▶│ Protein-Protein Interactions (9606.links)    │
-│             │     │ → data/knowledge_graph/string_ppi.tsv         │
-└─────────────┘     └──────────────────────────────────────────────┘
-
-┌─────────────┐     ┌──────────────────────────────────────────────┐
-│ DisGeNET    │────▶│ Gene-Disease Associations (breast cancer)    │
-│ API         │     │ → data/knowledge_graph/disgenet_gene_disease  │
-└─────────────┘     └──────────────────────────────────────────────┘
-
-┌─────────────┐     ┌──────────────────────────────────────────────┐
-│ NCBI Entrez │────▶│ Gene functional summaries (1750 genes)       │
-│             │     │ → data/embeddings/gene_summaries.json         │
-└─────────────┘     └──────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    GDC["GDC REST API<br/>(or Xena)"] -->|RNA-Seq| EXPR["TCGA-BRCA Expression<br/>20,530 genes × 1,218 samples<br/>→ data/raw/tcga_brca_expression.tsv.gz"]
+    GDC_C["GDC Cases API<br/>(or Xena)"] -->|Clinical| CLIN["Clinical Data<br/>1,098 patients, 11 columns<br/>→ data/raw/tcga_brca_clinical.tsv"]
+    STRING["STRING v12.0"] -->|PPI| PPI["Protein-Protein Interactions<br/>→ data/knowledge_graph/string_ppi.tsv"]
+    DISGENET["DisGeNET API"] -->|Gene-Disease| GDA["Gene-Disease Associations<br/>→ data/knowledge_graph/disgenet_gene_disease.tsv"]
+    NCBI["NCBI Entrez"] -->|Summaries| SUM["Gene Functional Summaries (1,750 genes)<br/>→ data/embeddings/gene_summaries.json"]
 ```
 
 **Fallback strategy**: GDC is the primary source. If the GDC bulk download fails (e.g., 500 error), the pipeline falls back to UCSC Xena mirrors automatically.
 
 ### 1b. Preprocessing (`src/preprocessing.py`)
 
-```
-Expression Matrix (20530 genes × 1218 samples)
-       │
-       ▼
-┌──────────────────┐
-│ Low-Expression   │  Removes genes with total counts ≤ 1000
-│ Gene Filter      │  20530 → 17343 genes
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ Normalization    │  log2(x+1) if raw counts, then z-score per gene
-│ (z-score)        │  Skips log if already pre-normalized (max ≤ 30)
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ Clinical         │  KNN imputation (k=5) for numeric columns
-│ Imputation       │  All-NaN columns (e.g. tumor_stage) filled with 0
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ Survival Label   │  Bins OS.time into 4 classes:
-│ Discretization   │  <365d (Class 0), 365–1095d (Class 1),
-│                  │  1095–1825d (Class 2), >1825d (Class 3)
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ LASSO Feature    │  LassoCV (10-fold, 100 alphas) selects genes
-│ Selection        │  93 genes with non-zero coefficients
-│                  │  + 107 high-variance supplement = 200 total
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ DisGeNET Filter  │  Intersects with known neoplastic genes
-│ (optional)       │  If intersection too small, keeps all + adds KG genes
-└────────┬─────────┘
-         ▼
-┌──────────────────┐
-│ Clinical Feature │  Extracts: age, stage (one-hot I–IV), gender
-│ Extraction       │  → 6 features per patient
-└────────┬─────────┘
-         ▼
-  Outputs:
-  ├── data/processed/expression_selected.tsv   (200 genes × 1217 patients)
-  ├── data/processed/selected_genes.txt         (200 gene symbols)
-  ├── data/processed/survival_labels.tsv        (labels + OS.time + OS)
-  └── data/processed/clinical_features.tsv      (6 features)
+```mermaid
+flowchart TD
+    RAW["Expression Matrix<br/>20,530 genes × 1,218 samples"] --> FILT["Low-Expression Gene Filter<br/>Removes total counts ≤ 1,000<br/>20,530 → 17,343 genes"]
+    FILT --> NORM["Normalization (z-score)<br/>log2(x+1) if raw, then z-score per gene<br/>Skips log if pre-normalized (max ≤ 30)"]
+    NORM --> IMP["Clinical Imputation<br/>KNN (k=5) for numeric columns<br/>All-NaN columns filled with 0"]
+    IMP --> SURV["Survival Label Discretization<br/>< 365d (Class 0), 365–1095d (Class 1)<br/>1095–1825d (Class 2), >1825d (Class 3)"]
+    SURV --> LASSO["LASSO Feature Selection<br/>LassoCV (10-fold, 100 alphas)<br/>93 non-zero + 107 high-variance = 200"]
+    LASSO --> DGN["DisGeNET Filter (optional)<br/>Intersection too small → keep all 200"]
+    DGN --> CLIN["Clinical Feature Extraction<br/>age, stage I–IV (one-hot), gender → 6 features"]
+    CLIN --> OUT1["expression_selected.tsv<br/>200 × 1,217"]
+    CLIN --> OUT2["selected_genes.txt<br/>200 genes"]
+    CLIN --> OUT3["survival_labels.tsv"]
+    CLIN --> OUT4["clinical_features.tsv<br/>6 features"]
+
+    style LASSO fill:#ffcdd2,stroke:#c62828
 ```
 
 **Patient matching**: TCGA sample barcodes (e.g., `TCGA-XX-XXXX-01`) are truncated to 12-character patient IDs and matched across expression and clinical data. 1,217 of 1,218 samples match successfully.
@@ -135,30 +79,21 @@ Expression Matrix (20530 genes × 1218 samples)
 
 ### 2a. Knowledge Graph Construction (`src/kg_construction.py`)
 
+```mermaid
+graph TD
+    subgraph KG["Knowledge Graph (200 gene nodes)"]
+        G1["Gene"] ---|"STRING PPI<br/>64 edges, conf ≥ 700"| G2["Gene"]
+        G1 ---|"KEGG<br/>173 edges, 126 pathways"| P["Pathway"]
+        G1 -.-|"DisGeNET<br/>0 edges*"| D["Disease"]
+    end
+
+    KG --- STATS["Statistics:<br/>Density: 0.0016 | Avg degree: 0.32<br/>Max degree: 6 | Isolated: 162 (81%)"]
+
+    style D fill:#ffcdd2,stroke:#c62828
+    style STATS fill:#fff9c4,stroke:#f57f17
 ```
-┌───────────────────────────────────────────────────────────────────┐
-│                     Knowledge Graph                               │
-│                                                                   │
-│   Gene ◆──────────◆ Gene         (STRING PPI, 64 edges)          │
-│         \                                                         │
-│          \                                                        │
-│           ◆──────── Pathway      (KEGG, 173 edges, 126 pathways) │
-│          /                                                        │
-│         /                                                         │
-│   Gene ◆──────────◆ Disease      (DisGeNET, 0 edges*)            │
-│                                                                   │
-│   * No overlap between LASSO-selected genes and DisGeNET entries  │
-│                                                                   │
-│   Statistics:                                                     │
-│   ├── 200 gene nodes                                              │
-│   ├── 64 gene-gene edges (PPI, confidence ≥ 700)                 │
-│   ├── 173 gene-pathway edges (126 KEGG pathways)                 │
-│   ├── Gene-gene density: 0.0016                                  │
-│   ├── Average degree: 0.32                                       │
-│   ├── Max degree: 6                                              │
-│   └── Isolated genes: 162 (81% — sparse graph)                   │
-└───────────────────────────────────────────────────────────────────┘
-```
+
+\* No overlap between LASSO-selected genes and DisGeNET entries.
 
 **Edge construction details**:
 - **STRING PPI**: Loads 13.7M human protein links, filters to confidence ≥ 700, maps protein IDs to gene symbols, intersects with 200 selected genes → 64 bidirectional edges
@@ -167,12 +102,12 @@ Expression Matrix (20530 genes × 1218 samples)
 
 ### 2b. LLM Embeddings (`src/llm_embeddings.py`)
 
-```
-┌────────────────────┐     ┌───────────────────┐     ┌─────────────────┐
-│ Gene Summaries     │     │ BioBERT v1.2      │     │ Gene Embeddings │
-│ (NCBI Entrez text) │────▶│ [CLS] pooling     │────▶│ (200 × 768)     │
-│ 1750 gene entries  │     │ max_length=512     │     │ float32 .npy    │
-└────────────────────┘     └───────────────────┘     └─────────────────┘
+```mermaid
+flowchart LR
+    SUM["Gene Summaries<br/>(NCBI Entrez text)<br/>1,750 entries"] --> BIO["BioBERT v1.2<br/>[CLS] pooling<br/>max_length=512"]
+    BIO --> EMB["Gene Embeddings<br/>(200 × 768)<br/>float32 .npy"]
+
+    style BIO fill:#e3f2fd,stroke:#1565c0
 ```
 
 - **Model**: `dmis-lab/biobert-base-cased-v1.2` (PubMed + PMC pre-trained BERT)
@@ -182,17 +117,12 @@ Expression Matrix (20530 genes × 1218 samples)
 
 ### 2c. FAISS Vector Store (`src/vector_store.py`)
 
-```
-┌─────────────────┐     ┌────────────────────────┐
-│ Gene Embeddings │────▶│ FAISS IndexFlatL2      │
-│ (200 × 768)     │     │ Exact L2 nearest       │
-│                 │     │ neighbor search         │
-└─────────────────┘     │                        │
-                        │ Sanity check:          │
-                        │ RPL13AP6 neighbors:    │
-                        │ → RPL19P12 (d=4.98)    │
-                        │ → MRPL42P5 (d=10.33)   │
-                        └────────────────────────┘
+```mermaid
+flowchart LR
+    EMB["Gene Embeddings<br/>(200 × 768)"] --> FAISS["FAISS IndexFlatL2<br/>Exact L2 nearest neighbor"]
+    FAISS --> CHECK["Sanity check:<br/>RPL13AP6 neighbors:<br/>→ RPL19P12 (d=4.98)<br/>→ MRPL42P5 (d=10.33)"]
+
+    style FAISS fill:#c8e6c9,stroke:#2e7d32
 ```
 
 ---
@@ -203,34 +133,35 @@ Expression Matrix (20530 genes × 1218 samples)
 
 ### Patient-Weighted Embeddings (GenePT-w)
 
-```
-Gene Embeddings          Expression Matrix        Patient Embeddings
-(200 × 768)              (1217 × 200)             (1217 × 200 × 768)
-     │                        │                         │
-     │    For each patient p: │                         │
-     │    emb[p,g,:] = expr[p,g] × gene_emb[g,:]       │
-     └────────────────────────┘─────────────────────────┘
+```mermaid
+flowchart LR
+    GE["Gene Embeddings<br/>(200 × 768)"] --> MUL["⊗ Element-wise multiply<br/>emb[p,g,:] = expr[p,g] × gene_emb[g,:]"]
+    EX["Expression Matrix<br/>(1,217 × 200)"] --> MUL
+    MUL --> PE["Patient Embeddings<br/>(1,217 × 200 × 768)"]
+
+    style MUL fill:#fff9c4,stroke:#f57f17,stroke-width:2px
 ```
 
 Each patient gets a **personalized graph** where node features are the gene's BioBERT embedding scaled by that patient's expression level for that gene. This encodes both functional meaning (from the LLM) and patient-specific expression signal.
 
 ### PyTorch Geometric Dataset
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  BreastCancerGraphDataset (1217 patients)                │
-│                                                         │
-│  Per patient (one Data object):                         │
-│  ├── x: [200, 768]        node features (weighted emb) │
-│  ├── edge_index: [2, 237]  shared KG topology           │
-│  ├── clinical: [1, 6]      clinical features            │
-│  ├── y: scalar              survival class (0–3)        │
-│  ├── os_time: scalar        overall survival (days)     │
-│  └── tumor_stage: scalar    stage for aux task          │
-│                                                         │
-│  5-Fold Stratified CV:                                  │
-│  └── Each fold: 956 train / 239 validation              │
-└─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph DATASET["BreastCancerGraphDataset (1,217 patients)"]
+        direction TB
+        subgraph PATIENT["Per patient (one Data object)"]
+            X["x: [200, 768] — node features"]
+            EI["edge_index: [2, 237] — shared KG topology"]
+            CL["clinical: [1, 6] — clinical features"]
+            Y["y: scalar — survival class (0–3)"]
+            OS["os_time: scalar — overall survival (days)"]
+            TS["tumor_stage: scalar — stage for aux task"]
+        end
+        CV["5-Fold Stratified CV<br/>Each fold: 956 train / 239 validation"]
+    end
+
+    style DATASET fill:#fff3e0,stroke:#e65100
 ```
 
 **SMOTE handling**: The flattened feature dimension (200 × 768 + 6 = 153,606) exceeds the `MAX_SMOTE_FEATURES` threshold of 50,000. SMOTE is skipped and **class-weighted cross-entropy loss** is used instead for class imbalance.
@@ -243,73 +174,58 @@ Each patient gets a **personalized graph** where node features are the gene's Bi
 
 ### Model Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        HybridModel                                  │
-│                                                                     │
-│  ┌─────────────────────────────────────────────────────────────┐    │
-│  │                    BioKG_GAT (GNN Backbone)                 │    │
-│  │                                                             │    │
-│  │  Input: x [B×200, 768]                                     │    │
-│  │         edge_index [2, E] (shared across batch)             │    │
-│  │                                                             │    │
-│  │  ┌───────────┐   ┌───────────┐   ┌───────────┐             │    │
-│  │  │ GAT Layer1│   │ GAT Layer2│   │ GAT Layer3│             │    │
-│  │  │ 768→128   │──▶│ 128→128   │──▶│ 128→128   │             │    │
-│  │  │ 8 heads   │   │ 4 heads   │   │ 1 head    │             │    │
-│  │  │ +BN +ELU  │   │ +BN +ELU  │   │ +BN +ELU  │             │    │
-│  │  │ +Dropout  │   │ +Dropout  │   │ +Dropout  │             │    │
-│  │  │ +Residual │   │ +Residual │   │           │             │    │
-│  │  └───────────┘   └───────────┘   └───────────┘             │    │
-│  │         │                                                   │    │
-│  │         ▼                                                   │    │
-│  │  Graph Pooling (mean + max, concatenated)                   │    │
-│  │  → [B, 256]                                                 │    │
-│  └─────────────────────────────────────┬───────────────────────┘    │
-│                                        │                            │
-│  ┌──────────────────┐                  │                            │
-│  │ Clinical Features│                  │                            │
-│  │ [B, 6]           │──────┐           │                            │
-│  └──────────────────┘      │           │                            │
-│                            ▼           ▼                            │
-│                     ┌──────────────────────┐                        │
-│                     │ FC Head (Main Task)  │                        │
-│                     │ 262 → 64 → BN → ELU │                        │
-│                     │ → Dropout → 64 → 32  │                        │
-│                     │ → 4 (survival class) │                        │
-│                     └──────────┬───────────┘                        │
-│                                │                                    │
-│                     ┌──────────┴───────────┐                        │
-│                     │ Aux Head (Staging)   │                        │
-│                     │ 256 → 32 → 4 stages │                        │
-│                     └──────────────────────┘                        │
-│                                                                     │
-│  Total Parameters: 2,712,072 (all trainable)                        │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    IN["Input: x [B×200, 768]<br/>edge_index [2, E]"] --> GAT1
+
+    subgraph GAT["BioKG_GAT (GNN Backbone)"]
+        GAT1["GAT Layer 1<br/>768→128, 8 heads<br/>+BN +ELU +Dropout +Residual"] --> GAT2["GAT Layer 2<br/>128→128, 4 heads<br/>+BN +ELU +Dropout +Residual"]
+        GAT2 --> GAT3["GAT Layer 3<br/>128→128, 1 head<br/>+BN +ELU +Dropout"]
+        GAT3 --> POOL["Graph Pooling<br/>mean ‖ max → [B, 256]"]
+    end
+
+    POOL --> CAT
+    CLIN["Clinical Features [B, 6]"] --> CAT["Concatenate → [B, 262]"]
+
+    CAT --> MAIN["FC Head (Main Task)<br/>262 → 64 → BN → ELU → Drop<br/>→ 32 → 4 (survival class)"]
+
+    POOL --> AUX["Aux Head (Staging)<br/>256 → 32 → ReLU → Drop → 4 stages"]
+
+    MAIN --> PARAMS["Total Parameters: 2,712,072 (all trainable)"]
+    AUX --> PARAMS
+
+    style GAT fill:#e3f2fd,stroke:#1565c0
+    style MAIN fill:#c8e6c9,stroke:#2e7d32
+    style AUX fill:#fff9c4,stroke:#f57f17
 ```
 
 ### Training Loop
 
-```
-For each fold (1..5):
-    │
-    ├── Initialize model (fresh weights)
-    ├── Compute class weights (inverse frequency)
-    ├── Create DataLoaders (batch_size=32)
-    │
-    ├── For each epoch (max 200):
-    │   ├── Train: weighted CE loss + 0.3 × aux loss
-    │   │          + gradient clipping (max_norm=1.0)
-    │   ├── Validate: loss, accuracy, macro AUC, C-index
-    │   └── ReduceLROnPlateau (factor=0.5, patience=10)
-    │
-    ├── Early stopping (patience=20 on val loss)
-    ├── Save best model checkpoint
-    │
-    └── Hybrid RF Training:
-        ├── Extract GNN embeddings from best model
-        ├── Train RF (500 trees, calibrated, isotonic)
-        └── Evaluate RF on validation fold
+```mermaid
+flowchart TD
+    FOLD{{"For each fold (1..5)"}} --> INIT["Initialize model (fresh weights)"]
+    INIT --> WEIGHTS["Compute class weights (inverse frequency)"]
+    WEIGHTS --> DL["Create DataLoaders (batch_size=32)"]
+
+    DL --> EPOCH{{"For each epoch (max 200)"}}
+    EPOCH --> TRAIN["Train: weighted CE + 0.3 × aux loss<br/>+ gradient clipping (max_norm=1.0)"]
+    TRAIN --> VAL["Validate: loss, accuracy, macro AUC, C-index"]
+    VAL --> SCHED["ReduceLROnPlateau (factor=0.5, patience=10)"]
+
+    SCHED --> BEST{"New best<br/>val_loss?"}
+    BEST -->|Yes| SAVE["Save best model checkpoint"]
+    SAVE --> EPOCH
+    BEST -->|No| PAT{"Patience<br/>exhausted?"}
+    PAT -->|"No (< 20)"| EPOCH
+    PAT -->|"Yes (≥ 20)"| STOP["Early stopping"]
+
+    STOP --> RF_TRAIN["Hybrid RF Training:<br/>Extract GNN embeddings → Train RF (500 trees)<br/>→ Calibrate (isotonic) → Evaluate on val fold"]
+
+    RF_TRAIN --> FOLD
+
+    style STOP fill:#ffcdd2,stroke:#c62828
+    style SAVE fill:#c8e6c9,stroke:#2e7d32
+    style RF_TRAIN fill:#e3f2fd,stroke:#1565c0
 ```
 
 ### Training Progress (Fold 1 Example)
@@ -353,18 +269,26 @@ Generates 5 publication-ready figures:
 
 ### Output Artifacts
 
-```
-results/
-├── training_results.json       # Full fold-level metrics + training history
-├── evaluation_report.json      # Baselines, ablation, model states
-├── explainability_results.json # GNNExplainer + SHAP top features
-├── model_fold{0..4}.pt         # Saved model checkpoints (~10.8 MB each)
-├── training_curves.png         # Training dynamics visualization
-├── kaplan_meier.png            # Survival analysis plot
-├── tsne_embeddings.png         # t-SNE embedding visualization
-├── umap_embeddings.png         # UMAP embedding visualization
-├── model_comparison.png        # Cross-model comparison chart
-└── risk_heatmap.png            # Gene importance network graph
+```mermaid
+flowchart TD
+    subgraph RES["results/"]
+        direction TB
+        JSON1["training_results.json — Full fold-level metrics + history"]
+        JSON2["evaluation_report.json — Baselines, ablation, model states"]
+        JSON3["explainability_results.json — GNNExplainer + SHAP"]
+        MODELS["model_fold0..4.pt — Model checkpoints (~10.8 MB each)"]
+        subgraph FIGS["figures/"]
+            FIG1["training_curves.png"]
+            FIG2["kaplan_meier.png"]
+            FIG3["tsne_embeddings.png"]
+            FIG4["umap_embeddings.png"]
+            FIG5["model_comparison.png"]
+            FIG6["risk_heatmap.png"]
+        end
+    end
+
+    style RES fill:#f3e5f5,stroke:#6a1b9a
+    style FIGS fill:#e1bee7,stroke:#8e24aa
 ```
 
 ---

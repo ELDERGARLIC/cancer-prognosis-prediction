@@ -547,30 +547,39 @@ Orchestrates all visualizations using fold-0 results. Returns list of generated 
 
 ## Module Dependency Graph
 
+```mermaid
+flowchart TD
+    main["main.py"] --> dd["data_download.py"]
+    main --> pp["preprocessing.py"]
+    main --> kg["kg_construction.py"]
+    main --> emb["llm_embeddings.py"]
+    main --> vs["vector_store.py"]
+    main --> ds["dataset.py"]
+    main --> tr["train.py"]
+    main --> ev["evaluate.py"]
+    main --> ex["explain.py"]
+    main --> viz["visualize.py"]
+
+    emb -.-> HF["HuggingFace transformers"]
+    vs -.-> FA["faiss"]
+    ds --> emb
+    ds -.-> PyG_data["torch_geometric, imblearn"]
+    mo["model.py"] -.-> PyG_nn["torch_geometric.nn"]
+    tr --> mo
+    tr --> ds
+    tr -.-> SKL1["sklearn, lifelines"]
+    ev --> mo
+    ev --> ds
+    ev -.-> SKL2["sklearn, lifelines"]
+    ex -.-> SHAP["shap, torch_geometric.explain"]
+    viz -.-> MPL["matplotlib, umap, sklearn.manifold"]
+
+    style main fill:#ffeb3b,stroke:#f57f17,stroke-width:2px
+    style mo fill:#ef9a9a,stroke:#c62828
+    style tr fill:#ef9a9a,stroke:#c62828
+    style ds fill:#ffcc80,stroke:#e65100
+    style emb fill:#90caf9,stroke:#1565c0
+    style kg fill:#90caf9,stroke:#1565c0
 ```
-main.py
-  ├── src/data_download.py
-  ├── src/preprocessing.py
-  ├── src/kg_construction.py
-  ├── src/llm_embeddings.py
-  │     └── (HuggingFace transformers)
-  ├── src/vector_store.py
-  │     └── (faiss)
-  ├── src/dataset.py
-  │     ├── src/llm_embeddings.py
-  │     └── (torch_geometric, imblearn)
-  ├── src/model.py
-  │     └── (torch_geometric.nn)
-  ├── src/train.py
-  │     ├── src/model.py
-  │     ├── src/dataset.py
-  │     └── (sklearn, lifelines)
-  ├── src/evaluate.py
-  │     ├── src/model.py
-  │     ├── src/dataset.py
-  │     └── (sklearn, lifelines)
-  ├── src/explain.py
-  │     └── (shap, torch_geometric.explain)
-  └── src/visualize.py
-        └── (matplotlib, umap, sklearn.manifold)
-```
+
+*Solid arrows = internal imports. Dashed arrows = external library dependencies.*

@@ -14,43 +14,47 @@ These are fused through a 3-layer GAT that operates on a per-patient biological 
 
 ## Pipeline Architecture
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                        PIPELINE OVERVIEW                            │
-├─────────────────────────────────────────────────────────────────────┤
-│                                                                     │
-│  Stage 1: Data Acquisition & Preprocessing                          │
-│  ┌──────────┐  ┌──────────────┐  ┌────────────┐  ┌──────────────┐  │
-│  │ TCGA-BRCA│  │ Gene Filter  │  │ Normalize  │  │ LASSO Select │  │
-│  │ Download │─▶│ (20530→17343)│─▶│ (z-score)  │─▶│ (17343→200)  │  │
-│  └──────────┘  └──────────────┘  └────────────┘  └──────────────┘  │
-│                                                                     │
-│  Stage 2: Knowledge Graph & LLM Embeddings                          │
-│  ┌──────────┐  ┌──────────────┐  ┌────────────┐  ┌──────────────┐  │
-│  │ STRING   │  │ DisGeNET     │  │ KEGG       │  │ BioBERT      │  │
-│  │ PPI      │  │ Gene-Disease │  │ Pathways   │  │ Embeddings   │  │
-│  │ (64 edges│  │ (0 edges)    │  │ (173 edges)│  │ (768-dim)    │  │
-│  └──────────┘  └──────────────┘  └────────────┘  └──────────────┘  │
-│                                                                     │
-│  Stage 3: Dataset Construction                                      │
-│  ┌────────────────────────────────────────────────────────────────┐  │
-│  │ Patient-Weighted Embeddings (1217 × 200 × 768)                │  │
-│  │ + 5-Fold Stratified CV Splits + Clinical Features (6-dim)     │  │
-│  └────────────────────────────────────────────────────────────────┘  │
-│                                                                     │
-│  Stage 4: Model Training (5-Fold CV)                                │
-│  ┌──────────────────┐    ┌────────────────────────┐                 │
-│  │ 3-Layer GAT      │───▶│ Calibrated RF (Hybrid) │                 │
-│  │ + Multi-Task Loss│    │ on GNN Embeddings       │                 │
-│  └──────────────────┘    └────────────────────────┘                 │
-│                                                                     │
-│  Stage 5: Evaluation & Explainability                               │
-│  ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌──────────────┐  │
-│  │ Baselines  │  │ Ablation   │  │ GNNExplain │  │ Visualize    │  │
-│  │ Cox/RF/MLP │  │ Study      │  │ + SHAP     │  │ KM/tSNE/UMAP │  │
-│  └────────────┘  └────────────┘  └────────────┘  └──────────────┘  │
-│                                                                     │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    subgraph S1["Stage 1 — Data Acquisition & Preprocessing"]
+        direction LR
+        A1["TCGA-BRCA<br/>Download"] --> A2["Gene Filter<br/>20,530 → 17,343"]
+        A2 --> A3["Normalize<br/>z-score"]
+        A3 --> A4["LASSO Select<br/>17,343 → 200"]
+    end
+
+    subgraph S2["Stage 2 — Knowledge Graph & LLM Embeddings"]
+        direction LR
+        B1["STRING PPI<br/>64 edges"]
+        B2["DisGeNET<br/>0 edges"]
+        B3["KEGG Pathways<br/>173 edges"]
+        B4["BioBERT<br/>768-dim embeddings"]
+    end
+
+    subgraph S3["Stage 3 — Dataset Construction"]
+        C1["Patient-Weighted Embeddings (1217 × 200 × 768)<br/>+ 5-Fold Stratified CV Splits + Clinical Features (6-dim)"]
+    end
+
+    subgraph S4["Stage 4 — Model Training (5-Fold CV)"]
+        direction LR
+        D1["3-Layer GAT<br/>+ Multi-Task Loss"] --> D2["Calibrated RF (Hybrid)<br/>on GNN Embeddings"]
+    end
+
+    subgraph S5["Stage 5 — Evaluation & Explainability"]
+        direction LR
+        E1["Baselines<br/>Cox/RF/MLP"]
+        E2["Ablation<br/>Study"]
+        E3["GNNExplainer<br/>+ SHAP"]
+        E4["Visualize<br/>KM/tSNE/UMAP"]
+    end
+
+    S1 --> S2 --> S3 --> S4 --> S5
+
+    style S1 fill:#e8f5e9,stroke:#2e7d32
+    style S2 fill:#e3f2fd,stroke:#1565c0
+    style S3 fill:#fff3e0,stroke:#e65100
+    style S4 fill:#fce4ec,stroke:#c62828
+    style S5 fill:#f3e5f5,stroke:#6a1b9a
 ```
 
 ## Key Results
@@ -110,31 +114,37 @@ CCDC117, LOC100101266, TM9SF2, GPR152, NCKAP5, LOC550112, C1orf156, EXTL3, C9orf
 
 ## Project Structure
 
-```
-.
-├── configs/
-│   └── config.yaml              # All hyperparameters and paths
-├── data/
-│   ├── raw/                     # Downloaded TCGA expression + clinical
-│   ├── processed/               # Filtered expression, labels, genes
-│   ├── knowledge_graph/         # STRING PPI, DisGeNET, KEGG edges
-│   └── embeddings/              # BioBERT embeddings, FAISS index
-├── src/
-│   ├── data_download.py         # Stage 1a: Data acquisition
-│   ├── preprocessing.py         # Stage 1b: Filtering, normalization, LASSO
-│   ├── kg_construction.py       # Stage 2a: Knowledge graph construction
-│   ├── llm_embeddings.py        # Stage 2b: BioBERT gene embeddings
-│   ├── vector_store.py          # Stage 2c: FAISS vector database
-│   ├── dataset.py               # Stage 3: PyG dataset + CV splits
-│   ├── model.py                 # GAT + Hybrid model architectures
-│   ├── train.py                 # Stage 4: Training loop + RF hybrid
-│   ├── evaluate.py              # Stage 5a: Metrics + baselines + ablation
-│   ├── explain.py               # Stage 5b: GNNExplainer + SHAP
-│   └── visualize.py             # Stage 5c: Plots and figures
-├── results/                     # Trained models, metrics, figures
-├── docs/                        # Documentation (this folder)
-├── main.py                      # Pipeline entry point
-└── pyproject.toml               # Dependencies (Poetry)
+```mermaid
+flowchart LR
+    subgraph ROOT["."]
+        direction TB
+        configs["configs/<br/>└── config.yaml"]
+        subgraph data["data/"]
+            direction TB
+            raw["raw/ — TCGA expression + clinical"]
+            processed["processed/ — Filtered expression, labels, genes"]
+            kg_dir["knowledge_graph/ — STRING PPI, DisGeNET, KEGG"]
+            emb_dir["embeddings/ — BioBERT, FAISS index"]
+        end
+        subgraph src["src/"]
+            direction TB
+            dd["data_download.py — Stage 1a"]
+            pp["preprocessing.py — Stage 1b"]
+            kgc["kg_construction.py — Stage 2a"]
+            llm["llm_embeddings.py — Stage 2b"]
+            vs["vector_store.py — Stage 2c"]
+            ds["dataset.py — Stage 3"]
+            mo["model.py — Architectures"]
+            tr["train.py — Stage 4"]
+            ev["evaluate.py — Stage 5a"]
+            ex["explain.py — Stage 5b"]
+            viz["visualize.py — Stage 5c"]
+        end
+        results["results/ — Trained models, metrics, figures"]
+        docs["docs/ — Documentation"]
+        main["main.py — Pipeline entry point"]
+        pyproject["pyproject.toml — Dependencies"]
+    end
 ```
 
 ## Quick Start

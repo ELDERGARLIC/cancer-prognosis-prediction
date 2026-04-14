@@ -39,20 +39,20 @@ Comprehensive performance analysis of the breast cancer prognosis prediction pip
 
 ### Key Observations
 
+```mermaid
+xychart-beta
+    title "Performance Comparison — Accuracy"
+    x-axis ["Calibrated RF", "GAT", "Random Chance"]
+    y-axis "Accuracy" 0 --> 0.6
+    bar [0.454, 0.332, 0.250]
 ```
-Performance Comparison (Accuracy)
-─────────────────────────────────────────────────────
-Calibrated RF  ████████████████████████████████ 0.454
-GAT            ██████████████████████           0.332
-Random chance  █████████████                    0.250
-─────────────────────────────────────────────────────
 
-Performance Comparison (AUC-ROC)
-─────────────────────────────────────────────────────
-GAT            █████████████████████████████████ 0.627
-Calibrated RF  ██████████████████████████████   0.601
-Random chance  ████████████████████████████     0.500
-─────────────────────────────────────────────────────
+```mermaid
+xychart-beta
+    title "Performance Comparison — AUC-ROC"
+    x-axis ["GAT", "Calibrated RF", "Random Chance"]
+    y-axis "AUC-ROC" 0 --> 0.8
+    bar [0.627, 0.601, 0.500]
 ```
 
 - The **Calibrated RF** outperforms the raw GAT on accuracy (+12.2 pp) by leveraging the learned GNN embeddings as features for a traditional classifier
@@ -74,25 +74,28 @@ Random chance  █████████████████████�
 | 4 | 25 | Yes | 1.337 | 0.574 |
 | 5 | 22 | Yes | 1.360 | 0.532 |
 
+```mermaid
+xychart-beta
+    title "Fold 1 — Validation AUC-ROC Over Epochs"
+    x-axis "Epoch" [1, 10, 20, 30, 50, 70, 90, 100, 120, 140, 150, 156]
+    y-axis "Val AUC-ROC" 0.5 --> 0.75
+    line [0.546, 0.536, 0.546, 0.572, 0.609, 0.653, 0.684, 0.668, 0.676, 0.700, 0.701, 0.695]
 ```
-Training Progression (Fold 1 — Best Fold)
-──────────────────────────────────────────────────────────────────
-Epoch     Loss(train)   Loss(val)    Acc(val)    AUC(val)
-──────────────────────────────────────────────────────────────────
-   1       1.385         1.382        0.188       0.546
-  10       1.369         1.391        0.188       0.536
-  20       1.366         1.372        0.259       0.546
-  30       1.346         1.349        0.385       0.572
-  50       1.328         1.347        0.326       0.609
-  70       1.299         1.305        0.347       0.653
-  90       1.276         1.268        0.347       0.684
- 100       1.306         1.317        0.335       0.668
- 120       1.251         1.273        0.356       0.676
- 140       1.216         1.260        0.360       0.700
- 150       1.249         1.250        0.393       0.701   ← Peak AUC
- 156       EARLY STOP    1.245        0.372       0.695
-──────────────────────────────────────────────────────────────────
-```
+
+| Epoch | Loss (train) | Loss (val) | Acc (val) | AUC (val) |
+|-------|-------------|-----------|----------|----------|
+| 1 | 1.385 | 1.382 | 0.188 | 0.546 |
+| 10 | 1.369 | 1.391 | 0.188 | 0.536 |
+| 20 | 1.366 | 1.372 | 0.259 | 0.546 |
+| 30 | 1.346 | 1.349 | 0.385 | 0.572 |
+| 50 | 1.328 | 1.347 | 0.326 | 0.609 |
+| 70 | 1.299 | 1.305 | 0.347 | 0.653 |
+| 90 | 1.276 | 1.268 | 0.347 | 0.684 |
+| 100 | 1.306 | 1.317 | 0.335 | 0.668 |
+| 120 | 1.251 | 1.273 | 0.356 | 0.676 |
+| 140 | 1.216 | 1.260 | 0.360 | 0.700 |
+| 150 | 1.249 | 1.250 | 0.393 | **0.701** (peak) |
+| 156 | EARLY STOP | 1.245 | 0.372 | 0.695 |
 
 - Training loss steadily decreases from ~1.39 to ~1.22 over 156 epochs
 - Validation loss plateaus around epoch 90, oscillating between 1.25–1.32
@@ -116,24 +119,19 @@ Epoch     Loss(train)   Loss(val)    Acc(val)    AUC(val)
 
 ### Cox Proportional Hazards
 
-```
-┌──────────────────────────────────────────────────────────────┐
-│  Cox PH Baseline                                             │
-│  ├── Features: First 50 PCA components of gene embeddings   │
-│  ├── Penalizer: 0.1 (L2 regularization)                     │
-│  ├── C-index: 0.748                                         │
-│  │                                                           │
-│  │  Note: Cox PH directly models hazard ratios and is       │
-│  │  optimized for C-index. It significantly outperforms      │
-│  │  the GAT on concordance (0.748 vs 0.380), suggesting     │
-│  │  the survival prediction task benefits from explicit      │
-│  │  time-to-event modeling rather than class discretization. │
-│  │                                                           │
-│  │  Warning: Low-variance features triggered a convergence  │
-│  │  warning from lifelines (50 features with near-zero      │
-│  │  variance in the PCA-reduced space).                      │
-│  └                                                           │
-└──────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    subgraph COX["Cox PH Baseline"]
+        direction TB
+        FEAT["Features: First 50 PCA components"]
+        PEN["Penalizer: 0.1 (L2)"]
+        CIDX["C-index: 0.748"]
+        NOTE["Note: Cox PH directly models hazard ratios<br/>and is optimized for C-index. It outperforms<br/>the GAT on concordance (0.748 vs 0.380),<br/>suggesting the task benefits from explicit<br/>time-to-event modeling."]
+        WARN["Warning: Low-variance features triggered a<br/>convergence warning from lifelines."]
+    end
+
+    style COX fill:#fff9c4,stroke:#f57f17
+    style CIDX fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
 ### Random Forest Baseline
@@ -165,15 +163,12 @@ Epoch     Loss(train)   Loss(val)    Acc(val)    AUC(val)
 | GCN with BioKG | 0.460 | 0.250 | Vanilla GCN using KG topology |
 | **Full Pipeline (GAT+RF)** | **0.454** | — | GAT on BioKG + Calibrated RF |
 
-```
-Ablation Study (Accuracy)
-─────────────────────────────────────────────────────
-GCN + BioKG        █████████████████████████████████ 0.460
-Full GAT+RF        ████████████████████████████████  0.454
-Expr only (RF)     ████████████████████████████████  0.452
-Expr+Clinical (RF) ██████████████████████████████    0.435
-Random (4-class)   █████████████████                 0.250
-─────────────────────────────────────────────────────
+```mermaid
+xychart-beta
+    title "Ablation Study — Accuracy"
+    x-axis ["GCN + BioKG", "Full GAT+RF", "Expr only (RF)", "Expr+Clinical (RF)", "Random (4-class)"]
+    y-axis "Accuracy" 0 --> 0.6
+    bar [0.460, 0.454, 0.452, 0.435, 0.250]
 ```
 
 ### Ablation Insights
@@ -260,12 +255,13 @@ SHAP (TreeExplainer) on the Calibrated Random Forest reveals which dimensions of
 
 ## Per-Fold Hybrid RF Performance
 
-```
-Fold 1:  RF Acc=0.515  AUC=0.678  ██████████████████████████████████████  Best
-Fold 2:  RF Acc=0.460  AUC=0.640  █████████████████████████████████
-Fold 3:  RF Acc=0.452  AUC=0.633  █████████████████████████████████
-Fold 4:  RF Acc=0.427  AUC=0.519  ██████████████████████████████
-Fold 5:  RF Acc=0.418  AUC=0.533  █████████████████████████████        Worst
+```mermaid
+xychart-beta
+    title "Per-Fold Hybrid RF Performance"
+    x-axis ["Fold 1 (Best)", "Fold 2", "Fold 3", "Fold 4", "Fold 5 (Worst)"]
+    y-axis "Score" 0 --> 0.8
+    bar "Accuracy" [0.515, 0.460, 0.452, 0.427, 0.418]
+    bar "AUC-ROC" [0.678, 0.640, 0.633, 0.519, 0.533]
 ```
 
 Fold 1 is the strongest fold across both GAT and RF metrics. The performance degradation in folds 4–5 correlates with very early stopping (25 and 22 epochs), suggesting the model did not converge well on those data splits.
