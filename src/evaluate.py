@@ -97,14 +97,18 @@ def compute_full_metrics(
     metrics["confusion_matrix"] = confusion_matrix(y_true, y_pred).tolist()
 
     # C-index (Zohari & Chehreghani, 2025)
+    # lifelines `predicted_scores`: higher score = longer predicted survival.
+    # Expected class index (higher class = longer survival bin) is a valid
+    # surrogate. Do NOT negate -- negation inverts concordance direction.
     if os_time is not None and os_event is not None:
-        risk_scores = np.sum(y_probs * np.arange(y_probs.shape[1]), axis=1)
-        risk_scores = -risk_scores  # Negate: higher survival bin = lower risk
+        predicted_survival = np.sum(y_probs * np.arange(y_probs.shape[1]), axis=1)
 
         valid = ~np.isnan(os_time) & ~np.isnan(os_event) & (os_time > 0)
         if valid.sum() > 10:
             try:
-                metrics["c_index"] = concordance_index(os_time[valid], risk_scores[valid], os_event[valid])
+                metrics["c_index"] = concordance_index(
+                    os_time[valid], predicted_survival[valid], os_event[valid]
+                )
             except Exception:
                 metrics["c_index"] = 0.5
 
@@ -114,7 +118,7 @@ def compute_full_metrics(
                     t_mask = valid & (os_time <= t_days)
                     if t_mask.sum() > 10:
                         metrics[f"c_index_{t_name}"] = concordance_index(
-                            os_time[t_mask], risk_scores[t_mask], os_event[t_mask]
+                            os_time[t_mask], predicted_survival[t_mask], os_event[t_mask]
                         )
                 except Exception:
                     pass

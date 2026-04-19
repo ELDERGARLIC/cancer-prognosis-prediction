@@ -106,6 +106,11 @@ def impute_clinical_data(clinical_df: pd.DataFrame) -> pd.DataFrame:
     """Handle missing clinical values using KNN imputation.
 
     Reference: sklearn.impute.KNNImputer
+
+    IMPORTANT: Categorical/label columns (tumor_stage, pathologic_stage,
+    ER/PR/HER2 status, etc.) are preserved as-is. Filling them with 0 breaks
+    downstream parsing (see the tumor-stage-all-minus-one bug from the first
+    run). Only truly numeric columns get KNN-imputed.
     """
     # Separate numeric and categorical columns
     numeric_cols = clinical_df.select_dtypes(include=[np.number]).columns.tolist()
@@ -114,6 +119,18 @@ def impute_clinical_data(clinical_df: pd.DataFrame) -> pd.DataFrame:
     # Skip ID columns for imputation
     id_cols = [c for c in categorical_cols if "id" in c.lower() or "submitter" in c.lower()]
     categorical_cols = [c for c in categorical_cols if c not in id_cols]
+
+    # Protect clinical-label columns that are semantically categorical even if
+    # they happen to be numeric-typed (some TCGA extracts store stage as int).
+    PROTECTED_KEYWORDS = (
+        "stage", "status", "grade", "subtype", "er_", "pr_", "her2",
+        "hormone", "metastasis", "metastatic", "recurrence", "histolog",
+    )
+    protected_numeric = [
+        c for c in numeric_cols
+        if any(kw in c.lower() for kw in PROTECTED_KEYWORDS)
+    ]
+    numeric_cols = [c for c in numeric_cols if c not in protected_numeric]
 
     if numeric_cols:
         n_missing_before = clinical_df[numeric_cols].isnull().sum().sum()
@@ -130,11 +147,20 @@ def impute_clinical_data(clinical_df: pd.DataFrame) -> pd.DataFrame:
                 )
                 clinical_df[imputable_cols] = imputed
 
+            # Leave all-NaN numeric columns alone -- filling with 0 masquerades
+            # as signal and can corrupt downstream feature extraction. Drop
+            # them instead so nothing silently uses a constant column.
             for col in all_nan_cols:
-                clinical_df[col] = 0
-                logger.warning(f"Column '{col}' is entirely NaN — filled with 0")
+                logger.warning(f"Column '{col}' is entirely NaN — dropping from clinical frame")
+                clinical_df = clinical_df.drop(columns=[col])
 
             logger.info(f"KNN-imputed {n_missing_before} missing numeric values")
+
+    if protected_numeric:
+        logger.info(
+            f"Preserved {len(protected_numeric)} clinical label columns "
+            f"without imputation: {protected_numeric}"
+        )
 
     return clinical_df
 
@@ -338,6 +364,38 @@ def create_survival_labels(
     return df
 
 
+def _parse_stage_string(s) -> int:
+    """Parse a tumor-stage string to ordinal 0-3 (I-IV). Returns -1 if unknown.
+
+    Matches both 'Stage IIA' / 'iiia' and numeric TCGA AJCC codes ('2', '3b').
+    Order matters: check longer prefixes first so 'iii' beats 'ii'.
+    """
+    if s is None or (isinstance(s, float) and pd.isna(s)):
+        return -1
+    s = str(s).strip().lower()
+    if not s or s in {"nan", "none", "not reported", "unknown", "[not available]", "[not applicable]", "0", "0.0"}:
+        return -1
+    # Strip 'stage ' prefix and trailing letter (IIA -> II)
+    s = s.replace("stage", "").strip()
+    # Check roman numerals longest-first
+    if "iv" in s:
+        return 3
+    if "iii" in s:
+        return 2
+    if "ii" in s:
+        return 1
+    if s.startswith("i") or s == "1":
+        return 0
+    # Numeric codes used by some TCGA extracts
+    try:
+        n = int(float(s.rstrip("abc")))
+        if 1 <= n <= 4:
+            return n - 1
+    except (ValueError, TypeError):
+        pass
+    return -1
+
+
 def extract_clinical_features(clinical_df: pd.DataFrame) -> tuple:
     """Extract and encode clinical features for model fusion.
 
@@ -351,53 +409,89 @@ def extract_clinical_features(clinical_df: pd.DataFrame) -> tuple:
     features = {}
 
     # Age at diagnosis (convert from days to years if needed)
-    if "age_at_diagnosis" in df.columns:
-        age = pd.to_numeric(df["age_at_diagnosis"], errors="coerce")
-        if age.median() > 200:  # Likely in days
+    age_col = None
+    for col in ["age_at_diagnosis", "age_at_initial_pathologic_diagnosis", "age"]:
+        if col in df.columns:
+            age_col = col
+            break
+    if age_col:
+        age = pd.to_numeric(df[age_col], errors="coerce")
+        if age.median() and age.median() > 200:  # Likely in days
             age = age / 365.25
-        features["age"] = age
+        # Normalize age to z-score so it doesn't dominate small binary features
+        age_mean = age.mean()
+        age_std = age.std()
+        if age_std and age_std > 0:
+            features["age"] = (age - age_mean) / age_std
+        else:
+            features["age"] = age.fillna(0)
 
-    # Tumor stage
+    # Tumor stage -- encode as ordinal (0-3) AND one-hot so models can use both.
     stage_col = None
-    for col in ["tumor_stage", "pathologic_stage", "ajcc_pathologic_stage", "clinical_stage"]:
+    for col in [
+        "tumor_stage", "pathologic_stage", "ajcc_pathologic_stage",
+        "clinical_stage", "ajcc_pathologic_tumor_stage",
+    ]:
         if col in df.columns:
             stage_col = col
             break
 
     if stage_col:
-        stage = df[stage_col].astype(str).str.lower()
-        # Simplify stage to I, II, III, IV
-        stage_simple = stage.copy()
-        stage_simple[stage.str.contains("stage iv|iv", na=False)] = "IV"
-        stage_simple[stage.str.contains("stage iii|iii", na=False)] = "III"
-        stage_simple[stage.str.contains("stage ii|ii", na=False)] = "II"
-        stage_simple[stage.str.contains("stage i|^i$", na=False)] = "I"
-        stage_simple[~stage_simple.isin(["I", "II", "III", "IV"])] = "unknown"
-
-        # One-hot encode
-        for s in ["I", "II", "III", "IV"]:
-            features[f"stage_{s}"] = (stage_simple == s).astype(float)
+        stage_ordinal = df[stage_col].apply(_parse_stage_string)
+        valid_mask = stage_ordinal >= 0
+        n_valid = int(valid_mask.sum())
+        logger.info(
+            f"Tumor stage ({stage_col}): {n_valid}/{len(stage_ordinal)} parsed "
+            f"({100 * n_valid / max(len(stage_ordinal), 1):.1f}%)"
+        )
+        if n_valid >= 10:
+            # Fill unknowns with median stage so one-hot/ordinal is defined
+            median_stage = int(stage_ordinal[valid_mask].median())
+            stage_filled = stage_ordinal.where(valid_mask, median_stage)
+            features["stage_ordinal"] = stage_filled.astype(float) / 3.0  # scale to [0,1]
+            for s_idx, s_name in enumerate(["I", "II", "III", "IV"]):
+                features[f"stage_{s_name}"] = (stage_filled == s_idx).astype(float)
+        else:
+            logger.warning(
+                f"Stage column '{stage_col}' has only {n_valid} parseable values; "
+                "skipping stage features."
+            )
 
     # ER/PR/HER2 status (look for these in column names)
     for marker in ["er", "pr", "her2"]:
         marker_col = None
+        # Prefer explicit *_status columns, fall back to marker-containing column
         for col in df.columns:
-            if marker in col.lower() and "status" in col.lower():
+            lc = col.lower()
+            if marker == "er" and "estrogen" in lc:
                 marker_col = col
                 break
+            if marker == "pr" and "progesterone" in lc:
+                marker_col = col
+                break
+            if marker in lc and "status" in lc:
+                marker_col = col
+                break
+        if marker_col is None:
+            for col in df.columns:
+                if marker in col.lower():
+                    marker_col = col
+                    break
 
         if marker_col:
             status = df[marker_col].astype(str).str.lower()
-            features[f"{marker}_positive"] = status.str.contains("positive|pos|\\+", na=False).astype(float)
-            features[f"{marker}_negative"] = status.str.contains("negative|neg|\\-", na=False).astype(float)
+            pos = status.str.contains(r"positive|pos|\+", na=False, regex=True)
+            neg = status.str.contains(r"negative|neg|-", na=False, regex=True)
+            # Three-state: +1 positive, -1 negative, 0 unknown
+            features[f"{marker}_signed"] = pos.astype(float) - neg.astype(float)
 
     # Gender
     if "gender" in df.columns:
-        features["is_female"] = (df["gender"].str.lower() == "female").astype(float)
+        features["is_female"] = (df["gender"].astype(str).str.lower() == "female").astype(float)
 
     feature_df = pd.DataFrame(features)
 
-    # Impute remaining NaN with 0
+    # Impute remaining NaN with 0 (these are truly missing binary flags)
     feature_df = feature_df.fillna(0)
 
     logger.info(f"Extracted {feature_df.shape[1]} clinical features: {list(feature_df.columns)}")

@@ -28,11 +28,13 @@ class BioKG_GAT(nn.Module):
     """Multi-layer Graph Attention Network for biological knowledge graphs.
 
     Architecture (Alharbi et al., 2025):
-        Layer 1: GATConv(768, 128, heads=8) -> ELU -> Dropout
+        [Optional] Linear projection 768 -> projection_dim (BioBERT -> task subspace)
+        Layer 1: GATConv(in_dim, 128, heads=8) -> ELU -> Dropout
         Layer 2: GATConv(1024, 128, heads=4) -> ELU -> Dropout
-        Layer 3: GATConv(512, 128, heads=1) -> graph pooling
+        Layer 3: GATConv(512, 128, heads=1) -> mean+max pool
 
-    With residual connections (Choudhry et al., 2025).
+    With residual connections (Choudhry et al., 2025) and graph-level
+    mean||max pooling concatenation for richer downstream features.
     """
 
     def __init__(
@@ -41,7 +43,8 @@ class BioKG_GAT(nn.Module):
         hidden_dim: int = 128,
         heads: list = None,
         dropout: float = 0.4,
-        pooling: str = "mean",
+        pooling: str = "meanmax",
+        projection_dim: int = None,
     ):
         super().__init__()
         if heads is None:
@@ -49,8 +52,23 @@ class BioKG_GAT(nn.Module):
 
         self.dropout_rate = dropout
 
+        # Optional projection of BioBERT embeddings to a lower-dim, learnable
+        # subspace before GAT layers. Shrinks patient tensors and gives the
+        # network a task-specific compression of the LLM features.
+        if projection_dim is not None and projection_dim > 0 and projection_dim != in_dim:
+            self.projection = nn.Sequential(
+                nn.Linear(in_dim, projection_dim),
+                nn.LayerNorm(projection_dim),
+                nn.GELU(),
+                nn.Dropout(dropout),
+            )
+            gat_in = projection_dim
+        else:
+            self.projection = None
+            gat_in = in_dim
+
         # Layer 1
-        self.gat1 = GATConv(in_dim, hidden_dim, heads=heads[0], dropout=dropout)
+        self.gat1 = GATConv(gat_in, hidden_dim, heads=heads[0], dropout=dropout)
         self.bn1 = nn.BatchNorm1d(hidden_dim * heads[0])
 
         # Layer 2
@@ -62,24 +80,36 @@ class BioKG_GAT(nn.Module):
         self.bn3 = nn.BatchNorm1d(hidden_dim)
 
         # Residual projections (Choudhry et al., 2025)
-        self.res1 = nn.Linear(in_dim, hidden_dim * heads[0])
+        self.res1 = nn.Linear(gat_in, hidden_dim * heads[0])
         self.res2 = nn.Linear(hidden_dim * heads[0], hidden_dim * heads[1])
 
         self.dropout = nn.Dropout(dropout)
 
-        # Graph-level pooling
+        # Graph-level pooling. 'meanmax' concatenates mean+max -> 2x hidden_dim
+        self.pooling_mode = pooling
         if pooling == "mean":
-            self.pool = global_mean_pool
+            self.output_dim = hidden_dim
         elif pooling == "max":
-            self.pool = global_max_pool
+            self.output_dim = hidden_dim
         elif pooling == "add":
-            self.pool = global_add_pool
-        else:
-            self.pool = global_mean_pool
+            self.output_dim = hidden_dim
+        else:  # meanmax
+            self.output_dim = hidden_dim * 2
 
-        self.output_dim = hidden_dim
+    def _pool(self, x, batch):
+        if self.pooling_mode == "mean":
+            return global_mean_pool(x, batch)
+        if self.pooling_mode == "max":
+            return global_max_pool(x, batch)
+        if self.pooling_mode == "add":
+            return global_add_pool(x, batch)
+        # meanmax: concat mean and max for richer representation
+        return torch.cat([global_mean_pool(x, batch), global_max_pool(x, batch)], dim=1)
 
     def forward(self, x, edge_index, batch, edge_attr=None):
+        if self.projection is not None:
+            x = self.projection(x)
+
         # Layer 1 with residual
         residual = self.res1(x)
         x = self.gat1(x, edge_index)
@@ -100,18 +130,25 @@ class BioKG_GAT(nn.Module):
         x = F.elu(x)
 
         # Pool to patient-level embedding
-        x = self.pool(x, batch)  # [batch_size, hidden_dim]
-        return x
+        return self._pool(x, batch)  # [batch_size, output_dim]
 
 
 class HybridModel(nn.Module):
-    """GAT + Clinical Feature Fusion + Auxiliary Head.
+    """GAT + Clinical Feature Fusion + Multi-task Heads.
 
-    Architecture (Gao et al., 2021 concatenation + Rahaman et al., 2023 AuxNet):
-        GNN -> patient embedding (128-dim)
-        Concatenate with clinical features
-        FC layers -> survival class prediction (main task)
-        Separate head -> tumor stage prediction (auxiliary task)
+    Architecture (Gao et al., 2021 concat + Rahaman et al., 2023 AuxNet
+    + Katzman et al., 2018 DeepSurv Cox head):
+
+        GNN                       -> patient embedding (gnn_out_dim)
+        concat with clinical      -> fused vector
+        main FC head              -> survival class logits (4 classes)
+        tumor-stage aux head      -> stage logits (4 classes)
+        Cox survival head         -> scalar log-hazard (DeepSurv-style)
+        ordinal regression head   -> single continuous score in [0,3]
+
+    The Cox head is the key addition after the first run showed that
+    CoxPH baseline achieved 0.748 C-index while the GAT got 0.38 -- a
+    differentiable Cox objective lets the GNN optimize C-index directly.
     """
 
     def __init__(
@@ -120,7 +157,7 @@ class HybridModel(nn.Module):
         clinical_dim: int,
         num_classes: int = 4,
         num_stages: int = 4,
-        fc_hidden: int = 64,
+        fc_hidden: int = 128,
         dropout: float = 0.3,
     ):
         super().__init__()
@@ -147,23 +184,44 @@ class HybridModel(nn.Module):
             nn.Linear(fc_hidden // 2, num_stages),
         )
 
+        # Cox-PH survival head (DeepSurv, Katzman 2018) -- scalar log hazard.
+        # Uses fused (gnn + clinical) features so it can leverage age/stage.
+        self.cox_head = nn.Sequential(
+            nn.Linear(gnn_out_dim + clinical_dim, fc_hidden // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(fc_hidden // 2, 1),
+        )
+
+        # Ordinal regression head -- single scalar, trained with MSE against
+        # the integer survival class. Encourages monotone ordering.
+        self.ordinal_head = nn.Sequential(
+            nn.Linear(gnn_out_dim + clinical_dim, fc_hidden // 2),
+            nn.ReLU(),
+            nn.Dropout(dropout),
+            nn.Linear(fc_hidden // 2, 1),
+        )
+
         # Store dimensions for later use
         self.gnn_out_dim = gnn_out_dim
         self.clinical_dim = clinical_dim
         self.num_classes = num_classes
 
     def forward(self, x, edge_index, batch, clinical_features, edge_attr=None):
+        """Returns (main_logits, aux_logits, gnn_emb, cox_log_hazard, ordinal_score)."""
         # GNN forward pass
-        gnn_emb = self.gnn(x, edge_index, batch, edge_attr)  # [batch_size, 128]
+        gnn_emb = self.gnn(x, edge_index, batch, edge_attr)  # [B, gnn_out_dim]
 
-        # Auxiliary task: predict tumor stage from GNN embedding
+        # Auxiliary task: tumor stage from pure GNN embedding
         aux_out = self.aux_head(gnn_emb)
 
-        # Main task: fuse with clinical features
+        # Fuse with clinical features for the heads that care about patient-level covariates
         fused = torch.cat([gnn_emb, clinical_features], dim=1)
         main_out = self.fc(fused)
+        cox_out = self.cox_head(fused).squeeze(-1)       # [B]
+        ordinal_out = self.ordinal_head(fused).squeeze(-1)  # [B]
 
-        return main_out, aux_out, gnn_emb
+        return main_out, aux_out, gnn_emb, cox_out, ordinal_out
 
     def extract_embeddings(self, x, edge_index, batch, clinical_features=None, edge_attr=None):
         """Extract patient embeddings without classification head.
@@ -192,14 +250,19 @@ class GATClassifier(nn.Module):
         num_classes: int = 4,
         heads: list = None,
         dropout: float = 0.4,
+        projection_dim: int = None,
     ):
         super().__init__()
         if heads is None:
             heads = [8, 4, 1]
 
-        self.gat = BioKG_GAT(in_dim, hidden_dim, heads, dropout)
+        self.gat = BioKG_GAT(
+            in_dim, hidden_dim, heads, dropout,
+            projection_dim=projection_dim,
+        )
+        # Use gat.output_dim so meanmax pooling (2x hidden_dim) works as input.
         self.classifier = nn.Sequential(
-            nn.Linear(hidden_dim, hidden_dim // 2),
+            nn.Linear(self.gat.output_dim, hidden_dim // 2),
             nn.ReLU(),
             nn.Dropout(dropout),
             nn.Linear(hidden_dim // 2, num_classes),
@@ -232,6 +295,8 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
         hidden_dim=model_cfg["hidden_dim"],
         heads=model_cfg["gat_heads"],
         dropout=model_cfg["dropout"],
+        projection_dim=model_cfg.get("projection_dim"),
+        pooling=model_cfg.get("pooling", "meanmax"),
     )
 
     model = HybridModel(
@@ -239,6 +304,7 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
         clinical_dim=clinical_dim,
         num_classes=4,  # 4 survival bins
         num_stages=4,   # 4 tumor stages (I-IV)
+        fc_hidden=model_cfg.get("fc_hidden", 128),
         dropout=model_cfg["dropout"],
     )
 
@@ -250,6 +316,11 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
     logger.info(f"Model built on {device}")
     logger.info(f"  Total parameters: {total_params:,}")
     logger.info(f"  Trainable parameters: {trainable_params:,}")
+    logger.info(
+        f"  GAT in_dim={model_cfg['llm_embedding_dim']} "
+        f"proj_dim={model_cfg.get('projection_dim')} "
+        f"pool_out_dim={gnn.output_dim} clinical_dim={clinical_dim}"
+    )
 
     return model
 
@@ -276,7 +347,9 @@ if __name__ == "__main__":
     device = next(model.parameters()).device
     x, edge_index, batch, clinical = x.to(device), edge_index.to(device), batch.to(device), clinical.to(device)
 
-    main_out, aux_out, emb = model(x, edge_index, batch, clinical)
+    main_out, aux_out, emb, cox, ordinal = model(x, edge_index, batch, clinical)
     print(f"Main output shape: {main_out.shape}")   # [4, 4]
     print(f"Aux output shape: {aux_out.shape}")      # [4, 4]
-    print(f"Embedding shape: {emb.shape}")           # [4, 128]
+    print(f"Embedding shape: {emb.shape}")           # [4, hidden or 2*hidden]
+    print(f"Cox log-hazard shape: {cox.shape}")      # [4]
+    print(f"Ordinal score shape: {ordinal.shape}")   # [4]

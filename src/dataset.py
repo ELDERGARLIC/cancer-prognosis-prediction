@@ -224,44 +224,50 @@ def extract_tumor_stages(clinical_df: pd.DataFrame) -> np.ndarray:
     """Extract numerical tumor stage labels for auxiliary task.
 
     Reference: Rahaman et al., 2023 — AuxNet predicts tumor stage.
+
+    Returns:
+        Array of stage codes 0-3 (I-IV), or None if nothing is parseable.
+        Unparseable rows are filled with the median of the valid ones so the
+        auxiliary CE loss can still train (CE with ignore_index=-1 is used
+        downstream to skip unresolved rows when there aren't enough valid ones).
     """
+    from src.preprocessing import _parse_stage_string
+
     stage_col = None
-    for col in ["tumor_stage", "pathologic_stage", "ajcc_pathologic_stage"]:
+    for col in [
+        "tumor_stage", "pathologic_stage", "ajcc_pathologic_stage",
+        "clinical_stage", "ajcc_pathologic_tumor_stage",
+    ]:
         if col in clinical_df.columns:
             stage_col = col
             break
 
     if stage_col is None:
+        logger.warning("No tumor stage column found; auxiliary task disabled.")
         return None
 
-    stages = clinical_df[stage_col].astype(str).str.lower()
+    stages_raw = clinical_df[stage_col].astype(str)
+    result = np.array([_parse_stage_string(s) for s in stages_raw], dtype=np.int64)
 
-    stage_map = {}
-    stage_map_val = {"i": 0, "ii": 1, "iii": 2, "iv": 3}
-    for idx, s in stages.items():
-        assigned = -1
-        for key, val in stage_map_val.items():
-            if key in s and f"i{key}" not in s:
-                assigned = max(assigned, val)
-        # More specific matching
-        if "stage iv" in s or s.endswith("iv"):
-            assigned = 3
-        elif "stage iii" in s:
-            assigned = 2
-        elif "stage ii" in s:
-            assigned = 1
-        elif "stage i" in s:
-            assigned = 0
-        stage_map[idx] = assigned if assigned >= 0 else -1
-
-    result = np.array([stage_map.get(i, -1) for i in clinical_df.index])
-    # Replace -1 with most common stage
     valid = result[result >= 0]
-    if len(valid) > 0:
-        most_common = int(np.bincount(valid).argmax())
-        result[result < 0] = most_common
+    n_valid = len(valid)
+    logger.info(
+        f"Tumor stage ({stage_col}): {n_valid}/{len(result)} rows parsed as stages"
+    )
 
-    logger.info(f"Tumor stage distribution: {dict(zip(*np.unique(result, return_counts=True)))}")
+    if n_valid < 10:
+        # Not enough signal to learn an auxiliary head; disable entirely so the
+        # main loss isn't wasting capacity on a constant target.
+        logger.warning(
+            f"Only {n_valid} stages parseable -- disabling auxiliary tumor-stage task."
+        )
+        return None
+
+    # Keep -1 for unparseable rows. train_one_epoch masks these out via
+    # `valid_aux = batch.tumor_stage >= 0` (and CE uses ignore_index=-1),
+    # so unresolved rows contribute zero gradient rather than a biased median.
+    uniq, counts = np.unique(result, return_counts=True)
+    logger.info(f"Tumor stage distribution: {dict(zip(uniq.tolist(), counts.tolist()))}")
     return result
 
 

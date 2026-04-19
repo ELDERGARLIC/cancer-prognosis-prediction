@@ -16,6 +16,7 @@ References:
 import os
 import json
 import logging
+import numpy as np
 import pandas as pd
 import yaml
 import torch
@@ -112,6 +113,134 @@ def load_string_ppi(
 
     logger.info(f"Final gene-gene edges: {edge_index.size(1)}")
     return edge_index, edge_weights, gene_to_idx
+
+
+def build_coexpression_edges(
+    expr_df: pd.DataFrame,
+    gene_list: list,
+    gene_to_idx: dict,
+    threshold: float = 0.7,
+    top_k: int = 8,
+) -> tuple:
+    """Build gene-gene co-expression edges from the expression matrix.
+
+    Motivation: the STRING PPI network leaves ~80% of LASSO-selected genes
+    isolated (first-run analysis), starving the GAT of neighborhood signal.
+    Co-expression edges densify the graph using the same data the model
+    already sees, connecting genes that move together across patients.
+
+    Args:
+        expr_df: Expression matrix (genes x samples), already normalized.
+        gene_list: Gene ordering used by the dataset.
+        gene_to_idx: Mapping from gene symbol to node index.
+        threshold: Minimum |Pearson correlation| to consider.
+        top_k: Keep at most this many edges per gene to avoid dense hubs.
+
+    Returns:
+        (edge_index, edge_weights) with bidirectional edges, no self-loops,
+        no duplicates.
+    """
+    logger.info(
+        f"Building co-expression edges (|r|>={threshold}, top_k={top_k})..."
+    )
+
+    # Subset to selected genes and align order
+    available = [g for g in gene_list if g in expr_df.index]
+    if len(available) < 5:
+        logger.warning("Not enough genes for co-expression; skipping.")
+        return torch.zeros((2, 0), dtype=torch.long), torch.zeros((0,), dtype=torch.float)
+
+    expr_sub = expr_df.loc[available]
+    # Expression matrix is genes x samples; correlate across samples
+    # by treating each row as a variable.
+    values = expr_sub.values.astype(np.float32)
+
+    # Standardize row-wise in case normalization drift
+    mu = values.mean(axis=1, keepdims=True)
+    sd = values.std(axis=1, keepdims=True) + 1e-8
+    z = (values - mu) / sd
+    n_samples = z.shape[1]
+    corr = (z @ z.T) / max(n_samples - 1, 1)
+    np.fill_diagonal(corr, 0.0)
+
+    src, dst, weights = [], [], []
+    abs_corr = np.abs(corr)
+    # For each gene, pick its top_k strongest correlates above threshold
+    for i, g1 in enumerate(available):
+        if g1 not in gene_to_idx:
+            continue
+        # Argsort descending by |corr|
+        neighbor_order = np.argsort(-abs_corr[i])
+        added = 0
+        for j in neighbor_order:
+            if added >= top_k:
+                break
+            if abs_corr[i, j] < threshold:
+                break
+            g2 = available[j]
+            if g2 not in gene_to_idx:
+                continue
+            idx1 = gene_to_idx[g1]
+            idx2 = gene_to_idx[g2]
+            if idx1 == idx2:
+                continue
+            # Add bidirectional; edge weight = |correlation| in [0,1]
+            w = float(abs_corr[i, j])
+            src.extend([idx1, idx2])
+            dst.extend([idx2, idx1])
+            weights.extend([w, w])
+            added += 1
+
+    if not src:
+        logger.info("No co-expression edges found above threshold.")
+        return torch.zeros((2, 0), dtype=torch.long), torch.zeros((0,), dtype=torch.float)
+
+    edge_index = torch.tensor([src, dst], dtype=torch.long)
+    edge_weights = torch.tensor(weights, dtype=torch.float)
+
+    # Deduplicate (gene pair may appear multiple times from both sides' top_k)
+    edge_set = {}
+    for i in range(edge_index.size(1)):
+        key = (edge_index[0, i].item(), edge_index[1, i].item())
+        w = edge_weights[i].item()
+        # Keep max weight across duplicates
+        if key not in edge_set or edge_set[key] < w:
+            edge_set[key] = w
+
+    if edge_set:
+        keys = list(edge_set.keys())
+        values_list = list(edge_set.values())
+        edge_index = torch.tensor(list(zip(*keys)), dtype=torch.long)
+        edge_weights = torch.tensor(values_list, dtype=torch.float)
+
+    logger.info(f"Co-expression edges: {edge_index.size(1)}")
+    return edge_index, edge_weights
+
+
+def merge_edge_sets(
+    edges_a: torch.Tensor,
+    weights_a: torch.Tensor,
+    edges_b: torch.Tensor,
+    weights_b: torch.Tensor,
+) -> tuple:
+    """Union of two edge sets. Duplicate edges keep the max weight."""
+    if edges_a.size(1) == 0:
+        return edges_b, weights_b
+    if edges_b.size(1) == 0:
+        return edges_a, weights_a
+
+    edge_set = {}
+    for i in range(edges_a.size(1)):
+        key = (edges_a[0, i].item(), edges_a[1, i].item())
+        edge_set[key] = max(edge_set.get(key, 0.0), weights_a[i].item())
+    for i in range(edges_b.size(1)):
+        key = (edges_b[0, i].item(), edges_b[1, i].item())
+        edge_set[key] = max(edge_set.get(key, 0.0), weights_b[i].item())
+
+    keys = list(edge_set.keys())
+    idx = torch.tensor(list(zip(*keys)), dtype=torch.long)
+    w = torch.tensor([edge_set[k] for k in keys], dtype=torch.float)
+    return idx, w
 
 
 def load_disgenet_edges(
@@ -350,6 +479,36 @@ def build_knowledge_graph(config: dict, gene_list: list) -> dict:
         gene_list,
         confidence_threshold=config["data"]["string_confidence_threshold"],
     )
+
+    # 1b. Co-expression edges derived from the normalized expression matrix.
+    # Densifies the graph so the GAT has actual neighborhoods to attend over
+    # (first run: ~81% of genes isolated at STRING threshold 700).
+    coexp_thr = config["data"].get("coexpression_threshold")
+    coexp_k = config["data"].get("coexpression_top_k", 8)
+    if coexp_thr is not None:
+        expr_path = os.path.join(processed_dir, "expression_selected.tsv")
+        if os.path.exists(expr_path):
+            try:
+                expr_df = pd.read_csv(expr_path, sep="\t", index_col=0)
+                coexp_edges, coexp_weights = build_coexpression_edges(
+                    expr_df, gene_list, gene_to_idx,
+                    threshold=float(coexp_thr), top_k=int(coexp_k),
+                )
+                gene_gene_edges, gene_gene_weights = merge_edge_sets(
+                    gene_gene_edges, gene_gene_weights,
+                    coexp_edges, coexp_weights,
+                )
+                logger.info(
+                    f"Merged gene-gene edges (STRING + co-expression): "
+                    f"{gene_gene_edges.size(1)}"
+                )
+            except Exception as e:
+                logger.warning(f"Co-expression edges skipped: {e}")
+        else:
+            logger.warning(
+                f"Expression file not found at {expr_path}; "
+                "skipping co-expression edge construction."
+            )
 
     # 2. DisGeNET edges (gene-disease)
     logger.info("=" * 60)
