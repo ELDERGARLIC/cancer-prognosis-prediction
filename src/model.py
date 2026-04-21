@@ -45,26 +45,60 @@ class BioKG_GAT(nn.Module):
         dropout: float = 0.4,
         pooling: str = "meanmax",
         projection_dim: int = None,
+        num_genes: int = None,
+        gene_embed_dim: int = 0,
     ):
+        """Args:
+            in_dim: per-node input feature dim. For BioBERT embeddings it's 768;
+                for the lightweight `gene_id_expr` path it's 1 (expression scalar).
+            gene_embed_dim: if > 0, a learnable `Embedding(num_genes, gene_embed_dim)`
+                is applied and multiplied by the incoming expression scalar. This
+                is the Phase 1.2 shrinkage path -- patient tensors become
+                (N_genes, 1) instead of (N_genes, 768), so SMOTE is tractable
+                and the network has far fewer parameters to overfit with ~1k
+                training samples.
+            num_genes: required when `gene_embed_dim > 0` so the embedding table
+                can be sized correctly.
+        """
         super().__init__()
         if heads is None:
             heads = [8, 4, 1]
 
         self.dropout_rate = dropout
 
+        # Lightweight gene-id-expression path: learnable embedding per gene
+        # index, scaled by expression. Output dim per node = gene_embed_dim.
+        self.gene_embed_dim = int(gene_embed_dim) if gene_embed_dim else 0
+        if self.gene_embed_dim > 0:
+            if num_genes is None or num_genes <= 0:
+                raise ValueError(
+                    "gene_embed_dim > 0 requires num_genes to be a positive int"
+                )
+            self.gene_embedding = nn.Embedding(num_genes, self.gene_embed_dim)
+            # Initialize near zero so the model starts from "expression magnitude
+            # only" and gradually learns per-gene structure.
+            nn.init.normal_(self.gene_embedding.weight, mean=0.0, std=0.1)
+            gat_in = self.gene_embed_dim
+            self.projection = None  # Skip BioBERT projection in this mode
+            logger.info(
+                f"BioKG_GAT: using learnable gene-id embedding "
+                f"(num_genes={num_genes}, embed_dim={self.gene_embed_dim})"
+            )
         # Optional projection of BioBERT embeddings to a lower-dim, learnable
         # subspace before GAT layers. Shrinks patient tensors and gives the
         # network a task-specific compression of the LLM features.
-        if projection_dim is not None and projection_dim > 0 and projection_dim != in_dim:
+        elif projection_dim is not None and projection_dim > 0 and projection_dim != in_dim:
             self.projection = nn.Sequential(
                 nn.Linear(in_dim, projection_dim),
                 nn.LayerNorm(projection_dim),
                 nn.GELU(),
                 nn.Dropout(dropout),
             )
+            self.gene_embedding = None
             gat_in = projection_dim
         else:
             self.projection = None
+            self.gene_embedding = None
             gat_in = in_dim
 
         # Layer 1
@@ -106,8 +140,25 @@ class BioKG_GAT(nn.Module):
         # meanmax: concat mean and max for richer representation
         return torch.cat([global_mean_pool(x, batch), global_max_pool(x, batch)], dim=1)
 
-    def forward(self, x, edge_index, batch, edge_attr=None):
-        if self.projection is not None:
+    def forward(self, x, edge_index, batch, edge_attr=None, gene_idx=None):
+        """
+        Args:
+            x: node features. Shape depends on mode:
+               - BioBERT path:  [num_nodes, 768]
+               - gene-id path:  [num_nodes, 1] (expression scalar)
+            gene_idx: [num_nodes] long tensor of gene indices into the
+               embedding table. Required when `self.gene_embedding` is active.
+        """
+        if self.gene_embedding is not None:
+            if gene_idx is None:
+                raise ValueError(
+                    "gene_idx must be provided when gene_embedding is active"
+                )
+            # x is [N, 1] expression scalars; broadcast-multiply the looked-up
+            # gene embedding. Result is a per-patient-per-gene dense feature.
+            embedded = self.gene_embedding(gene_idx)  # [N, gene_embed_dim]
+            x = embedded * x  # broadcast [N, gene_embed_dim] * [N, 1]
+        elif self.projection is not None:
             x = self.projection(x)
 
         # Layer 1 with residual
@@ -207,10 +258,15 @@ class HybridModel(nn.Module):
         self.clinical_dim = clinical_dim
         self.num_classes = num_classes
 
-    def forward(self, x, edge_index, batch, clinical_features, edge_attr=None):
-        """Returns (main_logits, aux_logits, gnn_emb, cox_log_hazard, ordinal_score)."""
+    def forward(self, x, edge_index, batch, clinical_features, edge_attr=None, gene_idx=None):
+        """Returns (main_logits, aux_logits, gnn_emb, cox_log_hazard, ordinal_score).
+
+        `gene_idx` is forwarded to the GNN so the learnable gene-id embedding
+        path (Phase 1.2) can look up per-gene embeddings. Callers using the
+        BioBERT path can omit it.
+        """
         # GNN forward pass
-        gnn_emb = self.gnn(x, edge_index, batch, edge_attr)  # [B, gnn_out_dim]
+        gnn_emb = self.gnn(x, edge_index, batch, edge_attr, gene_idx=gene_idx)  # [B, gnn_out_dim]
 
         # Auxiliary task: tumor stage from pure GNN embedding
         aux_out = self.aux_head(gnn_emb)
@@ -223,7 +279,7 @@ class HybridModel(nn.Module):
 
         return main_out, aux_out, gnn_emb, cox_out, ordinal_out
 
-    def extract_embeddings(self, x, edge_index, batch, clinical_features=None, edge_attr=None):
+    def extract_embeddings(self, x, edge_index, batch, clinical_features=None, edge_attr=None, gene_idx=None):
         """Extract patient embeddings without classification head.
 
         Used for:
@@ -231,7 +287,7 @@ class HybridModel(nn.Module):
             - t-SNE/UMAP visualization
             - GNNExplainer
         """
-        gnn_emb = self.gnn(x, edge_index, batch, edge_attr)
+        gnn_emb = self.gnn(x, edge_index, batch, edge_attr, gene_idx=gene_idx)
         if clinical_features is not None:
             return torch.cat([gnn_emb, clinical_features], dim=1)
         return gnn_emb
@@ -274,13 +330,15 @@ class GATClassifier(nn.Module):
         return out, emb
 
 
-def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridModel:
+def build_model(config: dict, clinical_dim: int, device: str = None, num_genes: int = None) -> HybridModel:
     """Build the full hybrid model from config.
 
     Args:
         config: Configuration dictionary.
         clinical_dim: Number of clinical features.
         device: Compute device.
+        num_genes: Number of genes in the KG; required when the lightweight
+            gene-id-embedding feature mode is enabled.
 
     Returns:
         HybridModel on the specified device.
@@ -289,14 +347,28 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
         device = "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
 
     model_cfg = config["model"]
+    data_cfg = config.get("data", {})
+
+    # Phase 1.2: feature_mode selects the per-gene input dimensionality.
+    #   "biobert" (default): patient-weighted BioBERT-768 per gene (legacy path)
+    #   "gene_id_expr": per-gene expression scalar + learnable gene-id embedding
+    feature_mode = data_cfg.get("feature_mode", "biobert")
+    if feature_mode == "gene_id_expr":
+        gene_embed_dim = int(model_cfg.get("gene_embed_dim", 32))
+        in_dim = 1  # expression scalar per gene node
+    else:
+        gene_embed_dim = 0
+        in_dim = model_cfg["llm_embedding_dim"]
 
     gnn = BioKG_GAT(
-        in_dim=model_cfg["llm_embedding_dim"],
+        in_dim=in_dim,
         hidden_dim=model_cfg["hidden_dim"],
         heads=model_cfg["gat_heads"],
         dropout=model_cfg["dropout"],
         projection_dim=model_cfg.get("projection_dim"),
         pooling=model_cfg.get("pooling", "meanmax"),
+        num_genes=num_genes,
+        gene_embed_dim=gene_embed_dim,
     )
 
     model = HybridModel(
@@ -317,7 +389,8 @@ def build_model(config: dict, clinical_dim: int, device: str = None) -> HybridMo
     logger.info(f"  Total parameters: {total_params:,}")
     logger.info(f"  Trainable parameters: {trainable_params:,}")
     logger.info(
-        f"  GAT in_dim={model_cfg['llm_embedding_dim']} "
+        f"  feature_mode={feature_mode} "
+        f"GAT in_dim={in_dim} gene_embed_dim={gene_embed_dim} "
         f"proj_dim={model_cfg.get('projection_dim')} "
         f"pool_out_dim={gnn.output_dim} clinical_dim={clinical_dim}"
     )

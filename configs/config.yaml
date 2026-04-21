@@ -1,29 +1,42 @@
 # Breast Cancer Prognosis Prediction - Configuration
 # Knowledge Graph-Enhanced GAT + Calibrated Random Forest
 #
-# Enhancements applied after first-run analysis (alpha.md):
-#   - Lowered STRING confidence threshold (700 -> 400) to densify the KG
-#     (first run had 81% isolated gene nodes)
-#   - Added Cox partial likelihood survival head (cox_loss_weight)
-#   - Added CE label smoothing to exploit ordinal survival classes
-#   - Added ordinal regression auxiliary loss
-#   - Switched early-stopping criterion from val_loss to val_auc
-#   - Increased patience (20 -> 30) to stabilize folds 4-5
-#   - Larger gene set (200 -> 600) to restore LASSO expressiveness
-#   - Robust clinical extraction: parse stage strings, keep ER/PR/HER2
-#   - Tumor-stage all-NaN columns no longer filled with 0
+# Phase 1 overhaul (targeting C-index >= 0.80, baseline Cox PH = 0.748):
+#   - feature_mode: "gene_id_expr" replaces 460k-dim BioBERT patient tensors
+#     with learnable gene-id embedding (32-d) x expression scalar (-> ~600-dim)
+#   - STRING threshold lowered 400 -> 300 to further densify PPI edges
+#   - n_genes_lasso raised 600 -> 1000 for more mechanistic signal
+#   - Added MSigDB Hallmarks (50) + Reactome (~200 cancer-filtered) gene-set nodes
+#   - DeepHit discrete-time survival loss w/ censoring mask takes over main head
+#   - 5-fold CV stratified on (survival_bin x event) to balance censoring
+#   - Early stopping switched auc_roc -> c_index (actual survival metric)
+#   - Patience 30 -> 25 (tighter with stronger signal from DeepHit + strat-fold)
+#
+# Earlier enhancements (kept):
+#   - Cox partial likelihood survival head (cox_loss_weight)
+#   - CE label smoothing to exploit ordinal survival classes
+#   - Ordinal regression auxiliary loss
+#   - Robust regex-based stage parsing with >=70% parseability guard
 
 data:
   tcga_project: TCGA-BRCA
+  # Feature encoding for patient-node inputs.
+  #   "biobert"       -> 768-d BioBERT per-gene embeddings weighted by expression
+  #                      (legacy; flattens to 460k-dim per patient -> SMOTE explodes)
+  #   "gene_id_expr"  -> learnable 32-d gene-id embedding * scalar expression
+  #                      (Phase 1; flattens to ~600-dim per patient -> tractable)
+  feature_mode: "gene_id_expr"
   # Gene filtering
   min_total_counts: 1000
-  n_genes_lasso: 600
-  # STRING PPI threshold -- 400 gives ~5x more edges than 700
-  # (first run had 64 edges / 81% isolated genes at threshold 700)
-  string_confidence_threshold: 400
-  # Densify the KG with expression co-expression edges (Pearson > threshold)
-  coexpression_threshold: 0.7
-  coexpression_top_k: 8  # max co-expression neighbors per gene
+  n_genes_lasso: 1000          # was 600; more genes -> richer KG signal
+  # STRING PPI threshold: 300 ("medium confidence"). Lower than 400 to further
+  # reduce isolated genes now that n_genes_lasso is larger.
+  string_confidence_threshold: 300
+  # Densify KG with expression co-expression edges (Pearson > threshold)
+  coexpression_threshold: 0.6   # was 0.7
+  coexpression_top_k: 10        # was 8
+  # MSigDB pathway caps (hallmarks are always 50, reactome filtered)
+  reactome_max_pathways: 200
   # Survival discretization bins (days)
   survival_bins: [365, 1095, 1825]  # 1yr, 3yr, 5yr
   survival_labels: ["<1yr", "1-3yr", "3-5yr", ">5yr"]
@@ -40,23 +53,33 @@ model:
   dropout: 0.4
   llm_embedding_dim: 768
   llm_model: "dmis-lab/biobert-base-cased-v1.2"
-  # Projection layer: BioBERT 768 -> proj_dim feeds the GAT. Lowering this
-  # shrinks the flattened patient tensor so SMOTE becomes tractable.
-  # Set null/None to skip projection and feed raw 768-dim embeddings.
+  # Projection layer: BioBERT 768 -> proj_dim feeds the GAT (legacy biobert mode).
+  # Ignored when feature_mode=gene_id_expr.
   projection_dim: 128
+  # Learnable gene-id embedding dim (active when feature_mode=gene_id_expr).
+  # Each gene gets a gene_embed_dim-d vector, scaled by the patient's expression
+  # scalar for that gene. 32 keeps the flattened tensor small (~1000*32 = 32k)
+  # while giving the GAT enough capacity to learn gene identity.
+  gene_embed_dim: 32
 
 training:
   lr: 0.001
   weight_decay: 1.0e-4
   epochs: 200
-  patience: 30          # was 20; folds 4-5 early-stopped at 22/25 epochs
+  patience: 25                  # tightened from 30 with c_index + DeepHit signal
   batch_size: 32
   cv_folds: 5
   aux_loss_weight: 0.3          # tumor stage classification head
   cox_loss_weight: 0.5          # DeepSurv-style partial likelihood head
   ordinal_loss_weight: 0.2      # ordinal regression on survival bins
   label_smoothing: 0.1          # CE label smoothing (ordinal neighbor bleed)
-  early_stop_metric: "auc_roc"  # was "loss"; val_auc is more stable
+  # DeepHit discrete-time loss (Lee et al., 2018): takes over as the main
+  # objective when os_event is available, properly handling censoring.
+  use_deephit: true
+  deephit_loss_weight: 1.0
+  # Early stopping on the actual survival metric (not AUC).
+  # Valid values: "loss" (min), "auc_roc" / "accuracy" / "c_index" (max).
+  early_stop_metric: "c_index"
   seed: 42
 
 hybrid:

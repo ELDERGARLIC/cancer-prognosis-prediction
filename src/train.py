@@ -67,6 +67,56 @@ def get_device():
     return torch.device("cpu")
 
 
+def deephit_loss(
+    logits: torch.Tensor,
+    bin_idx: torch.Tensor,
+    censored: torch.Tensor,
+    eps: float = 1e-8,
+) -> torch.Tensor:
+    """DeepHit-style discrete-time survival loss (Lee et al., 2018).
+
+    Mass vs. ranking trade-off: this implements just the mass term (L_1 in
+    the paper). The ranking term is handled separately by the Cox head.
+
+    Semantics per-patient:
+      - Uncensored (event observed at bin k): maximize P(event=k).
+      - Censored (last-seen at bin k): maximize P(survive past k)
+        = sum_{j>k} P(event=j), i.e. the patient survived all bins up to k.
+
+    Args:
+        logits: [B, K] unnormalized class scores (main classification head).
+        bin_idx: [B] int, which survival bin the patient is in.
+        censored: [B] float 1.0 if censored, 0.0 if event observed.
+
+    Returns:
+        Scalar loss averaged over the batch. Returns 0 when the batch has
+        no valid targets (bin_idx < 0).
+    """
+    valid = bin_idx >= 0
+    if valid.sum() < 1:
+        return torch.zeros((), device=logits.device)
+
+    logits = logits[valid]
+    bin_idx = bin_idx[valid].long()
+    censored = censored[valid].float()
+
+    probs = torch.softmax(logits, dim=-1).clamp(min=eps, max=1.0 - eps)  # [B, K]
+
+    # P(event at bin_idx) -- uncensored signal
+    event_p = probs.gather(1, bin_idx.unsqueeze(1)).squeeze(1)  # [B]
+    event_ll = -torch.log(event_p + eps)
+
+    # P(survive > bin_idx) = 1 - cumsum_up_to_bin_idx
+    cum = probs.cumsum(dim=-1)  # [B, K]
+    surv_p = 1.0 - cum.gather(1, bin_idx.unsqueeze(1)).squeeze(1)
+    surv_p = surv_p.clamp(min=eps)
+    surv_ll = -torch.log(surv_p)
+
+    # Combine: censored -> surv_ll, uncensored -> event_ll
+    loss = (1.0 - censored) * event_ll + censored * surv_ll
+    return loss.mean()
+
+
 def cox_ph_loss(log_hazards: torch.Tensor, times: torch.Tensor, events: torch.Tensor,
                 eps: float = 1e-7) -> torch.Tensor:
     """Negative Cox partial log-likelihood (Breslow approximation).
@@ -117,18 +167,25 @@ def train_one_epoch(
     aux_loss_weight: float = 0.3,
     cox_loss_weight: float = 0.5,
     ordinal_loss_weight: float = 0.2,
+    deephit_loss_weight: float = 1.0,
     label_smoothing: float = 0.1,
     class_weights: torch.Tensor = None,
+    use_deephit: bool = True,
 ) -> dict:
     """Train for one epoch with multi-task survival objective.
 
-    Total loss =   CE_smooth(main) * 1
-                 + aux_weight   * CE(aux_stage, ignore_index=-1)
-                 + cox_weight   * CoxPartialLikelihood(log_hazard, T, E)
-                 + ordinal_wt   * MSE(ordinal_score, y_float)
+    When use_deephit=True (recommended): main classification uses DeepHit
+    discrete-time survival loss which properly handles censored patients:
+        L = deephit_w * DeepHit(logits, bin, censored)
+          + aux_w     * CE(aux_stage, ignore_index=-1)
+          + cox_w     * CoxPartialLikelihood(log_hazard, T, E)
+          + ord_w     * SmoothL1(ordinal_score, y_float)
+
+    When use_deephit=False (legacy): main uses class-weighted smoothed CE.
 
     The Cox and ordinal heads directly optimize survival ordering, which
     was the biggest gap in the first run (GAT C-index=0.38 vs Cox=0.748).
+    DeepHit adds censoring-aware mass learning on top.
     """
     model.train()
     total_loss = 0.0
@@ -149,12 +206,37 @@ def train_one_epoch(
         batch = batch.to(device)
         optimizer.zero_grad()
 
+        gene_idx = getattr(batch, "gene_idx", None)
         main_out, aux_out, _, cox_out, ordinal_out = model(
-            batch.x, batch.edge_index, batch.batch, batch.clinical
+            batch.x, batch.edge_index, batch.batch, batch.clinical,
+            gene_idx=gene_idx,
         )
 
-        # --- Main classification loss ---
-        main_loss = main_criterion(main_out, batch.y)
+        # --- Main classification loss (DeepHit if requested and metadata present) ---
+        if (
+            use_deephit
+            and hasattr(batch, "os_event")
+            and batch.os_event is not None
+        ):
+            # censored = 1 - event; skip synthetic SMOTE rows (NaN event)
+            event = batch.os_event.float()
+            censored = 1.0 - event
+            # Mask NaN (synthetic samples): train only on real patients for DeepHit.
+            valid_dh = ~torch.isnan(event)
+            if valid_dh.any():
+                main_loss = deephit_loss(
+                    main_out[valid_dh],
+                    batch.y[valid_dh],
+                    censored[valid_dh],
+                )
+                # Blend with class-weighted smoothed CE on the full batch so
+                # synthetic SMOTE samples still contribute gradient (otherwise
+                # they're dead weight in the batch). Scale deephit by its weight.
+                main_loss = deephit_loss_weight * main_loss + (1.0 - deephit_loss_weight) * main_criterion(main_out, batch.y)
+            else:
+                main_loss = main_criterion(main_out, batch.y)
+        else:
+            main_loss = main_criterion(main_out, batch.y)
 
         # --- Auxiliary tumor-stage loss (skip unresolved rows) ---
         aux_loss = torch.zeros((), device=device)
@@ -229,8 +311,10 @@ def evaluate(model: HybridModel, loader, device) -> dict:
     for batch in loader:
         batch = batch.to(device)
 
+        gene_idx = getattr(batch, "gene_idx", None)
         main_out, _, _, cox_out, ordinal_out = model(
-            batch.x, batch.edge_index, batch.batch, batch.clinical
+            batch.x, batch.edge_index, batch.batch, batch.clinical,
+            gene_idx=gene_idx,
         )
         loss = criterion(main_out, batch.y)
 
@@ -324,7 +408,10 @@ def extract_embeddings(model: HybridModel, loader, device) -> tuple:
 
     for batch in loader:
         batch = batch.to(device)
-        emb = model.extract_embeddings(batch.x, batch.edge_index, batch.batch, batch.clinical)
+        gene_idx = getattr(batch, "gene_idx", None)
+        emb = model.extract_embeddings(
+            batch.x, batch.edge_index, batch.batch, batch.clinical, gene_idx=gene_idx,
+        )
         all_emb.append(emb.cpu().numpy())
         all_labels.append(batch.y.cpu().numpy())
         all_clinical.append(batch.clinical.cpu().numpy())
@@ -444,8 +531,10 @@ def train_fold(
             aux_loss_weight=train_cfg.get("aux_loss_weight", 0.3),
             cox_loss_weight=train_cfg.get("cox_loss_weight", 0.5),
             ordinal_loss_weight=train_cfg.get("ordinal_loss_weight", 0.2),
+            deephit_loss_weight=train_cfg.get("deephit_loss_weight", 1.0),
             label_smoothing=train_cfg.get("label_smoothing", 0.1),
             class_weights=class_weights,
+            use_deephit=train_cfg.get("use_deephit", True),
         )
 
         # Validate
@@ -532,6 +621,7 @@ def run_training(config: dict) -> dict:
     dataset = data["dataset"]
     splits = data["splits"]
     clinical_dim = data["clinical_dim"]
+    num_genes = data["n_genes"]
 
     results_dir = config["paths"]["results"]
     os.makedirs(results_dir, exist_ok=True)
@@ -542,7 +632,10 @@ def run_training(config: dict) -> dict:
 
     for fold, (train_idx, val_idx) in enumerate(splits):
         # Build fresh model for each fold
-        model = build_model(config, clinical_dim=clinical_dim, device=str(device))
+        model = build_model(
+            config, clinical_dim=clinical_dim, device=str(device),
+            num_genes=num_genes,
+        )
 
         fold_result = train_fold(fold, model, dataset, train_idx, val_idx, config, device)
         all_fold_results.append(fold_result)

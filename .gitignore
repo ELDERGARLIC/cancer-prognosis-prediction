@@ -41,3 +41,12 @@ resources/
 
 # Ignore the pipeline.log file
 pipeline.log
+
+# Ignore the .idea directory
+.idea/
+
+# Ignore the .claude directory
+.claude/
+
+# Ignore the .agents directory
+.agents/

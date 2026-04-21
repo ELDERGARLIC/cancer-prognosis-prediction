@@ -18,13 +18,44 @@ Usage:
     python main.py --stage 5          # Run only Stage 5 (evaluation + viz)
 """
 
+import os
+
+# macOS OpenMP workaround: PyTorch bundles Intel libomp, FAISS bundles LLVM
+# libomp. When both end up in the same process the Intel runtime aborts with
+# "OMP: Error #15: Initializing libomp.dylib, but found libomp.dylib already
+# initialized." This env var tells the Intel runtime to tolerate the second
+# load. MUST be set before `import torch` / `import faiss`.
+os.environ.setdefault("KMP_DUPLICATE_LIB_OK", "TRUE")
+
 import argparse
 import logging
-import os
 import sys
 import yaml
 import torch
 import numpy as np
+
+
+def _load_dotenv(path: str = ".env") -> None:
+    """Minimal .env loader (no python-dotenv dep).
+
+    Parses KEY=VALUE lines and sets them in os.environ without overriding
+    values that are already set in the real environment.
+    """
+    if not os.path.isfile(path):
+        return
+    with open(path, "r", encoding="utf-8") as f:
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            key = key.strip()
+            value = value.strip().strip('"').strip("'")
+            if key and key not in os.environ:
+                os.environ[key] = value
+
+
+_load_dotenv()
 
 logging.basicConfig(
     level=logging.INFO,

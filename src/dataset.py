@@ -55,10 +55,13 @@ class BreastCancerGraphDataset(Dataset):
         os_event: np.ndarray = None,
         tumor_stages: np.ndarray = None,
         patient_ids: list = None,
+        feature_mode: str = "biobert",
     ):
         """
         Args:
-            patient_embeddings: [num_patients, num_genes, embedding_dim]
+            patient_embeddings: shape depends on feature_mode
+                - "biobert":       [num_patients, num_genes, embedding_dim]
+                - "gene_id_expr":  [num_patients, num_genes] (expression scalar only)
             edge_index: [2, num_edges] shared topology
             edge_weights: [num_edges] edge weights
             survival_labels: [num_patients] discrete survival class (0-3)
@@ -67,6 +70,7 @@ class BreastCancerGraphDataset(Dataset):
             os_event: [num_patients] event indicator (1=death, 0=censored)
             tumor_stages: [num_patients] tumor stage labels for auxiliary task
             patient_ids: list of patient identifiers
+            feature_mode: which input representation to use at __getitem__.
         """
         super().__init__()
         self.patient_embeddings = patient_embeddings
@@ -78,13 +82,32 @@ class BreastCancerGraphDataset(Dataset):
         self.os_event = os_event
         self.tumor_stages = tumor_stages
         self.patient_ids = patient_ids or [f"patient_{i}" for i in range(len(survival_labels))]
+        self.feature_mode = feature_mode
+
+        # Shared per-node gene-id tensor: same indices (0..N_genes-1) for every
+        # patient. PyG concatenates this attribute along with `x` at batch time
+        # so the model's gene_embedding lookup works on [B*N_genes] directly.
+        if feature_mode == "gene_id_expr":
+            n_genes = patient_embeddings.shape[1]
+            self.gene_idx = torch.arange(n_genes, dtype=torch.long)
+        else:
+            self.gene_idx = None
 
     def __len__(self):
         return len(self.survival_labels)
 
     def __getitem__(self, idx):
-        # Node features: patient-specific weighted embeddings
-        x = torch.tensor(self.patient_embeddings[idx], dtype=torch.float)
+        # Node features depend on feature_mode
+        if self.feature_mode == "gene_id_expr":
+            # patient_embeddings[idx] is [num_genes] -- lift to [num_genes, 1]
+            # so the model can broadcast-multiply the gene_embed lookup by it.
+            expr = np.asarray(self.patient_embeddings[idx], dtype=np.float32)
+            x = torch.tensor(expr, dtype=torch.float).unsqueeze(-1)
+            gene_idx = self.gene_idx  # already [num_genes] long
+        else:
+            # Legacy BioBERT path: patient_embeddings[idx] is [num_genes, embed_dim]
+            x = torch.tensor(self.patient_embeddings[idx], dtype=torch.float)
+            gene_idx = None
 
         # Survival label
         y = torch.tensor(self.survival_labels[idx], dtype=torch.long)
@@ -101,11 +124,19 @@ class BreastCancerGraphDataset(Dataset):
             clinical=clinical,
         )
 
+        if gene_idx is not None:
+            # PyG sees this as a per-node attribute (leading dim == num_nodes)
+            # and concatenates across graphs automatically at batch time.
+            data.gene_idx = gene_idx
+
         # Optional fields for C-index evaluation
         if self.os_time is not None:
             data.os_time = torch.tensor(self.os_time[idx], dtype=torch.float)
         if self.os_event is not None:
-            data.os_event = torch.tensor(self.os_event[idx], dtype=torch.long)
+            # Stored as float so NaN (sentinel for SMOTE-synthetic samples that
+            # have no real survival event) can round-trip. train.py / evaluate.py
+            # already treat this as float and mask with ~np.isnan.
+            data.os_event = torch.tensor(self.os_event[idx], dtype=torch.float)
 
         # Auxiliary task: tumor stage
         if self.tumor_stages is not None:
@@ -146,7 +177,8 @@ def apply_smote(
     skipped to avoid OOM. The caller should use class-weighted loss instead.
 
     Args:
-        embeddings: [num_patients, num_genes, embedding_dim]
+        embeddings: [num_patients, num_genes, embedding_dim]  (BioBERT mode), or
+                    [num_patients, num_genes]                 (gene_id_expr mode).
         labels: [num_patients]
         clinical_features: [num_patients, num_features]
         strategy: SMOTE sampling strategy
@@ -154,7 +186,14 @@ def apply_smote(
     Returns:
         (resampled_embeddings, resampled_labels, resampled_clinical)
     """
-    n_patients, n_genes, emb_dim = embeddings.shape
+    orig_shape = embeddings.shape
+    if embeddings.ndim == 3:
+        n_patients, n_genes, emb_dim = orig_shape
+    elif embeddings.ndim == 2:
+        n_patients, n_genes = orig_shape
+        emb_dim = 1
+    else:
+        raise ValueError(f"Unexpected embeddings.ndim={embeddings.ndim}")
     total_features = n_genes * emb_dim + clinical_features.shape[1]
 
     valid_mask = ~np.isnan(labels)
@@ -184,8 +223,13 @@ def apply_smote(
     smote = SMOTE(sampling_strategy=strategy, random_state=seed, k_neighbors=n_neighbors)
     combined_resampled, labels_resampled = smote.fit_resample(combined, labels_valid)
 
-    emb_resampled = combined_resampled[:, : n_genes * emb_dim].reshape(-1, n_genes, emb_dim)
-    clinical_resampled = combined_resampled[:, n_genes * emb_dim :]
+    # Reshape back to the original per-patient layout (3D for BioBERT, 2D for gene_id_expr).
+    emb_flat_dim = n_genes * emb_dim
+    if embeddings.ndim == 3:
+        emb_resampled = combined_resampled[:, :emb_flat_dim].reshape(-1, n_genes, emb_dim)
+    else:
+        emb_resampled = combined_resampled[:, :emb_flat_dim].reshape(-1, n_genes)
+    clinical_resampled = combined_resampled[:, emb_flat_dim:]
 
     logger.info(f"SMOTE: {len(labels_valid)} -> {len(labels_resampled)} samples")
     logger.info(f"  Before: {dict(Counter(labels_valid))}")
@@ -198,22 +242,55 @@ def create_cv_splits(
     labels: np.ndarray,
     n_folds: int = 5,
     seed: int = 42,
+    events: np.ndarray = None,
 ) -> list:
     """Create stratified k-fold cross-validation splits.
+
+    When `events` is provided, the strata are (survival_bin, event_indicator)
+    combined -- this balances censoring across folds, which is critical for
+    stable C-index estimation. Without this, rare "dead in <1yr" patients
+    can all land in the same fold and blow up variance. This fix directly
+    targets the 0.56-0.72 C-index range observed across folds in Phase 0.
 
     Returns:
         List of (train_indices, val_indices) tuples.
     """
     valid_mask = ~np.isnan(labels)
+    if events is not None:
+        events = np.asarray(events, dtype=float)
+        valid_mask = valid_mask & ~np.isnan(events)
+
     valid_indices = np.where(valid_mask)[0]
     valid_labels = labels[valid_mask].astype(int)
 
+    if events is not None:
+        valid_events = events[valid_mask].astype(int)
+        # Combined stratum: bin*10 + event  (bin in [0,3], event in {0,1})
+        strat = valid_labels * 10 + valid_events
+        # Guard: StratifiedKFold needs >= n_folds samples per stratum. If a
+        # (bin,event) combination is too rare, drop it back to labels only.
+        from collections import Counter
+        min_stratum = min(Counter(strat).values())
+        if min_stratum < n_folds:
+            logger.warning(
+                f"Some (bin, event) strata have only {min_stratum} samples (< {n_folds} folds). "
+                "Falling back to label-only stratification."
+            )
+            strat = valid_labels
+        else:
+            logger.info(
+                f"Stratifying on (bin, event); stratum distribution: "
+                f"{dict(Counter(strat.tolist()))}"
+            )
+    else:
+        strat = valid_labels
+
     skf = StratifiedKFold(n_splits=n_folds, shuffle=True, random_state=seed)
     splits = []
-    for train_idx, val_idx in skf.split(valid_indices, valid_labels):
+    for train_idx, val_idx in skf.split(valid_indices, strat):
         splits.append((valid_indices[train_idx], valid_indices[val_idx]))
 
-    logger.info(f"Created {n_folds}-fold CV splits")
+    logger.info(f"Created {n_folds}-fold CV splits (seed={seed})")
     for i, (train, val) in enumerate(splits):
         logger.info(f"  Fold {i}: train={len(train)}, val={len(val)}")
 
@@ -251,15 +328,19 @@ def extract_tumor_stages(clinical_df: pd.DataFrame) -> np.ndarray:
 
     valid = result[result >= 0]
     n_valid = len(valid)
+    pct_valid = 100.0 * n_valid / max(len(result), 1)
     logger.info(
-        f"Tumor stage ({stage_col}): {n_valid}/{len(result)} rows parsed as stages"
+        f"Tumor stage ({stage_col}): {n_valid}/{len(result)} parseable ({pct_valid:.1f}%)"
     )
 
-    if n_valid < 10:
-        # Not enough signal to learn an auxiliary head; disable entirely so the
-        # main loss isn't wasting capacity on a constant target.
+    # Require >=70% parseability before enabling the auxiliary task, consistent
+    # with the >=70% guard in preprocessing.extract_clinical_features. Below
+    # that, the signal is too sparse to help the main survival objective.
+    STAGE_AUX_MIN_PCT = 70.0
+    if pct_valid < STAGE_AUX_MIN_PCT:
         logger.warning(
-            f"Only {n_valid} stages parseable -- disabling auxiliary tumor-stage task."
+            f"Only {pct_valid:.1f}% of stages parseable (< {STAGE_AUX_MIN_PCT}%) -- "
+            "disabling auxiliary tumor-stage task."
         )
         return None
 
@@ -290,9 +371,6 @@ def build_dataset(config: dict) -> dict:
         os.path.join(processed_dir, "clinical_features.tsv"), sep="\t"
     ).values
 
-    # Load gene embeddings
-    gene_embeddings = np.load(os.path.join(emb_dir, "gene_embeddings.npy"))
-
     # Load knowledge graph edges
     kg_edges = torch.load(os.path.join(processed_dir, "kg_edges.pt"), weights_only=True)
     gene_gene_edges = kg_edges["gene_gene_edges"]
@@ -302,13 +380,28 @@ def build_dataset(config: dict) -> dict:
     with open(os.path.join(processed_dir, "selected_genes.txt")) as f:
         gene_list = [line.strip() for line in f if line.strip()]
 
-    # Create patient-weighted embeddings
-    from src.llm_embeddings import create_patient_weighted_embeddings
+    # Feature mode drives the per-node representation. `gene_id_expr` is the
+    # Phase 1.2 shrinkage path: each patient contributes only one scalar per
+    # gene; the learnable gene_embedding table lives inside the model.
+    feature_mode = config.get("data", {}).get("feature_mode", "biobert")
 
-    expression_matrix = expr_df.values  # [n_genes, n_patients]
-    patient_embeddings = create_patient_weighted_embeddings(
-        gene_embeddings, expression_matrix, gene_list
-    )
+    if feature_mode == "gene_id_expr":
+        # Per-patient expression scalars only: [n_patients, n_genes]
+        # expr_df is [n_genes x n_patients], so transpose.
+        patient_embeddings = expr_df.values.T.astype(np.float32)
+        logger.info(
+            f"feature_mode=gene_id_expr: patient tensor shape={patient_embeddings.shape} "
+            f"(was {patient_embeddings.shape[0]} x {patient_embeddings.shape[1]} x 768 "
+            "with BioBERT -- ~{:.0f}x smaller)".format(768)
+        )
+    else:
+        # Legacy BioBERT path: weight frozen 768-d embeddings by expression.
+        gene_embeddings = np.load(os.path.join(emb_dir, "gene_embeddings.npy"))
+        from src.llm_embeddings import create_patient_weighted_embeddings
+        expression_matrix = expr_df.values  # [n_genes, n_patients]
+        patient_embeddings = create_patient_weighted_embeddings(
+            gene_embeddings, expression_matrix, gene_list
+        )
 
     # Get survival labels and OS time/event
     survival_labels = clinical_df["survival_class"].values.astype(float)
@@ -318,8 +411,13 @@ def build_dataset(config: dict) -> dict:
     # Extract tumor stages for auxiliary task
     tumor_stages = extract_tumor_stages(clinical_df)
 
-    # Create CV splits
-    splits = create_cv_splits(survival_labels, n_folds=config["training"]["cv_folds"], seed=seed)
+    # Create CV splits stratified on (bin, event) for balanced censoring
+    splits = create_cv_splits(
+        survival_labels,
+        n_folds=config["training"]["cv_folds"],
+        seed=seed,
+        events=os_event,
+    )
 
     # Patient IDs
     patient_ids = expr_df.columns.tolist()
@@ -335,9 +433,19 @@ def build_dataset(config: dict) -> dict:
         os_event=os_event,
         tumor_stages=tumor_stages,
         patient_ids=patient_ids,
+        feature_mode=feature_mode,
     )
 
-    logger.info(f"Dataset built: {len(dataset)} patients, {len(gene_list)} genes, {gene_embeddings.shape[1]}-dim embeddings")
+    if feature_mode == "gene_id_expr":
+        logger.info(
+            f"Dataset built: {len(dataset)} patients, {len(gene_list)} genes, "
+            f"expression-scalar mode (patient tensor dim = {len(gene_list)})"
+        )
+    else:
+        logger.info(
+            f"Dataset built: {len(dataset)} patients, {len(gene_list)} genes, "
+            f"{patient_embeddings.shape[-1]}-dim embeddings"
+        )
 
     return {
         "dataset": dataset,
@@ -346,6 +454,7 @@ def build_dataset(config: dict) -> dict:
         "clinical_dim": clinical_features.shape[1],
         "n_genes": len(gene_list),
         "patient_ids": patient_ids,
+        "feature_mode": feature_mode,
     }
 
 
@@ -389,9 +498,18 @@ def get_dataloaders(
         train_os_time = np.concatenate([train_os_time, np.full(n_synthetic, np.nan)])
         train_os_event = np.concatenate([train_os_event, np.full(n_synthetic, np.nan)])
         if train_stages is not None:
-            # Use majority-class stage for synthetic samples
+            # Use majority-class stage for synthetic samples. Exclude the
+            # sentinel value -1 (unparseable stage) before bincount, which
+            # rejects negative values. If every training sample is -1, fall
+            # back to -1 so downstream masks still recognise them as missing.
+            stages_int = train_stages.astype(int)
+            valid = stages_int[stages_int >= 0]
+            if valid.size > 0:
+                fill_stage = int(np.bincount(valid).argmax())
+            else:
+                fill_stage = -1
             train_stages = np.concatenate([
-                train_stages, np.full(n_synthetic, int(np.bincount(train_stages.astype(int)).argmax()))
+                train_stages, np.full(n_synthetic, fill_stage)
             ])
 
     train_dataset = BreastCancerGraphDataset(
@@ -403,6 +521,7 @@ def get_dataloaders(
         os_time=train_os_time,
         os_event=train_os_event,
         tumor_stages=train_stages,
+        feature_mode=dataset.feature_mode,
     )
 
     # Validation dataset (no SMOTE)
@@ -416,6 +535,7 @@ def get_dataloaders(
         os_event=dataset.os_event[val_idx] if dataset.os_event is not None else None,
         tumor_stages=dataset.tumor_stages[val_idx] if dataset.tumor_stages is not None else None,
         patient_ids=[dataset.patient_ids[i] for i in val_idx],
+        feature_mode=dataset.feature_mode,
     )
 
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)

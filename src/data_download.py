@@ -14,10 +14,14 @@ import os
 import json
 import gzip
 import logging
+import time
+import tarfile
 import requests
 import pandas as pd
 import yaml
 from io import BytesIO
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
@@ -62,20 +66,165 @@ def download_tcga_expression_xena(output_dir: str) -> str:
     return expr_file
 
 
-def download_tcga_htseq_counts_gdc(output_dir: str, project: str = "TCGA-BRCA") -> str:
-    """Download TCGA-BRCA HTSeq-Counts from GDC API.
+def _gdc_session() -> requests.Session:
+    """Build a requests session with retry/backoff for GDC's flaky bulk endpoint.
 
-    Queries for STAR-Counts gene expression files and downloads them.
-    Returns path to the combined counts matrix.
+    GDC's ``/data`` endpoint frequently returns 500/502/503/504 or drops the
+    connection when asked for large batches. We use urllib3's Retry with
+    exponential backoff so transient failures self-heal before being raised.
+    """
+    s = requests.Session()
+    retry = Retry(
+        total=5,
+        connect=5,
+        read=5,
+        status=5,
+        backoff_factor=2.0,  # sleeps 0, 2, 4, 8, 16 s between retries
+        status_forcelist=[429, 500, 502, 503, 504],
+        allowed_methods=frozenset(["GET", "POST"]),
+        raise_on_status=False,
+    )
+    adapter = HTTPAdapter(max_retries=retry, pool_connections=10, pool_maxsize=10)
+    s.mount("https://", adapter)
+    s.mount("http://", adapter)
+    s.headers.update({
+        "User-Agent": "cancer-prognosis-prediction/1.0 (+github)",
+        "Accept": "application/json, application/x-tar",
+    })
+    return s
+
+
+def _parse_gdc_counts_tar(tar_bytes: bytes, case_map: dict) -> dict:
+    """Extract per-sample counts from a GDC STAR-Counts tarball (in-memory).
+
+    GDC STAR-Counts TSV columns are:
+        0: gene_id  (ENSG.version)
+        1: gene_name  (HGNC symbol)
+        2: gene_type
+        3: unstranded
+        4: stranded_first
+        5: stranded_second
+        6: tpm_unstranded
+        7: fpkm_unstranded
+        8: fpkm_uq_unstranded
+
+    We index by ``gene_name`` (symbol) because the rest of the pipeline
+    (BioBERT prompts, STRING PPI, KEGG, DisGeNET) keys on symbols.
+    Unstranded (column 3) is the canonical count field.
+    """
+    all_counts = {}
+    with tarfile.open(fileobj=BytesIO(tar_bytes), mode="r:*") as tar:
+        for member in tar.getmembers():
+            if not (member.name.endswith(".counts") or member.name.endswith(".tsv")):
+                continue
+            f = tar.extractfile(member)
+            if f is None:
+                continue
+            content = f.read().decode("utf-8", errors="replace")
+            file_uuid = member.name.split("/")[0]
+            sample_id = case_map.get(file_uuid, file_uuid)
+
+            counts = {}
+            for line in content.strip().split("\n"):
+                if not line or line.startswith("#") or line.startswith("gene_id"):
+                    continue
+                if line.startswith("N_") or line.startswith("__"):  # STAR stats
+                    continue
+                parts = line.split("\t")
+                if len(parts) < 4:
+                    continue
+                gene_symbol = parts[1].strip()
+                if not gene_symbol or gene_symbol == "-":
+                    # Some ENSG entries lack a symbol; fall back to Ensembl ID
+                    gene_symbol = parts[0].split(".")[0]
+                try:
+                    count = int(float(parts[3]))  # unstranded count
+                except (ValueError, IndexError):
+                    continue
+                # If a symbol appears twice in the same file (rare; multiple
+                # ENSG IDs map to one symbol), take the max so we retain signal.
+                prev = counts.get(gene_symbol)
+                counts[gene_symbol] = count if prev is None else max(prev, count)
+
+            if counts:
+                all_counts[sample_id] = counts
+    return all_counts
+
+
+def _download_gdc_batch(
+    session: requests.Session,
+    file_ids: list,
+    batch_idx: int,
+    n_batches: int,
+    max_attempts: int = 4,
+) -> bytes:
+    """POST one batch of file_ids to /data and return the tarball bytes.
+
+    Raises the last exception if all attempts fail. Implements per-attempt
+    backoff on top of the session-level Retry because session retries do not
+    cover chunked-transfer ``ConnectionResetError``s mid-stream.
+    """
+    payload = {"ids": file_ids}
+    last_exc = None
+    for attempt in range(1, max_attempts + 1):
+        try:
+            resp = session.post(
+                GDC_DATA_ENDPOINT,
+                json=payload,
+                headers={"Content-Type": "application/json"},
+                timeout=(30, 900),  # (connect, read)
+                stream=True,
+            )
+            resp.raise_for_status()
+            # Stream to a bytearray so a reset mid-transfer raises here, not later
+            buf = bytearray()
+            for chunk in resp.iter_content(chunk_size=1024 * 1024):
+                if chunk:
+                    buf.extend(chunk)
+            return bytes(buf)
+        except (requests.exceptions.RequestException, ConnectionResetError) as e:
+            last_exc = e
+            if attempt == max_attempts:
+                break
+            sleep_s = 3 * (2 ** (attempt - 1))  # 3, 6, 12, 24
+            logger.warning(
+                f"  Batch {batch_idx + 1}/{n_batches} attempt {attempt}/{max_attempts} "
+                f"failed ({type(e).__name__}: {e}). Retrying in {sleep_s}s..."
+            )
+            time.sleep(sleep_s)
+    raise RuntimeError(
+        f"GDC batch {batch_idx + 1}/{n_batches} failed after {max_attempts} attempts: {last_exc}"
+    )
+
+
+def download_tcga_htseq_counts_gdc(
+    output_dir: str,
+    project: str = "TCGA-BRCA",
+    batch_size: int = 50,
+) -> str:
+    """Download TCGA-BRCA STAR-Counts gene expression via the GDC API.
+
+    The GDC ``/data`` endpoint frequently fails on very large single-payload
+    requests (``ConnectionResetError`` / 500). We therefore:
+
+    * split the file list into ``batch_size`` chunks,
+    * stream each POST with a retry-backoff session,
+    * parse each tarball in memory and discard it,
+    * checkpoint parsed counts to ``tcga_brca_htseq_counts.partial.json`` so a
+      crashed run can resume.
+
+    Returns the path to the combined counts matrix TSV.
     """
     os.makedirs(output_dir, exist_ok=True)
     counts_file = os.path.join(output_dir, "tcga_brca_htseq_counts.tsv")
+    checkpoint_file = os.path.join(output_dir, "tcga_brca_htseq_counts.partial.json")
 
     if os.path.exists(counts_file):
         logger.info(f"HTSeq counts file already exists: {counts_file}")
         return counts_file
 
-    # Query for STAR-Counts files
+    session = _gdc_session()
+
     filters = {
         "op": "and",
         "content": [
@@ -90,79 +239,75 @@ def download_tcga_htseq_counts_gdc(output_dir: str, project: str = "TCGA-BRCA") 
         "filters": json.dumps(filters),
         "fields": "file_id,file_name,cases.case_id,cases.submitter_id",
         "format": "JSON",
-        "size": 2000,
+        "size": 5000,
     }
 
     logger.info("Querying GDC API for TCGA-BRCA expression files...")
-    response = requests.get(GDC_FILES_ENDPOINT, params=params, timeout=60)
-    response.raise_for_status()
-    data = response.json()
+    resp = session.get(GDC_FILES_ENDPOINT, params=params, timeout=60)
+    resp.raise_for_status()
+    data = resp.json()
 
-    file_ids = [hit["file_id"] for hit in data["data"]["hits"]]
+    hits = data["data"]["hits"]
+    file_ids = [hit["file_id"] for hit in hits]
     logger.info(f"Found {len(file_ids)} expression files")
 
     if not file_ids:
-        logger.warning("No files found via GDC API. Falling back to UCSC Xena.")
-        return download_tcga_expression_xena(output_dir)
+        raise RuntimeError("GDC returned zero expression files for the query.")
 
-    # Build case_id -> submitter_id mapping
     case_map = {}
-    for hit in data["data"]["hits"]:
+    for hit in hits:
         for case in hit.get("cases", []):
             case_map[hit["file_id"]] = case.get("submitter_id", case.get("case_id"))
 
-    # Download files in a single tarball
-    logger.info("Downloading expression files from GDC (this may take several minutes)...")
-    payload = {"ids": file_ids}
-    response = requests.post(GDC_DATA_ENDPOINT, json=payload, headers={"Content-Type": "application/json"}, timeout=600)
-    response.raise_for_status()
-
-    # Save the raw tarball
-    tar_path = os.path.join(output_dir, "gdc_download.tar.gz")
-    with open(tar_path, "wb") as f:
-        f.write(response.content)
-
-    logger.info(f"Downloaded {len(file_ids)} files. Parsing counts...")
-
-    # Parse the downloaded tar to extract counts
-    import tarfile
     all_counts = {}
-    with tarfile.open(tar_path, "r:gz") as tar:
-        for member in tar.getmembers():
-            if member.name.endswith(".counts") or member.name.endswith(".tsv"):
-                f = tar.extractfile(member)
-                if f is None:
-                    continue
-                content = f.read().decode("utf-8")
-                # Determine the sample ID from the directory name (which is the file UUID)
-                file_uuid = member.name.split("/")[0]
-                sample_id = case_map.get(file_uuid, file_uuid)
+    if os.path.exists(checkpoint_file):
+        try:
+            with open(checkpoint_file, "r") as f:
+                all_counts = json.load(f)
+            logger.info(f"Resuming from checkpoint: {len(all_counts)} samples already parsed")
+        except Exception:
+            all_counts = {}
 
-                counts = {}
-                for line in content.strip().split("\n"):
-                    if line.startswith("__"):  # skip __no_feature, __ambiguous, etc.
-                        continue
-                    parts = line.split("\t")
-                    if len(parts) >= 2:
-                        gene_id = parts[0].split(".")[0]  # Remove Ensembl version
-                        # For STAR-Counts, use unstranded (column index 1)
-                        try:
-                            count = int(float(parts[1]))
-                        except (ValueError, IndexError):
-                            continue
-                        counts[gene_id] = count
+    already_done = set(all_counts.keys())
+    pending_ids = [fid for fid in file_ids if case_map.get(fid, fid) not in already_done]
+    if len(pending_ids) < len(file_ids):
+        logger.info(f"Skipping {len(file_ids) - len(pending_ids)} files already parsed")
 
-                if counts:
-                    all_counts[sample_id] = counts
+    n_batches = (len(pending_ids) + batch_size - 1) // batch_size
+    logger.info(
+        f"Downloading expression files from GDC in {n_batches} batches of up to {batch_size} "
+        f"(retries with backoff on transient failures)..."
+    )
 
-    if all_counts:
-        df = pd.DataFrame(all_counts).fillna(0).astype(int)
-        df.index.name = "gene_id"
-        df.to_csv(counts_file, sep="\t")
-        logger.info(f"Saved combined counts matrix: {df.shape[0]} genes x {df.shape[1]} samples")
-    else:
-        logger.warning("No counts parsed from GDC download. Falling back to UCSC Xena.")
-        return download_tcga_expression_xena(output_dir)
+    for b in range(n_batches):
+        batch = pending_ids[b * batch_size : (b + 1) * batch_size]
+        t0 = time.time()
+        tar_bytes = _download_gdc_batch(session, batch, b, n_batches)
+        parsed = _parse_gdc_counts_tar(tar_bytes, case_map)
+        all_counts.update(parsed)
+        dt = time.time() - t0
+        logger.info(
+            f"  Batch {b + 1}/{n_batches}: {len(parsed)} samples parsed "
+            f"({len(all_counts)}/{len(file_ids)} total) in {dt:.1f}s"
+        )
+        # Checkpoint every 5 batches so a mid-run crash can resume
+        if (b + 1) % 5 == 0 or b == n_batches - 1:
+            with open(checkpoint_file, "w") as f:
+                json.dump(all_counts, f)
+
+    if not all_counts:
+        raise RuntimeError("No counts parsed from any GDC batch.")
+
+    df = pd.DataFrame(all_counts).fillna(0).astype(int)
+    df.index.name = "gene_id"
+    df.to_csv(counts_file, sep="\t")
+    logger.info(f"Saved combined counts matrix: {df.shape[0]} genes x {df.shape[1]} samples")
+
+    # Cleanup checkpoint on success
+    try:
+        os.remove(checkpoint_file)
+    except OSError:
+        pass
 
     return counts_file
 
@@ -176,6 +321,9 @@ def download_tcga_clinical_gdc(output_dir: str, project: str = "TCGA-BRCA") -> s
         logger.info(f"Clinical file already exists: {clinical_file}")
         return clinical_file
 
+    # NOTE: `diagnoses.tumor_stage` was deprecated by GDC in 2021 and now returns
+    # all nulls. The modern schema exposes AJCC stage under multiple fields --
+    # request all of them so downstream parsing can pick whichever is populated.
     fields = [
         "submitter_id",
         "demographic.vital_status",
@@ -184,6 +332,13 @@ def download_tcga_clinical_gdc(output_dir: str, project: str = "TCGA-BRCA") -> s
         "demographic.gender",
         "demographic.race",
         "diagnoses.age_at_diagnosis",
+        # Modern stage fields (GDC schema post-2021)
+        "diagnoses.ajcc_pathologic_stage",
+        "diagnoses.ajcc_clinical_stage",
+        "diagnoses.ajcc_pathologic_t",
+        "diagnoses.ajcc_pathologic_n",
+        "diagnoses.ajcc_pathologic_m",
+        # Legacy field, kept for older extracts that still populate it
         "diagnoses.tumor_stage",
         "diagnoses.primary_diagnosis",
         "diagnoses.morphology",
@@ -225,7 +380,24 @@ def download_tcga_clinical_gdc(output_dir: str, project: str = "TCGA-BRCA") -> s
         if diagnoses:
             diag = diagnoses[0]
             record["age_at_diagnosis"] = diag.get("age_at_diagnosis")
-            record["tumor_stage"] = diag.get("tumor_stage")
+            # Prefer AJCC pathologic stage, fall back through clinical stage,
+            # then T-stage, then the deprecated tumor_stage field.
+            record["ajcc_pathologic_stage"] = diag.get("ajcc_pathologic_stage")
+            record["ajcc_clinical_stage"] = diag.get("ajcc_clinical_stage")
+            record["ajcc_pathologic_t"] = diag.get("ajcc_pathologic_t")
+            record["ajcc_pathologic_n"] = diag.get("ajcc_pathologic_n")
+            record["ajcc_pathologic_m"] = diag.get("ajcc_pathologic_m")
+            # Unified tumor_stage: first non-null of the above in preference order
+            stage_candidates = [
+                diag.get("ajcc_pathologic_stage"),
+                diag.get("ajcc_clinical_stage"),
+                diag.get("tumor_stage"),
+                diag.get("ajcc_pathologic_t"),  # T-stage as last-resort proxy
+            ]
+            record["tumor_stage"] = next(
+                (s for s in stage_candidates if s and str(s).lower() not in ("not reported", "unknown")),
+                None,
+            )
             record["primary_diagnosis"] = diag.get("primary_diagnosis")
             # Use diagnosis-level days if demographic-level missing
             if record["days_to_death"] is None:
@@ -362,16 +534,24 @@ def download_string_id_mapping(output_dir: str, species: int = 9606) -> str:
 def _query_disgenet_gda(
     headers: dict,
     disease_id: str,
-    source: str = "ALL",
+    source: str = "CURATED",
 ) -> list[dict]:
-    """Query a single disease from the DisGeNET GDA summary endpoint with pagination."""
+    """Query a single disease from the DisGeNET GDA summary endpoint with pagination.
+
+    Default source is ``CURATED`` because DisGeNET ACADEMIC profiles (the free
+    tier most users have) are forbidden from querying ``source=ALL`` and the API
+    returns HTTP 403 with "Academic accounts may only access CURATED sources."
+    If a caller explicitly requests ``ALL`` and hits 403, we auto-downgrade to
+    ``CURATED`` for that disease so the run can proceed.
+    """
     records = []
     page = 0
+    active_source = source
 
     while page < 100:
         params = {
             "disease": disease_id,
-            "source": source,
+            "source": active_source,
             "type": "disease",
             "page_number": page,
         }
@@ -382,8 +562,23 @@ def _query_disgenet_gda(
                 headers=headers,
                 timeout=60,
             )
+            if resp.status_code == 403 and active_source != "CURATED":
+                logger.warning(
+                    f"DisGeNET 403 for {disease_id} with source={active_source} "
+                    "(ACADEMIC profiles can only query CURATED). Retrying with CURATED."
+                )
+                active_source = "CURATED"
+                continue
             if resp.status_code in (401, 403, 429):
-                logger.warning(f"DisGeNET API returned {resp.status_code} for {disease_id}")
+                detail = ""
+                try:
+                    j = resp.json()
+                    detail = f" — {j.get('payload', {}).get('details') or j.get('status')}"
+                except Exception:
+                    pass
+                logger.warning(
+                    f"DisGeNET API returned {resp.status_code} for {disease_id}{detail}"
+                )
                 break
             resp.raise_for_status()
             data = resp.json()
@@ -652,15 +847,16 @@ def run_data_download(config: dict) -> dict:
 
     file_paths = {}
 
-    # 1. TCGA expression data (try GDC first, fallback to Xena)
+    # 1. TCGA expression data -- GDC only (batched + retried). No silent Xena
+    # fallback because Xena uses a different sample-ID convention and a
+    # log2(norm_count+1) encoding that breaks downstream clinical joins and
+    # normalization heuristics (see prior run analysis).
     logger.info("=" * 60)
     logger.info("Stage 1: Downloading TCGA-BRCA expression data")
     logger.info("=" * 60)
-    try:
-        file_paths["expression"] = download_tcga_htseq_counts_gdc(raw_dir, config["data"]["tcga_project"])
-    except Exception as e:
-        logger.warning(f"GDC download failed ({e}), falling back to UCSC Xena")
-        file_paths["expression"] = download_tcga_expression_xena(raw_dir)
+    file_paths["expression"] = download_tcga_htseq_counts_gdc(
+        raw_dir, config["data"]["tcga_project"]
+    )
 
     # 2. TCGA clinical data
     logger.info("=" * 60)

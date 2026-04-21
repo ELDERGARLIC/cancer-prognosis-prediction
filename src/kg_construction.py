@@ -385,6 +385,107 @@ def _get_fallback_pathways(gene_list: list) -> dict:
     return pathways
 
 
+def load_gmt_pathways(gmt_path: str) -> dict:
+    """Load an MSigDB-format GMT file into {pathway_name: [gene_symbols, ...]}.
+
+    Each line: <name>\\t<description/url>\\t<gene1>\\t<gene2>...
+    """
+    if not os.path.exists(gmt_path):
+        logger.warning(f"GMT file not found: {gmt_path}")
+        return {}
+
+    pathways = {}
+    with open(gmt_path) as f:
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+            parts = line.split("\t")
+            if len(parts) < 3:
+                continue
+            name = parts[0]
+            genes = [g.strip() for g in parts[2:] if g.strip()]
+            if genes:
+                pathways[name] = genes
+    logger.info(f"Loaded {len(pathways)} pathways from {os.path.basename(gmt_path)}")
+    return pathways
+
+
+def load_msigdb_hallmarks(gmt_path: str, gene_list: list) -> dict:
+    """Load MSigDB Hallmarks (50 hallmark gene sets). Keep only pathways that
+    overlap the selected gene universe so we don't drag in noise.
+    """
+    all_hallmarks = load_gmt_pathways(gmt_path)
+    if not all_hallmarks:
+        return {}
+
+    gene_set_upper = {g.upper() for g in gene_list}
+    filtered = {}
+    for name, genes in all_hallmarks.items():
+        matched = [g for g in genes if g.upper() in gene_set_upper]
+        if matched:
+            filtered[name] = matched
+    logger.info(
+        f"MSigDB Hallmarks: {len(all_hallmarks)} loaded, "
+        f"{len(filtered)} with gene overlap in selected universe"
+    )
+    return filtered
+
+
+def load_reactome_pathways(
+    gmt_path: str,
+    gene_list: list,
+    max_pathways: int = 200,
+    cancer_keywords: tuple = (
+        "cell_cycle", "apoptosis", "dna", "repair", "p53", "wnt", "pi3k",
+        "mapk", "erbb", "notch", "tgf", "hedgehog", "estrogen", "jak",
+        "signaling", "pathway", "cancer", "tumor", "metastasis", "egfr",
+        "mtor", "kras", "receptor_tyrosine",
+    ),
+) -> dict:
+    """Load Reactome pathways (via MSigDB C2 collection) and filter to the
+    cancer/mechanistic subset. Limits to `max_pathways` by gene-overlap size
+    so we don't explode the KG with 1700 largely-irrelevant pathway nodes.
+    """
+    all_pathways = load_gmt_pathways(gmt_path)
+    if not all_pathways:
+        return {}
+
+    gene_set_upper = {g.upper() for g in gene_list}
+
+    # Filter 1: keep only pathways with overlap
+    overlap_map = {}
+    for name, genes in all_pathways.items():
+        matched = [g for g in genes if g.upper() in gene_set_upper]
+        if matched:
+            overlap_map[name] = matched
+
+    # Filter 2: prioritize cancer-mechanistic pathways via keyword match
+    name_lc = {n: n.lower() for n in overlap_map}
+    prioritized = {
+        n: g for n, g in overlap_map.items()
+        if any(kw in name_lc[n] for kw in cancer_keywords)
+    }
+    # Fill remainder with highest-overlap Reactome pathways (non-prioritized)
+    remainder = {n: g for n, g in overlap_map.items() if n not in prioritized}
+    remainder_sorted = sorted(remainder.items(), key=lambda kv: -len(kv[1]))
+    for n, g in remainder_sorted:
+        if len(prioritized) >= max_pathways:
+            break
+        prioritized[n] = g
+
+    # Hard cap
+    if len(prioritized) > max_pathways:
+        sorted_items = sorted(prioritized.items(), key=lambda kv: -len(kv[1]))[:max_pathways]
+        prioritized = dict(sorted_items)
+
+    logger.info(
+        f"Reactome: {len(all_pathways)} loaded, {len(overlap_map)} with overlap, "
+        f"{len(prioritized)} kept after cancer-keyword + max_pathways={max_pathways} filter"
+    )
+    return prioritized
+
+
 def build_pathway_edges(
     pathways: dict,
     gene_list: list,
@@ -423,35 +524,60 @@ def compute_graph_statistics(
     gene_disease_edges: torch.Tensor,
     gene_pathway_edges: torch.Tensor,
     n_genes: int,
+    gene_hallmark_edges: torch.Tensor = None,
+    gene_reactome_edges: torch.Tensor = None,
 ) -> dict:
-    """Compute and log knowledge graph statistics."""
+    """Compute and log knowledge graph statistics.
+
+    The isolated-genes count counts any gene with zero edges across ALL edge
+    types (gene-gene, gene-disease, gene-pathway, gene-hallmark, gene-reactome).
+    This is the metric Phase 1.3 tracks: target < 10%.
+    """
     stats = {
         "n_genes": n_genes,
-        "n_gene_gene_edges": gene_gene_edges.size(1),
-        "n_gene_disease_edges": gene_disease_edges.size(1),
-        "n_gene_pathway_edges": gene_pathway_edges.size(1),
+        "n_gene_gene_edges": int(gene_gene_edges.size(1)),
+        "n_gene_disease_edges": int(gene_disease_edges.size(1)),
+        "n_gene_pathway_edges": int(gene_pathway_edges.size(1)),
+        "n_gene_hallmark_edges": int(gene_hallmark_edges.size(1)) if gene_hallmark_edges is not None else 0,
+        "n_gene_reactome_edges": int(gene_reactome_edges.size(1)) if gene_reactome_edges is not None else 0,
     }
 
     # Gene-gene graph density
     max_edges = n_genes * (n_genes - 1)
     stats["gene_gene_density"] = gene_gene_edges.size(1) / max_edges if max_edges > 0 else 0
 
-    # Average node degree (gene-gene)
-    if gene_gene_edges.size(1) > 0:
-        degrees = torch.zeros(n_genes)
-        for i in range(gene_gene_edges.size(1)):
-            degrees[gene_gene_edges[0, i]] += 1
-        stats["avg_degree"] = degrees.mean().item()
-        stats["max_degree"] = degrees.max().item()
-        stats["isolated_genes"] = (degrees == 0).sum().item()
-    else:
-        stats["avg_degree"] = 0
-        stats["max_degree"] = 0
-        stats["isolated_genes"] = n_genes
+    # Per-node degree across ALL edge types. The isolated metric used in
+    # Phase 1.3 is across all graphs, since even a gene that has no PPI
+    # neighbor can still receive message-passing through pathway/hallmark
+    # hops in the heterogeneous setup.
+    degrees = torch.zeros(n_genes)
+    for tens in (gene_gene_edges, gene_disease_edges, gene_pathway_edges,
+                 gene_hallmark_edges, gene_reactome_edges):
+        if tens is None or tens.size(1) == 0:
+            continue
+        src = tens[0]
+        for i in range(src.size(0)):
+            node = int(src[i].item())
+            if 0 <= node < n_genes:
+                degrees[node] += 1
 
+    stats["avg_degree"] = float(degrees.mean().item())
+    stats["max_degree"] = float(degrees.max().item()) if n_genes > 0 else 0
+    stats["isolated_genes"] = int((degrees == 0).sum().item())
+    stats["isolated_pct"] = 100.0 * stats["isolated_genes"] / max(n_genes, 1)
+
+    logger.info("=" * 60)
     logger.info("Knowledge Graph Statistics:")
+    logger.info("=" * 60)
     for k, v in stats.items():
         logger.info(f"  {k}: {v:.4f}" if isinstance(v, float) else f"  {k}: {v}")
+    # Phase 1.3 targets, printed alongside actuals for easy pass/fail eyeballing
+    logger.info("  -- Phase 1.3 targets --")
+    logger.info(f"  n_gene_gene_edges target > 3000 (actual {stats['n_gene_gene_edges']})")
+    logger.info(f"  n_gene_pathway_edges target > 5000 "
+                f"(actual {stats['n_gene_pathway_edges'] + stats['n_gene_reactome_edges']})")
+    logger.info(f"  n_gene_hallmark_edges target > 4000 (actual {stats['n_gene_hallmark_edges']})")
+    logger.info(f"  isolated_pct target < 10% (actual {stats['isolated_pct']:.1f}%)")
 
     return stats
 
@@ -530,9 +656,33 @@ def build_knowledge_graph(config: dict, gene_list: list) -> dict:
         pathways, gene_list, gene_to_idx
     )
 
+    # 3b. MSigDB Hallmarks of Cancer -- 50 coarse-grained pathway nodes that
+    # double as the clinical interpretability layer. Cites Liberzon et al., 2015.
+    logger.info("=" * 60)
+    logger.info("Building gene-hallmark edges from MSigDB Hallmarks")
+    logger.info("=" * 60)
+    hallmarks_path = os.path.join(kg_dir, "msigdb_hallmarks.gmt")
+    hallmarks = load_msigdb_hallmarks(hallmarks_path, gene_list) if os.path.exists(hallmarks_path) else {}
+    gene_hallmark_edges, hallmark_names, hallmark_to_idx = build_pathway_edges(
+        hallmarks, gene_list, gene_to_idx
+    )
+
+    # 3c. Reactome -- finer mechanistic pathways (filtered to ~200 cancer-relevant).
+    logger.info("=" * 60)
+    logger.info("Building gene-reactome edges from MSigDB C2 Reactome")
+    logger.info("=" * 60)
+    reactome_path = os.path.join(kg_dir, "msigdb_reactome.gmt")
+    reactome_max = int(config.get("data", {}).get("reactome_max_pathways", 200))
+    reactome = load_reactome_pathways(reactome_path, gene_list, max_pathways=reactome_max) if os.path.exists(reactome_path) else {}
+    gene_reactome_edges, reactome_names, reactome_to_idx = build_pathway_edges(
+        reactome, gene_list, gene_to_idx
+    )
+
     # 4. Compute statistics
     stats = compute_graph_statistics(
-        gene_gene_edges, gene_disease_edges, gene_pathway_edges, len(gene_list)
+        gene_gene_edges, gene_disease_edges, gene_pathway_edges, len(gene_list),
+        gene_hallmark_edges=gene_hallmark_edges,
+        gene_reactome_edges=gene_reactome_edges,
     )
 
     # 5. Save knowledge graph
@@ -546,6 +696,12 @@ def build_knowledge_graph(config: dict, gene_list: list) -> dict:
         "gene_pathway_edges": gene_pathway_edges,
         "pathway_names": pathway_names,
         "pathway_to_idx": pathway_to_idx,
+        "gene_hallmark_edges": gene_hallmark_edges,
+        "hallmark_names": hallmark_names,
+        "hallmark_to_idx": hallmark_to_idx,
+        "gene_reactome_edges": gene_reactome_edges,
+        "reactome_names": reactome_names,
+        "reactome_to_idx": reactome_to_idx,
         "stats": stats,
     }
 
@@ -556,6 +712,8 @@ def build_knowledge_graph(config: dict, gene_list: list) -> dict:
             "gene_gene_weights": gene_gene_weights,
             "gene_disease_edges": gene_disease_edges,
             "gene_pathway_edges": gene_pathway_edges,
+            "gene_hallmark_edges": gene_hallmark_edges,
+            "gene_reactome_edges": gene_reactome_edges,
         },
         os.path.join(processed_dir, "kg_edges.pt"),
     )
@@ -567,6 +725,10 @@ def build_knowledge_graph(config: dict, gene_list: list) -> dict:
         "disease_to_idx": disease_to_idx,
         "pathway_names": pathway_names,
         "pathway_to_idx": pathway_to_idx,
+        "hallmark_names": hallmark_names,
+        "hallmark_to_idx": hallmark_to_idx,
+        "reactome_names": reactome_names,
+        "reactome_to_idx": reactome_to_idx,
         "stats": stats,
     }
     with open(os.path.join(processed_dir, "kg_metadata.json"), "w") as f:

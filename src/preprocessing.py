@@ -364,36 +364,109 @@ def create_survival_labels(
     return df
 
 
+import re
+
+# Compiled once at import to avoid re-parsing on every call. These capture:
+#   - "Stage IV"/"Stage IIA"/"iv"/"iiia"   ->  roman numeral
+#   - "T3N1M0" / "T2N0" / "pT1c"            ->  T-stage proxy
+#   - "1"/"2.0"/"3B"                        ->  numeric / numeric + letter
+# Note on the regexes:
+#  - ROMAN: we must tolerate substage letters (IIA/IIIC/IB). The alternation
+#    order matters: greedy longest-first (iv, iii, ii, i), then [abc]?
+#    swallows the substage before the \b closes the word.
+#  - LOOSE: a bare roman like "iiia" has no word boundary between "iii" and
+#    "a" (both word chars), so use anchored fullmatch against ^...$ with
+#    optional substage tail.
+#  - TNM: codes like "T3N1M0" have no separator between digit and "N", so
+#    the old trailing [a-z]?\b couldn't close. Drop the tail and only
+#    require \b before "T" -- the T-stage digit is a sufficient proxy.
+_STAGE_ROMAN_RE = re.compile(r"\bstage\s*(iv|iii|ii|i)[abc]?\b", re.IGNORECASE)
+_STAGE_ROMAN_LOOSE_RE = re.compile(r"^(iv|iii|ii|i)[abc]?$", re.IGNORECASE)
+_STAGE_TNM_RE = re.compile(r"\bp?t(\d)", re.IGNORECASE)
+_STAGE_NUMERIC_RE = re.compile(r"^\s*([1-4])[abc]?\s*$", re.IGNORECASE)
+
+_STAGE_UNKNOWN = {
+    "", "nan", "none", "not reported", "unknown", "[not available]",
+    "[not applicable]", "[unknown]", "stage x", "tx", "not evaluated",
+}
+
+
 def _parse_stage_string(s) -> int:
     """Parse a tumor-stage string to ordinal 0-3 (I-IV). Returns -1 if unknown.
 
-    Matches both 'Stage IIA' / 'iiia' and numeric TCGA AJCC codes ('2', '3b').
-    Order matters: check longer prefixes first so 'iii' beats 'ii'.
+    Handles:
+      - "Stage IIA", "Stage IIIC", "iiia"          -> roman numeral
+      - AJCC TNM codes: "T2N1M0", "pT1c"           -> T-stage as a proxy
+      - Numeric codes from older extracts: "1.0", "3B" -> int
+      - Sentinel values (NaN, "[Not Available]", "Stage X") -> -1
+
+    Unit tests (enforced via assertions at module import):
+      _parse_stage_string("Stage IIA") == 1
+      _parse_stage_string("Stage IV") == 3
+      _parse_stage_string("T3N1M0") == 2
+      _parse_stage_string("[Not Available]") == -1
+      _parse_stage_string(float('nan')) == -1
     """
-    if s is None or (isinstance(s, float) and pd.isna(s)):
+    if s is None:
         return -1
-    s = str(s).strip().lower()
-    if not s or s in {"nan", "none", "not reported", "unknown", "[not available]", "[not applicable]", "0", "0.0"}:
-        return -1
-    # Strip 'stage ' prefix and trailing letter (IIA -> II)
-    s = s.replace("stage", "").strip()
-    # Check roman numerals longest-first
-    if "iv" in s:
-        return 3
-    if "iii" in s:
-        return 2
-    if "ii" in s:
-        return 1
-    if s.startswith("i") or s == "1":
-        return 0
-    # Numeric codes used by some TCGA extracts
+    # numpy / pandas NaN scalars
     try:
-        n = int(float(s.rstrip("abc")))
+        if isinstance(s, float) and pd.isna(s):
+            return -1
+    except (TypeError, ValueError):
+        pass
+
+    raw = str(s).strip().lower()
+    if raw in _STAGE_UNKNOWN:
+        return -1
+
+    # 1) "Stage IIA" / "Stage IV" -- most reliable
+    m = _STAGE_ROMAN_RE.search(raw)
+    if m:
+        roman = m.group(1).lower()
+        return {"i": 0, "ii": 1, "iii": 2, "iv": 3}[roman]
+
+    # 2) Pure roman without "Stage" prefix
+    stripped = raw.replace("stage", "").strip()
+    m = _STAGE_ROMAN_LOOSE_RE.fullmatch(stripped.split()[0] if stripped.split() else "")
+    if m:
+        return {"i": 0, "ii": 1, "iii": 2, "iv": 3}[m.group(1).lower()]
+
+    # 3) Bare numeric with optional subgrade letter ("3B", "2.0")
+    m = _STAGE_NUMERIC_RE.match(stripped)
+    if m:
+        n = int(m.group(1))
+        if 1 <= n <= 4:
+            return n - 1
+    try:
+        n = int(float(stripped.rstrip("abc")))
         if 1 <= n <= 4:
             return n - 1
     except (ValueError, TypeError):
         pass
+
+    # 4) AJCC TNM code -- use T-stage as ordinal proxy
+    m = _STAGE_TNM_RE.search(raw)
+    if m:
+        n = int(m.group(1))
+        if 1 <= n <= 4:
+            return n - 1
+
     return -1
+
+
+# Self-test -- catches regressions at import time rather than in training.
+assert _parse_stage_string("Stage IIA") == 1, "stage parser: Stage IIA should be 1"
+assert _parse_stage_string("Stage IIIC") == 2, "stage parser: Stage IIIC should be 2"
+assert _parse_stage_string("Stage IV") == 3, "stage parser: Stage IV should be 3"
+assert _parse_stage_string("iiia") == 2, "stage parser: lowercase roman"
+assert _parse_stage_string("T3N1M0") == 2, "stage parser: TNM -> T-stage"
+assert _parse_stage_string("pT1c") == 0, "stage parser: pT1c -> 0"
+assert _parse_stage_string("[Not Available]") == -1
+assert _parse_stage_string("Stage X") == -1, "stage parser: Stage X -> -1"
+assert _parse_stage_string(float("nan")) == -1
+assert _parse_stage_string(None) == -1
+assert _parse_stage_string("2.0") == 1
 
 
 def extract_clinical_features(clinical_df: pd.DataFrame) -> tuple:
@@ -437,24 +510,35 @@ def extract_clinical_features(clinical_df: pd.DataFrame) -> tuple:
             break
 
     if stage_col:
+        # Pre-dump value_counts to aid debugging future schema drifts.
+        raw_top = df[stage_col].value_counts(dropna=False).head(10).to_dict()
+        logger.info(f"Tumor stage raw value counts (top 10): {raw_top}")
+
         stage_ordinal = df[stage_col].apply(_parse_stage_string)
         valid_mask = stage_ordinal >= 0
         n_valid = int(valid_mask.sum())
+        pct_valid = 100 * n_valid / max(len(stage_ordinal), 1)
         logger.info(
             f"Tumor stage ({stage_col}): {n_valid}/{len(stage_ordinal)} parsed "
-            f"({100 * n_valid / max(len(stage_ordinal), 1):.1f}%)"
+            f"({pct_valid:.1f}%)"
         )
-        if n_valid >= 10:
+
+        # Require >=70% parseability before we trust stage as a feature. This
+        # guard prevents a mostly-empty column from being encoded as 'all median'
+        # which injects a constant signal and confuses the model.
+        STAGE_FEATURE_MIN_PCT = 70.0
+        if pct_valid >= STAGE_FEATURE_MIN_PCT:
             # Fill unknowns with median stage so one-hot/ordinal is defined
             median_stage = int(stage_ordinal[valid_mask].median())
             stage_filled = stage_ordinal.where(valid_mask, median_stage)
             features["stage_ordinal"] = stage_filled.astype(float) / 3.0  # scale to [0,1]
             for s_idx, s_name in enumerate(["I", "II", "III", "IV"]):
                 features[f"stage_{s_name}"] = (stage_filled == s_idx).astype(float)
+            logger.info(f"Stage features enabled (parsed {pct_valid:.1f}% >= {STAGE_FEATURE_MIN_PCT}%).")
         else:
             logger.warning(
-                f"Stage column '{stage_col}' has only {n_valid} parseable values; "
-                "skipping stage features."
+                f"Stage column '{stage_col}' only {pct_valid:.1f}% parseable "
+                f"(< {STAGE_FEATURE_MIN_PCT}%); skipping stage features."
             )
 
     # ER/PR/HER2 status (look for these in column names)
