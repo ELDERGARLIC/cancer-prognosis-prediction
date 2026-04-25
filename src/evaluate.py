@@ -293,7 +293,7 @@ def train_vanilla_gcn_baseline(
     optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
     criterion = torch.nn.CrossEntropyLoss()
 
-    train_loader, val_loader = get_dataloaders(
+    train_loader, val_loader, _smote_applied = get_dataloaders(
         dataset, train_idx, val_idx,
         batch_size=config["training"]["batch_size"],
         smote=True, seed=config["training"]["seed"],

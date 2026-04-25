@@ -246,53 +246,125 @@ def select_features_rfe(
     return selected
 
 
-def filter_with_disgenet(
+def augment_with_disgenet_priors(
     selected_genes: list,
     disgenet_path: str,
+    expression_gene_index: pd.Index,
     disease_semantic_type: str = "Neoplastic Process",
+    max_priors: int = 500,
 ) -> list:
-    """Filter selected genes to keep those present in DisGeNET.
+    """Augment the LASSO-selected universe with DisGeNET BRCA-associated genes.
 
-    Reference: Qumsiyeh et al., 2022 — intersection with disease-relevant genes.
+    Reference: Qumsiyeh et al., 2022.
+
+    Phase 1 motivation: the old `filter_with_disgenet` did an *intersection*,
+    which with LASSO-1000 gave exactly 11 overlap -- not enough to build any
+    meaningful gene-disease subgraph. The fix is a *union*: keep all LASSO
+    picks (they maximize survival-predictive signal) AND pull in DisGeNET's
+    curated BRCA-associated genes (they maximize biological prior) if they
+    exist in the expression matrix. Duplicates are deduped by symbol.
+
+    Cap at `max_priors` DisGeNET additions so the universe doesn't blow up
+    past what downstream steps were sized for.
+
+    Args:
+        selected_genes: LASSO-picked symbols (already the main universe).
+        disgenet_path: TSV dump.
+        expression_gene_index: symbols available in the expression matrix;
+            DisGeNET priors are only added if expression data exists for them.
+        disease_semantic_type: filter for "Neoplastic Process".
+        max_priors: cap on DisGeNET-sourced additions.
     """
     if not os.path.exists(disgenet_path):
-        logger.warning(f"DisGeNET file not found: {disgenet_path}. Skipping filter.")
+        logger.warning(f"DisGeNET file not found: {disgenet_path}. Skipping augmentation.")
         return selected_genes
 
     disgenet = pd.read_csv(disgenet_path, sep="\t")
 
-    # Filter for neoplastic process
     if "diseaseSemanticType" in disgenet.columns:
-        disgenet = disgenet[disgenet["diseaseSemanticType"].str.contains(disease_semantic_type, na=False)]
+        disgenet = disgenet[
+            disgenet["diseaseSemanticType"].str.contains(disease_semantic_type, na=False)
+        ]
 
-    # Get the set of disease-associated genes
-    if "geneSymbol" in disgenet.columns:
-        kg_genes = set(disgenet["geneSymbol"].str.upper())
-    elif "gene_symbol" in disgenet.columns:
-        kg_genes = set(disgenet["gene_symbol"].str.upper())
-    else:
+    gene_col = "geneSymbol" if "geneSymbol" in disgenet.columns else "gene_symbol"
+    if gene_col not in disgenet.columns:
         logger.warning("Could not identify gene column in DisGeNET file")
         return selected_genes
 
-    # Intersection
-    selected_upper = {g.upper(): g for g in selected_genes}
-    intersection = [selected_upper[g] for g in selected_upper if g in kg_genes]
+    # Rank DisGeNET genes by score (if present) so we pick the strongest
+    # associations first when hitting the max_priors cap.
+    if "score" in disgenet.columns:
+        disgenet = disgenet.sort_values("score", ascending=False)
+
+    disgenet_symbols_upper = [
+        str(g).upper() for g in disgenet[gene_col].dropna().tolist()
+    ]
+
+    # Dedupe while preserving order (score-sorted above)
+    seen = set()
+    disgenet_ranked = []
+    for g in disgenet_symbols_upper:
+        if g in seen:
+            continue
+        seen.add(g)
+        disgenet_ranked.append(g)
+
+    # Filter to genes actually in the expression matrix
+    expression_universe_upper = {str(g).upper(): g for g in expression_gene_index}
+    disgenet_in_expr = [
+        expression_universe_upper[g]
+        for g in disgenet_ranked
+        if g in expression_universe_upper
+    ]
+
+    # Existing LASSO set (uppercase for dedupe)
+    selected_upper = {g.upper() for g in selected_genes}
+
+    priors_to_add = []
+    for g in disgenet_in_expr:
+        if g.upper() in selected_upper:
+            continue
+        priors_to_add.append(g)
+        if len(priors_to_add) >= max_priors:
+            break
+
+    unioned = list(selected_genes) + priors_to_add
 
     logger.info(
-        f"DisGeNET filter: {len(selected_genes)} genes -> {len(intersection)} genes "
-        f"(KG contains {len(kg_genes)} neoplastic genes)"
+        f"DisGeNET augmentation: LASSO={len(selected_genes)}, "
+        f"DisGeNET candidates={len(disgenet_in_expr)}, "
+        f"added_priors={len(priors_to_add)} (cap={max_priors}), "
+        f"final union={len(unioned)}"
     )
+    return unioned
 
-    # If intersection is too small, keep all selected genes
-    if len(intersection) < 100:
+
+# Backward-compat shim: existing call sites use `filter_with_disgenet`. The
+# union semantics are a strict improvement, but we preserve the old signature
+# so this one change doesn't cascade into every downstream caller.
+def filter_with_disgenet(
+    selected_genes: list,
+    disgenet_path: str,
+    disease_semantic_type: str = "Neoplastic Process",
+    expression_gene_index: pd.Index = None,
+    max_priors: int = 500,
+) -> list:
+    """DEPRECATED name; forwards to augment_with_disgenet_priors (union)."""
+    if expression_gene_index is None:
+        # Without expression knowledge we can't safely add priors, so fall
+        # back to the no-op that the old code hit when intersection was small.
         logger.warning(
-            f"Intersection too small ({len(intersection)}). Keeping all {len(selected_genes)} genes "
-            f"and adding KG genes as extra context."
+            "filter_with_disgenet called without expression_gene_index; "
+            "returning LASSO set unchanged."
         )
-        # Add any KG genes that are in our expression data
         return selected_genes
-
-    return intersection
+    return augment_with_disgenet_priors(
+        selected_genes=selected_genes,
+        disgenet_path=disgenet_path,
+        expression_gene_index=expression_gene_index,
+        disease_semantic_type=disease_semantic_type,
+        max_priors=max_priors,
+    )
 
 
 def create_survival_labels(
@@ -714,15 +786,22 @@ def run_preprocessing(config: dict, expr_path: str, clinical_path: str, disgenet
 
     selected_genes = select_features_lasso(expr_matched, survival_labels, n_genes=n_genes, seed=seed)
 
-    # 8. DisGeNET intersection filter
+    # 8. DisGeNET augmentation (Phase 1 fix: union, not intersection).
+    # Bringing in curated BRCA-associated genes gives the gene-disease edge
+    # set somewhere to attach to -- the LASSO universe by itself only
+    # overlapped DisGeNET by 11 genes, which is too few to build any
+    # meaningful gene-disease subgraph.
     if disgenet_path and os.path.exists(disgenet_path):
         logger.info("=" * 60)
-        logger.info("Filtering with DisGeNET")
+        logger.info("Augmenting LASSO universe with DisGeNET BRCA priors")
         logger.info("=" * 60)
-        selected_genes = filter_with_disgenet(
-            selected_genes,
-            disgenet_path,
-            config["data"]["disease_semantic_type"],
+        max_priors = int(config.get("data", {}).get("disgenet_max_priors", 500))
+        selected_genes = augment_with_disgenet_priors(
+            selected_genes=selected_genes,
+            disgenet_path=disgenet_path,
+            expression_gene_index=expr_matched.index,
+            disease_semantic_type=config["data"]["disease_semantic_type"],
+            max_priors=max_priors,
         )
 
     # 9. Extract clinical features

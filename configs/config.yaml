@@ -42,9 +42,61 @@ data:
   survival_labels: ["<1yr", "1-3yr", "3-5yr", ">5yr"]
   # SMOTE
   smote_strategy: auto
-  # DisGeNET
-  disease_cui: "C0006142"  # Breast cancer
+  # DisGeNET -- expanded from single CUI (C0006142) to a panel of 14 BRCA-
+  # relevant CUIs. Phase 1 observed "1236 associations after semantic-type
+  # filter -> 11 edges" because (a) the CUI restriction was too narrow and
+  # (b) the implicit score cutoff was too high. Fix: pre-filter by CUIs and
+  # drop the minimum GDA score.
+  disease_cui: "C0006142"     # legacy -- used only if disease_cuis not set
   disease_semantic_type: "Neoplastic Process"
+  disease_cuis:
+    - "C0006142"  # Malignant neoplasm of breast
+    - "C0678222"  # Breast carcinoma
+    - "C1458155"  # Breast neoplasm
+    - "C0279605"  # Breast cancer, metastatic
+    - "C0007104"  # Malignant neoplasm of female breast
+    - "C0346153"  # Familial cancer of breast
+    - "C0235653"  # Inflammatory breast carcinoma
+    - "C1328533"  # Triple-negative breast cancer
+    - "C2239176"  # Liver metastasis
+    - "C0027627"  # Neoplasm metastasis
+    - "C0024121"  # Lung neoplasm (common BRCA metastasis site)
+    - "C0242379"  # Malignant neoplasm of lung
+    - "C0006826"  # Malignant neoplasms (generic oncology prior)
+    - "C0027651"  # Neoplasms
+  disgenet_min_score: 0.05
+
+# Knowledge-graph build-time guards. Phase 1 found four silent zero-edge
+# regressions (MSigDB Hallmarks, Reactome, KEGG, DisGeNET) that passed an
+# earlier smoke test because the loaders returned {} without raising. The
+# asserts below turn those into loud failures. Flip `strict_asserts` off
+# only when deliberately debugging an individual loader.
+#
+# Thresholds are sized for the current LASSO+DisGeNET universe (~1,500 genes
+# out of ~20k gene symbols across MSigDB). Expected edge counts scale roughly
+# linearly with universe size:
+#   - Hallmarks: 50 sets x ~150 genes -> ~7.5k total memberships ->
+#     ~7.5k * (1.5k / 20k) ~= 560 edges expected. Floor 400.
+#   - Reactome: 200 filtered sets x ~50 genes -> ~10k memberships ->
+#     ~10k * (1.5k / 20k) ~= 750 edges expected. Floor 500.
+#   - KEGG: 370 pathways, already produces ~4.7k edges -> 2000 floor is fine.
+# If you raise `n_genes_lasso` again, revisit these floors.
+kg:
+  strict_asserts: true
+  min_gene_gene_edges: 2000
+  min_gene_hallmark_edges: 400
+  min_gene_reactome_edges: 500
+  min_gene_pathway_edges: 2000
+  min_gene_disease_edges: 500
+  # Post-build gene-universe trim. After all edge types are loaded, any gene
+  # with zero incident edges across ALL relations (gene-gene, gene-disease,
+  # gene-pathway, gene-hallmark, gene-reactome) is a dead node: the GAT sees
+  # only its expression value with no neighborhood context. The 5-fold Phase 1
+  # run had isolated_pct = 48.7% (731/1500), which is why c_index_ord std
+  # stayed at 0.090. Trim when we exceed max_isolated_pct; the remaining
+  # universe keeps expression features + graph topology consistent.
+  # Set max_isolated_pct to 1.0 to disable the trim entirely.
+  max_isolated_pct: 0.15
 
 model:
   gat_layers: 3
@@ -67,17 +119,42 @@ training:
   weight_decay: 1.0e-4
   epochs: 200
   patience: 25                  # tightened from 30 with c_index + DeepHit signal
-  batch_size: 32
-  cv_folds: 5
+  # batch_size: keep low on MPS. With the densified KG (n_genes=1500, ~58k
+  # edges/graph: 49.7k gene-gene + 8.8k hetero), batch 32 OOMs on a 20 GB M-series
+  # Mac during GAT backward (attention activations + retained graphs blow past
+  # the high-watermark). Batch 8 fits comfortably; scale up on CUDA if desired.
+  batch_size: 8
+  # `cv_folds` is what train.py actually reads. During debugging set to 2 so
+  # a full run finishes in ~30min instead of ~8h. Flip back to `cv_folds_final`
+  # (= 5) for the acceptance-criteria run.
+  cv_folds: 2
+  cv_folds_final: 5
   aux_loss_weight: 0.3          # tumor stage classification head
   cox_loss_weight: 0.5          # DeepSurv-style partial likelihood head
   ordinal_loss_weight: 0.2      # ordinal regression on survival bins
   label_smoothing: 0.1          # CE label smoothing (ordinal neighbor bleed)
-  # DeepHit discrete-time loss (Lee et al., 2018): takes over as the main
-  # objective when os_event is available, properly handling censoring.
+  # DeepHit discrete-time loss (Lee et al., 2018).
+  #
+  # Phase 1 head decoupling: DeepHit is no longer blended with CE on the
+  # main classifier logits. Instead the model exposes a dedicated
+  # `survival_bin_head` whose logits DeepHit supervises as an auxiliary
+  # term. The main CE classifier head is left untouched.
+  #
+  # Why: blending DeepHit + CE on shared logits collapsed val_acc to
+  # 0.2421 (== majority-class fraction). DeepHit's censored-sample L1
+  # term structurally biases logits toward the latest survival bin;
+  # with ~80% TCGA-BRCA censoring, that gradient swamped CE even at
+  # w=0.5 (diagnostic showed only 25.65% effective CE contribution,
+  # all 8 init predictions -> class 3). See tools/diagnose_classifier.py.
+  #
+  # `deephit_aux_weight` now scales the auxiliary DeepHit loss on its
+  # own head -- identical role to aux_loss_weight / cox_loss_weight /
+  # ordinal_loss_weight. 0.3 matches aux_loss_weight for consistency.
   use_deephit: true
-  deephit_loss_weight: 1.0
-  # Early stopping on the actual survival metric (not AUC).
+  deephit_aux_weight: 0.3
+  # Early stopping on the actual survival metric (not AUC). The headline
+  # c_index is now the *ordinal head* specifically -- no more per-fold max
+  # over three heads.
   # Valid values: "loss" (min), "auc_roc" / "accuracy" / "c_index" (max).
   early_stop_metric: "c_index"
   seed: 42
@@ -87,6 +164,32 @@ hybrid:
   rf_calibrated: true
   rf_max_depth: null
   rf_min_samples_split: 5
+
+# Phase-1.5 loss-ablation sweep controls. When `enabled: true`, train.py:
+#   - restricts the multi-task loss to members of `active_losses`
+#     (inactive terms are .detach()ed so they appear in logs but never
+#     contribute a gradient -- `loss.backward()` through a 0*tensor can
+#     still propagate rank-1 updates so we skip the term entirely).
+#   - caps training at `max_epochs` regardless of `training.epochs`.
+#   - logs an `[ABLATION {run_name}]` line and a `[GRAD {run_name}]` line
+#     at the end of every epoch (grad norms come from a single extra
+#     forward+per-loss backward on the first train batch).
+#   - kills the run at epoch 5 if train_ce > 1.35 AND val_acc < 0.25
+#     (the "dead_early" signature -- classifier stuck at uniform softmax
+#     and not improving; no point burning 5 more epochs).
+#   - skips Calibrated-RF training when `skip_rf: true`, since the point
+#     of the sweep is to isolate which GNN loss is working, not to tune RF.
+#
+# Driver (`tools/run_ablation_sweep.py`) programmatically sets these fields
+# for each of the four ablation specs (A ce-only, B ce+aux_stage, C
+# deephit-only, D ce+deephit at low weight).
+ablation:
+  enabled: false
+  active_losses: ["ce", "deephit", "cox", "ordinal", "aux_stage"]
+  run_name: "full"
+  max_epochs: 10
+  skip_rf: true
+  dead_early_kill: true
 
 paths:
   raw_data: "data/raw"

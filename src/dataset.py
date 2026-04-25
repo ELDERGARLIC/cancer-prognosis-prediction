@@ -478,12 +478,20 @@ def get_dataloaders(
     train_emb = dataset.patient_embeddings[train_idx]
     train_labels = dataset.survival_labels[train_idx]
     train_clinical = dataset.clinical_features[train_idx]
+    n_before_smote = len(train_labels)
 
-    # Apply SMOTE on training set only
+    # Apply SMOTE on training set only.
+    # We track `smote_applied` rather than the user's `smote=True` request
+    # because SMOTE silently no-ops when the feature tensor is too large
+    # (>MAX_SMOTE_FEATURES) or when a class has <2 samples. The caller needs
+    # to know which branch happened so it can choose between uniform class
+    # weights (balanced via SMOTE) and inverse-frequency weights.
+    smote_applied = False
     if smote:
         train_emb, train_labels, train_clinical = apply_smote(
             train_emb, train_labels, train_clinical, strategy=smote_strategy, seed=seed
         )
+        smote_applied = len(train_labels) > n_before_smote
 
     # Build training dataset
     train_os_time = dataset.os_time[train_idx] if dataset.os_time is not None else None
@@ -541,9 +549,13 @@ def get_dataloaders(
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
-    logger.info(f"DataLoaders: train={len(train_dataset)} ({len(train_loader)} batches), val={len(val_dataset)} ({len(val_loader)} batches)")
+    logger.info(
+        f"DataLoaders: train={len(train_dataset)} ({len(train_loader)} batches), "
+        f"val={len(val_dataset)} ({len(val_loader)} batches), "
+        f"smote_applied={smote_applied}"
+    )
 
-    return train_loader, val_loader
+    return train_loader, val_loader, smote_applied
 
 
 if __name__ == "__main__":
@@ -555,11 +567,12 @@ if __name__ == "__main__":
 
     # Test first fold
     train_idx, val_idx = splits[0]
-    train_loader, val_loader = get_dataloaders(
+    train_loader, val_loader, smote_applied = get_dataloaders(
         dataset, train_idx, val_idx,
         batch_size=config["training"]["batch_size"],
         seed=config["training"]["seed"],
     )
+    logger.info(f"Smoke test smote_applied={smote_applied}")
 
     # Print a sample batch
     for batch in train_loader:

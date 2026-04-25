@@ -301,6 +301,28 @@ files = [
 numpy = "*"
 
 [[package]]
+name = "biothings-client"
+version = "0.5.0"
+description = "Python Client for BioThings API services."
+optional = false
+python-versions = ">=3.7"
+groups = ["main"]
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\")"
+files = [
+    {file = "biothings_client-0.5.0-py3-none-any.whl", hash = "sha256:733488a5133bb6833a43cc895ad122654d8c72446926301d8607df0a9888c004"},
+    {file = "biothings_client-0.5.0.tar.gz", hash = "sha256:f9fddc7436d59bcde4f9a2501431fc744d142062ac4796585470adca29c59ed4"},
+]
+
+[package.dependencies]
+httpx = {version = ">=0.25.0", markers = "python_version >= \"3.8\""}
+
+[package.extras]
+caching = ["anysqlite", "hishel[httpx] (==1.1.8)", "hishel[httpx] (>=1.1.9)"]
+dataframe = ["pandas (>=1.2.0)"]
+jsonld = ["PyLD (>=0.7.2)"]
+tests = ["pytest (>=7.4.4)", "pytest (>=8.3.3)", "pytest-asyncio (>=0.21.2)", "pytest-asyncio (>=0.23.8)"]
+
+[[package]]
 name = "captum"
 version = "0.7.0"
 description = "Model interpretability for PyTorch"
@@ -514,7 +536,7 @@ description = "Cross-platform colored terminal text."
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,!=3.6.*,>=2.7"
 groups = ["main"]
-markers = "platform_system == \"Windows\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Windows\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Windows\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Windows\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Windows\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Windows\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Windows\""
 files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
@@ -620,7 +642,7 @@ description = "Python bindings for CUDA"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "cuda_bindings-13.2.0-cp310-cp310-manylinux_2_24_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:08b395f79cb89ce0cd8effff07c4a1e20101b873c256a1aeb286e8fd7bd0f556"},
     {file = "cuda_bindings-13.2.0-cp310-cp310-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:d6f3682ec3c4769326aafc67c2ba669d97d688d0b7e63e659d36d2f8b72f32d6"},
@@ -655,7 +677,7 @@ description = "Pathfinder for CUDA components"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "cuda_pathfinder-1.5.0-py3-none-any.whl", hash = "sha256:498f90a9e9de36044a7924742aecce11c50c49f735f1bc53e05aa46de9ea4110"},
 ]
@@ -667,7 +689,7 @@ description = "CUDA Toolkit meta-package"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "cuda_toolkit-13.0.2-py2.py3-none-any.whl", hash = "sha256:b198824cf2f54003f50d64ada3a0f184b42ca0846c1c94192fa269ecd97a66eb"},
 ]
@@ -1895,6 +1917,22 @@ files = [
 ]
 
 [[package]]
+name = "mygene"
+version = "3.2.2"
+description = "Python Client for MyGene.Info services."
+optional = false
+python-versions = "*"
+groups = ["main"]
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\")"
+files = [
+    {file = "mygene-3.2.2-py2.py3-none-any.whl", hash = "sha256:18d85d1b28ecee2be31d844607fb0c5f7d7c58573278432df819ee2a5e88fe46"},
+    {file = "mygene-3.2.2.tar.gz", hash = "sha256:e729cabbc28cf5afb221bca1ab637883b375cb1a3e2f067587ec79f71affdaea"},
+]
+
+[package.dependencies]
+biothings-client = ">=0.2.6"
+
+[[package]]
 name = "narwhals"
 version = "2.19.0"
 description = "Extremely lightweight compatibility layer between dataframe libraries"
@@ -2107,7 +2145,7 @@ description = "CUBLAS native runtime libraries"
 optional = false
 python-versions = ">=3"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "nvidia_cublas-13.1.0.3-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:c86fc7f7ae36d7528288c5d88098edcb7b02c633d262e7ddbb86b0ad91be5df2"},
     {file = "nvidia_cublas-13.1.0.3-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:ee8722c1f0145ab246bccb9e452153b5e0515fd094c3678df50b2a0888b8b171"},
@@ -2163,7 +2201,7 @@ description = "cuDNN runtime libraries"
 optional = false
 python-versions = ">=3"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "nvidia_cudnn_cu13-9.19.0.56-py3-none-manylinux_2_27_aarch64.whl", hash = "sha256:6ed29ffaee1176c612daf442e4dd6cfeb6a0caa43ddcbeb59da94953030b1be4"},
     {file = "nvidia_cudnn_cu13-9.19.0.56-py3-none-manylinux_2_27_x86_64.whl", hash = "sha256:d20e1734305e9d68889a96e3f35094d733ff1f83932ebe462753973e53a572bf"},
@@ -2260,7 +2298,7 @@ description = "NVIDIA cuSPARSELt"
 optional = false
 python-versions = "*"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "nvidia_cusparselt_cu13-0.8.0-py3-none-manylinux2014_aarch64.whl", hash = "sha256:400c6ed1cf6780fc6efedd64ec9f1345871767e6a1a0a552a1ea0578117ea77c"},
     {file = "nvidia_cusparselt_cu13-0.8.0-py3-none-manylinux2014_x86_64.whl", hash = "sha256:25e30a8a7323935d4ad0340b95a0b69926eee755767e8e0b1cf8dd85b197d3fd"},
@@ -2274,7 +2312,7 @@ description = "NVIDIA Collective Communication Library (NCCL) Runtime"
 optional = false
 python-versions = ">=3"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "nvidia_nccl_cu13-2.28.9-py3-none-manylinux_2_18_aarch64.whl", hash = "sha256:01c873ba1626b54caa12272ed228dc5b2781545e0ae8ba3f432a8ef1c6d78643"},
     {file = "nvidia_nccl_cu13-2.28.9-py3-none-manylinux_2_18_x86_64.whl", hash = "sha256:e4553a30f34195f3fa1da02a6da3d6337d28f2003943aa0a3d247bbc25fefc42"},
@@ -2301,7 +2339,7 @@ description = "NVSHMEM creates a global address space that provides efficient an
 optional = false
 python-versions = ">=3"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "nvidia_nvshmem_cu13-3.4.5-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:6dc2a197f38e5d0376ad52cd1a2a3617d3cdc150fd5966f4aee9bcebb1d68fe9"},
     {file = "nvidia_nvshmem_cu13-3.4.5-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:290f0a2ee94c9f3687a02502f3b9299a9f9fe826e6d0287ee18482e78d495b80"},
@@ -3648,7 +3686,7 @@ description = "A language and compiler for custom Deep Learning operations"
 optional = false
 python-versions = "<3.15,>=3.10"
 groups = ["main"]
-markers = "platform_system == \"Linux\" and (sys_platform == \"darwin\" or sys_platform == \"win32\" or sys_platform == \"emscripten\") or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
+markers = "sys_platform == \"darwin\" and platform_machine == \"x86_64\" and platform_system == \"Linux\" or (sys_platform == \"win32\" or sys_platform == \"emscripten\") and platform_system == \"Linux\" or (sys_platform != \"win32\" and sys_platform != \"emscripten\" and sys_platform != \"darwin\") and platform_system == \"Linux\" or platform_machine != \"x86_64\" and (sys_platform != \"win32\" and sys_platform != \"emscripten\") and platform_system == \"Linux\""
 files = [
     {file = "triton-3.6.0-cp310-cp310-manylinux_2_27_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:6c723cfb12f6842a0ae94ac307dba7e7a44741d720a40cf0e270ed4a4e3be781"},
     {file = "triton-3.6.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:a6550fae429e0667e397e5de64b332d1e5695b73650ee75a6146e2e902770bea"},
@@ -4164,4 +4202,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11,<3.15"
-content-hash = "5b1e08f49b468a8a4348438be97184732925127a0c3ade037244850674582022"
+content-hash = "1406f638b693144324db4a1338978b7b0a8889bc4e01966532d57d04f6d56fe5"

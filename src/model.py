@@ -253,13 +253,34 @@ class HybridModel(nn.Module):
             nn.Linear(fc_hidden // 2, 1),
         )
 
+        # DeepHit discrete-time survival-bin head. Produces K hazard-logit
+        # scores per patient, interpreted as P(event in bin_k | survived
+        # through bin_{k-1}) after softmax.
+        #
+        # Decoupling rationale: the earlier design blended DeepHit and CE
+        # on the same `self.fc` classifier head. The Phase 1 diagnostic
+        # (tools/diagnose_classifier.py) traced the val_acc=0.2421 collapse
+        # to a head-sharing conflict: DeepHit's censored-sample L1 term
+        # pushes probability mass toward the latest bin, which fought the
+        # CE signal on the same logits. With TCGA-BRCA's ~80% censoring
+        # rate this structurally biased the classifier toward class 3.
+        # Giving DeepHit its own head (this one) lets `self.fc` be supervised
+        # purely by class-weighted smoothed CE.
+        self.survival_bin_head = nn.Linear(gnn_out_dim + clinical_dim, num_classes)
+
         # Store dimensions for later use
         self.gnn_out_dim = gnn_out_dim
         self.clinical_dim = clinical_dim
         self.num_classes = num_classes
 
     def forward(self, x, edge_index, batch, clinical_features, edge_attr=None, gene_idx=None):
-        """Returns (main_logits, aux_logits, gnn_emb, cox_log_hazard, ordinal_score).
+        """Returns (cls_logits, aux_logits, gnn_emb, cox_log_hazard,
+        ordinal_score, survival_bin_logits).
+
+        `cls_logits` is pure-CE classification output (self.fc). `survival_bin_logits`
+        is the DeepHit discrete-time-hazard output (self.survival_bin_head). Both
+        have shape [B, num_classes] but carry different semantics and train under
+        different losses -- see the head docstrings above for rationale.
 
         `gene_idx` is forwarded to the GNN so the learnable gene-id embedding
         path (Phase 1.2) can look up per-gene embeddings. Callers using the
@@ -273,11 +294,12 @@ class HybridModel(nn.Module):
 
         # Fuse with clinical features for the heads that care about patient-level covariates
         fused = torch.cat([gnn_emb, clinical_features], dim=1)
-        main_out = self.fc(fused)
+        cls_logits = self.fc(fused)
         cox_out = self.cox_head(fused).squeeze(-1)       # [B]
         ordinal_out = self.ordinal_head(fused).squeeze(-1)  # [B]
+        bin_logits = self.survival_bin_head(fused)       # [B, num_classes]
 
-        return main_out, aux_out, gnn_emb, cox_out, ordinal_out
+        return cls_logits, aux_out, gnn_emb, cox_out, ordinal_out, bin_logits
 
     def extract_embeddings(self, x, edge_index, batch, clinical_features=None, edge_attr=None, gene_idx=None):
         """Extract patient embeddings without classification head.
@@ -420,9 +442,12 @@ if __name__ == "__main__":
     device = next(model.parameters()).device
     x, edge_index, batch, clinical = x.to(device), edge_index.to(device), batch.to(device), clinical.to(device)
 
-    main_out, aux_out, emb, cox, ordinal = model(x, edge_index, batch, clinical)
-    print(f"Main output shape: {main_out.shape}")   # [4, 4]
-    print(f"Aux output shape: {aux_out.shape}")      # [4, 4]
-    print(f"Embedding shape: {emb.shape}")           # [4, hidden or 2*hidden]
-    print(f"Cox log-hazard shape: {cox.shape}")      # [4]
-    print(f"Ordinal score shape: {ordinal.shape}")   # [4]
+    cls_logits, aux_out, emb, cox, ordinal, bin_logits = model(
+        x, edge_index, batch, clinical
+    )
+    print(f"Classifier logits shape: {cls_logits.shape}")        # [4, 4]
+    print(f"Aux output shape:        {aux_out.shape}")            # [4, 4]
+    print(f"Embedding shape:         {emb.shape}")                # [4, hidden or 2*hidden]
+    print(f"Cox log-hazard shape:    {cox.shape}")                # [4]
+    print(f"Ordinal score shape:     {ordinal.shape}")            # [4]
+    print(f"Survival-bin logits:     {bin_logits.shape}")         # [4, 4]
