@@ -1,59 +1,150 @@
-# Breast Cancer Prognosis Prediction using Knowledge Graph-Enhanced Graph Neural Networks
+# A Leakage-Corrected, Externally-Validated GraphSAGE for Breast Cancer Prognosis
 
-This repository contains the implementation of a cutting-edge hybrid framework for breast cancer prognosis prediction. The project fuses **Graph Neural Networks (GNNs)** with **Retrieval-Augmented Generation (RAG)** and **Large Language Model (LLM)** embeddings to create a biologically aware, high-precision survival analysis model.
+This repository contains the implementation accompanying an MSc thesis at
+Ege University (Department of Computer Engineering). The thesis builds a
+leakage-corrected GraphSAGE for TCGA-BRCA prognosis, evaluates it on
+METABRIC with paired-bootstrap on identical external patients, and
+decomposes the resulting lift against a non-linear MLP-clinical reference.
 
-## 🏥 Overview
+**Headline finding.** Knob A (the frozen architecture) beats matched Cox PH
+on external METABRIC validation with paired-bootstrap delta = +0.053
+(95% CI [+0.031, +0.076], P < 0.001 over 2,000 resamples on n = 1,466
+patients with 824 events). Two architectural elaborations — Reactome
+pathway pooling and BioBERT-PCA gene priors — significantly underperform
+the minimal architecture on the same external test despite competitive
+internal performance.
 
-Breast cancer prognosis often faces the **p >> n problem**, where genetic features vastly outnumber patient samples. Traditional models treat genes as independent variables, ignoring the complex regulatory networks (Graph Topology) and deep biological functions (Semantic Context) revealed in millions of biomedical documents.
-
-This project addresses the "Prognosis Gap" (Liang et al., 2025) by integrating **The Cancer Genome Atlas (TCGA)** multi-omic data with structured **Knowledge Graphs (BioKG, DisGeNET)** and unstructured biomedical text using a **RAG-GNN** architecture.
-
-## 🚀 Core Innovations (2026-Level Architecture)
-
-1.  **RAG-GNN Integration**: Moving beyond topology-only GNNs. We utilize **Retrieval-Augmented Generation** to pull functional context from PubMed and NCBI, addressing the failure of standard GNNs to capture biological function (Hays & Richardson, 2026).
-2.  **Semantic Gene Embeddings (GenePT)**: Instead of random initialization, nodes are initialized with **1536-dimensional semantic vectors** generated from NCBI summaries using LLMs (e.g., GPT-3.5/BioBERT). This captures deep interaction contexts (Chen & Zou, 2023).
-3.  **Patient-Specific Dynamic Fusion**: We implement a revolutionary weighting system where static LLM gene embeddings are multiplied by the patient's individual **TCGA mRNA expression levels**. This ensures **patient-specific feature emphasis** rather than population averages (Vavekanand, 2026).
-4.  **Vector Database Optimization**: Use of **FAISS/ChromaDB** for high-speed retrieval of BioKG edges and semantic literature, preventing RAM overhead during large-scale graph processing.
-
-## 📊 Methodology
-
-### 1. Data Prep & Semantic Embedding
-*   **Transcriptomics**: TCGA-BRCA mRNA-seq counts.
-*   **Knowledge Retrieval**: Scraping NCBI summaries for 1000+ key genes.
-*   **Embedding Pipeline**: Converting text to dense vectors via **BioLinkBERT** or **OpenAI API**.
-*   **Vector DB Storage**: Indexing embeddings in a Vector Database for on-the-fly retrieval.
-
-### 2. Hybrid Model Development (RAG-GNN)
-*   **Dynamic Node Initialization**: `Initialized_Feature = LLM_Embedding * Patient_Expression`.
-*   **Architecture**: **Graph Attention Networks (GAT)** to learn pathway importance.
-*   **Contrastive Learning**: A joint embedding space where graph topology and LLM-retrieved text are aligned using a Contrastive Loss function.
-
-### 3. Interpretable Survival Prediction
-*   **Classification**: A **Calibrated Random Forest** ensemble processing the GNN-latent space to predict High vs. Low-risk survival.
-*   **XAI (Explainable AI)**: Using **GNNExplainer** to map predictions back to specific genes (BRCA1, ERBB2) and textual evidence retrieved via RAG.
-
-## 🛠️ Technology Stack
-
-*   **Graph Framework**: PyTorch Geometric
-*   **LLM Tools**: Transformers (HuggingFace), LangChain (for RAG chains)
-*   **Vector Database**: FAISS / ChromaDB
-*   **Bioinformatics**: Biopython, TCGAbiolinks
-*   **Compute**: CUDA-optimized for TRUBA/GPU clusters
-
-## 📈 Expected Impact
-
-*   **Functional Accuracy**: Overcoming the "Structural vs. Functional" dichotomy where pure GNNs fail.
-*   **Hallucination-Resistance**: Grounding LLM semantic power in deterministic biological graphs (BioKG).
-*   **Clinical Readiness**: Bridging the gap between "Black Box" AI and interpretable clinical decision support.
-
-## 📚 References
-
-*   **Vavekanand (2026)**: A Comprehensive Review of Multimodal LLMs for Medical Imaging and Omics. *Archives of Computational Methods in Engineering*.
-*   **Hays & Richardson (2026)**: RAG-GNN: Integrating Retrieved Knowledge with GNNs for Precision Medicine. *Pre-print*.
-*   **Liang et al. (2025)**: The potential of large language models to advance precision oncology. *eBioMedicine / The Lancet*.
-*   **Chen & Zou (2023)**: GenePT: A Simple But Effective Foundation Model for Genes and Cells Built From ChatGPT. *Stanford University*.
-*   **Alharbi & Vakanski (2025)**: Multi-Omics Integration using GNNs. *IEEE Access*.
+For the full thesis, see [`results/thesis/thesis_full.pdf`](results/thesis/thesis_full.pdf).
+For methodological detail, see [`results/thesis/methods.md`](results/thesis/methods.md).
 
 ---
 
-*This project represents the cutting edge of Generative AI in Oncology, merging the structural power of Graphs with the semantic depth of Language Models.*
+## Stage → script mapping (from thesis Methods §7)
+
+The pipeline runs sequentially across six stages. Each stage's deliverables
+are saved in `results/` as JSON; figures are at `results/figures/`.
+
+| Stage | Description | Script(s) | Wall-clock |
+|---|---|---|---|
+| 0 | Cox PH baselines + LASSO leakage audit + METABRIC fetch | `scripts/00_baseline.py`, `scripts/00_baseline_diag.py`, `scripts/00_lasso_audit.py`, `scripts/00_metabric_fetch.py` | ~14 min |
+| 1 | Multinomial logistic-regression sanity check | `scripts/01_logreg.py` | ~5 sec |
+| 2 | Minimal SAGE + R1 embedding-collapse sentinel forensic | `scripts/02_sage_minimal.py` | ~28 min |
+| 3a | Knob D — GNN+clinical with leaky-769 gene set | `scripts/03a_sage_clinical.py` | ~30 min |
+| 3 ref | MLP-clinical-only non-linear flat-feature reference | `scripts/03_ref_mlp_clinical_only.py` | ~5 sec |
+| 3b | Knob A — per-fold-honest LASSO + clinical late-fusion | `scripts/03b_sage_clinical_lasso_honest.py` | ~10 min |
+| 3c | Knob B — Reactome pathway pooling on top of knob A | `scripts/03c_sage_pathway_clinical.py` | ~15 min |
+| 5 | Knob A on METABRIC — full-TCGA train + external paired bootstrap | `scripts/05_metabric_external.py` | ~12 min |
+| 6 | Figure scripts (KM, calibration, pathway attention, forest plot) | `scripts/06_*.py` | ~2 min total |
+| 6d | Knob B on METABRIC | `scripts/06d_knob_b_metabric.py` | ~3 min |
+| 6e | Knob C — BioBERT-PCA gene priors on METABRIC | `scripts/06e_knob_c_biobert_metabric.py` | ~3 min |
+| 7 | Thesis assembly (concat chapters → PDF) | `scripts/07_assemble_thesis.py` | <30 sec |
+| 8 | Bibliography parser | `scripts/08_bibliography.py` | <5 sec |
+
+**Total compute: under 2 hours end-to-end on the documented hardware**
+(M-series Apple Silicon, 16-core CPU, 20 GB unified memory).
+
+---
+
+## Data prerequisites
+
+| Dataset | Location | Source | Size |
+|---|---|---|---|
+| TCGA-BRCA HTSeq counts | `data/raw/tcga_brca_htseq_counts.tsv` | NCI Genomic Data Commons (`gdc-client`) | 60,660 genes × 1,095 patients |
+| TCGA-BRCA clinical | `data/raw/tcga_brca_clinical.tsv` | NCI Genomic Data Commons | 1,095 patients × clinical fields |
+| METABRIC mRNA + clinical | `data/external/brca_metabric/` | cBioPortal datahub LFS, fetched by `scripts/00_metabric_fetch.py` | 24,368 genes × 1,980 samples |
+| BioBERT gene-embedding cache | `data/embeddings/gene_embeddings.npy` + `gene_names.json` | Pre-computed via `dmis-lab/biobert-base-cased-v1.2`; covers all 769 KG genes | 1,500 genes × 768 dim |
+| STRING PPI knowledge graph | `data/processed/kg_edges.pt` + `kg_metadata.json` | STRING v11.5, combined-score ≥ 700 | 49,674 gene-gene edges over 769 genes |
+| 5-fold stratified CV splits | `data/processed/cv_splits.json` | Built by Stage 0; stratified on (survival_class × OS event), seed 42 | 5 folds × ~215 val patients |
+
+**Inherited preprocessing.** The 769-gene candidate set in `data/processed/`
+was selected by full-cohort LASSO in earlier work; this repository documents
+the leakage characteristics of that selection (Methods §1.2, §5.1) and
+applies a per-fold-honest correction within the inherited universe. A
+fully-honest universe rebuild from raw 60k via per-fold STRING extraction
+remains future work (Discussion §6).
+
+---
+
+## Reproducing the environment
+
+This project uses [Poetry](https://python-poetry.org/) for dependency
+management. Version pins below match the exact installed versions reported
+in Methods §7 of the thesis.
+
+```bash
+# Install Poetry (once)
+curl -sSL https://install.python-poetry.org | python3 -
+
+# Install all dependencies into a project-local venv
+poetry install
+
+# Run any stage script
+poetry run python scripts/00_baseline.py
+poetry run python scripts/05_metabric_external.py
+```
+
+**Pinned versions (Methods §7):**
+
+- Python 3.13.1
+- PyTorch 2.11.0
+- PyTorch Geometric 2.7.0
+- lifelines 0.30.0
+- scikit-survival 0.27.0
+- torchmetrics 1.9.0
+- NumPy 2.4.4
+- pandas 3.0.2
+- scikit-learn 1.8.0
+
+Constraints in `pyproject.toml` are minimum-pinned (`>=`); `poetry install`
+on a fresh machine will resolve to versions equal to or newer than these.
+For exact byte-for-byte reproducibility, `poetry.lock` (committed) records
+the resolved dependency graph at the time of thesis submission.
+
+---
+
+## Repository layout
+
+```
+configs/                   # YAML configuration (mostly legacy from earlier work)
+data/
+  raw/                     # TCGA + METABRIC source files
+  processed/               # gene universe, splits, KG, clinical features
+  embeddings/              # BioBERT cache
+  external/                # METABRIC raw download
+results/
+  figures/                 # 4 thesis figures (KM, calibration, pathway, forest)
+  thesis/                  # all six chapter files + bibliography + assembled PDF
+  *.json                   # per-stage saved predictions and statistics
+  *.md                     # per-stage summaries and retrospectives
+scripts/                   # 19 numbered stage scripts (00 through 08)
+src/                       # library modules (sage_models, cindex_bootstrap, etc.)
+pyproject.toml             # poetry dependency manifest
+```
+
+---
+
+## Where to start reading
+
+For the methodology and the framework's reusable contribution:
+[`results/thesis/methods.md`](results/thesis/methods.md), particularly
+§5 (Methodological backbone) and §6 (External validation protocol).
+
+For the headline findings: [`results/thesis/results.md`](results/thesis/results.md)
+§3 (External METABRIC) and §4 (Architectural ablations).
+
+For the synthesis and what comes next:
+[`results/thesis/discussion.md`](results/thesis/discussion.md).
+
+---
+
+## Citation
+
+If you use the framework or any of the released scripts, please cite the
+underlying thesis. Bibliography entries for thesis sources are in
+[`results/thesis/references.bib`](results/thesis/references.bib).
+
+---
+
+**Repository URL:** [TBD — to be assigned at submission time]
+**Supervisor:** Doç. Dr. Özgür Gümüş, Ege University
+**Author:** Mahdi Sarhangi
