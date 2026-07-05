@@ -1,0 +1,22 @@
+{
+  "cindex_a_point": 0.7218307179494985,
+  "cindex_b_point": 0.7168688452230559,
+  "delta_point": 0.004961872726442551,
+  "delta_mean": 0.005019902577195513,
+  "delta_std": 0.010333661043364736,
+  "delta_ci_low": -0.015145129935613223,
+  "delta_ci_high": 0.025408850859821086,
+  "p_a_le_b": 0.3165,
+  "alpha": 0.05,
+  "n_boot": 2000,
+  "n_valid": 2000,
+  "description": "Paired Delta(Mpath - M0), pooled TCGA out-of-fold, identical patients",
+  "seed": 42,
+  "manuscript_reported": {
+    "delta_point": 0.005,
+    "ci_low": -0.015,
+    "ci_high": 0.025,
+    "p_a_le_b": 0.32
+  },
+  "matches_manuscript": true
+}

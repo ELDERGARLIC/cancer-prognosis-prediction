@@ -1,0 +1,83 @@
+
+# Ignore the virtual environment
+.venv/
+
+# Ignore the environment variables
+.env
+
+# Ignore the macOS system files
+.DS_Store
+
+# Ignore the Python cache
+__pycache__
+
+# Ignore the data directory
+/data
+/documents
+
+# Any Files that start with ._ should be ignored
+._*
+
+# Ignore the logs directory
+logs/
+
+# Within results/, ignore regenerable per-stage outputs but track thesis-source
+# content (hand-written prose, bibliography, methodological notes, retrospectives,
+# figures referenced by the README). A blanket `results/` ignore was previously
+# used; replaced with selective patterns so the README's documented paths
+# resolve from a fresh clone.
+results/ablation_*_results.json
+results/evaluation_report.json
+results/explainability_results.json
+results/training_results.json
+results/*.log
+results/ablation_*.md
+results/phase_1_summary.md
+
+# Model checkpoints (large binaries; regenerable from scripts/)
+results/*.pt
+results/ablation_*.pt
+results/model_*.pt
+
+# Older figures from earlier project phases, not used by the current thesis
+results/kaplan_meier.png
+results/model_comparison.png
+results/risk_heatmap.png
+results/training_curves.png
+results/tsne_embeddings.png
+results/umap_embeddings.png
+
+# Figure PDFs (PNG versions are sufficient for thesis embedding)
+results/figures/*.pdf
+
+# Generated thesis-assembly artifacts (regenerable from scripts/07_assemble_thesis.py)
+results/thesis/thesis_full.pdf
+results/thesis/thesis_full.html
+results/thesis/_thesis_style.css
+
+# Ignore the models directory
+models/
+
+# Ignore the notebooks directory
+notebooks/
+
+# Ignore the tests directory
+tests/
+
+# Ignore the .hf_cache directory
+.hf_cache/
+
+# Ignore resources directory
+resources/
+
+# Ignore the pipeline.log file
+pipeline.log
+
+# Ignore the .idea directory
+.idea/
+
+# Ignore the .claude directory
+.claude/
+
+# Ignore the .agents directory
+.agents/

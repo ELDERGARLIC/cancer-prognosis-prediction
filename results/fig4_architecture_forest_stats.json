@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "label": "Knob A (scalar expression GNN)",
+      "tcga_internal_cidx": 0.7260901505901389,
+      "metabric_cidx": 0.6442539217252836,
+      "metabric_ci_low": 0.6238151948163357,
+      "metabric_ci_high": 0.6641037261448891,
+      "delta_vs_knob_a": 0.0,
+      "delta_ci_low": 0.0,
+      "delta_ci_high": 0.0,
+      "p_le_a": null
+    },
+    {
+      "label": "Knob B (pathway pool)",
+      "tcga_internal_cidx": 0.733436092285747,
+      "metabric_cidx": 0.6284664635322251,
+      "metabric_ci_low": 0.6070948874681904,
+      "metabric_ci_high": 0.6480197488903655,
+      "delta_vs_knob_a": -0.01578745819305849,
+      "delta_ci_low": -0.025863358634331972,
+      "delta_ci_high": -0.006271456964192551,
+      "p_le_a": 1.0
+    },
+    {
+      "label": "Knob C (BioBERT-PCA gene init)",
+      "tcga_internal_cidx": 0.7218048125385117,
+      "metabric_cidx": 0.6053727774135071,
+      "metabric_ci_low": 0.5833756323865918,
+      "metabric_ci_high": 0.6265280309907767,
+      "delta_vs_knob_a": -0.03888114431177647,
+      "delta_ci_low": -0.05890635068526,
+      "delta_ci_high": -0.02061877200070785,
+      "p_le_a": 1.0
+    },
+    {
+      "label": "Cox PH HONEST (linear; per-fold LASSO)",
+      "tcga_internal_cidx": 0.6661866126996159,
+      "metabric_cidx": 0.5914173861776747,
+      "metabric_ci_low": 0.5711185189299404,
+      "metabric_ci_high": 0.6117301118932106,
+      "delta_vs_knob_a": -0.05283653554760892,
+      "delta_ci_low": -0.07561632530399863,
+      "delta_ci_high": -0.030591253388845944,
+      "p_le_a": 1.0
+    }
+  ]
+}

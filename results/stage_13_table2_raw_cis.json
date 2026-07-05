@@ -1,0 +1,49 @@
+{
+  "n_boot": 1000,
+  "seed": 42,
+  "alpha": 0.05,
+  "note": "raw single-model bootstrap CI, NOT the paired-difference bootstrap (B=2000) used for Delta/CI values elsewhere",
+  "m0": {
+    "point": 0.6442539217252836,
+    "ci_low": 0.6239715900687517,
+    "ci_high": 0.6642474823115463,
+    "n_boot": 1000,
+    "n_valid": 1000,
+    "seed": 42,
+    "manuscript_reported": {
+      "point": 0.6443,
+      "ci_low": 0.624,
+      "ci_high": 0.664
+    },
+    "matches_manuscript": true
+  },
+  "elastic_net_cox": {
+    "point": 0.639205406388266,
+    "ci_low": 0.6183502159715478,
+    "ci_high": 0.6599540529137312,
+    "n_boot": 1000,
+    "n_valid": 1000,
+    "seed": 42,
+    "manuscript_reported": {
+      "point": 0.6392,
+      "ci_low": 0.618,
+      "ci_high": 0.66
+    },
+    "matches_manuscript": true
+  },
+  "clinical_only_cox": {
+    "point": 0.6399726705199764,
+    "ci_low": 0.6180443046246857,
+    "ci_high": 0.6608600436828004,
+    "n_boot": 1000,
+    "n_valid": 1000,
+    "seed": 42,
+    "manuscript_reported": {
+      "point": 0.64,
+      "ci_low": 0.618,
+      "ci_high": 0.661
+    },
+    "matches_manuscript": true
+  },
+  "all_match_manuscript": true
+}

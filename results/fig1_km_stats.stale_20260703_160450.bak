@@ -1,0 +1,36 @@
+{
+  "tcga": {
+    "logrank_p": 4.1977255098742853e-10,
+    "logrank_chi2": 46.614548800218905,
+    "df": 3,
+    "n_per_quartile": [
+      269,
+      268,
+      268,
+      269
+    ],
+    "events_per_quartile": [
+      17,
+      35,
+      36,
+      62
+    ]
+  },
+  "metabric": {
+    "logrank_p": 5.819540785804448e-44,
+    "logrank_chi2": 203.98122444110467,
+    "df": 3,
+    "n_per_quartile": [
+      367,
+      366,
+      366,
+      367
+    ],
+    "events_per_quartile": [
+      137,
+      163,
+      230,
+      293
+    ]
+  }
+}

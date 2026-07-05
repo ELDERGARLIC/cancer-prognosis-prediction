@@ -1,0 +1,88 @@
+{
+  "n_patients": 1074,
+  "event_rate": 0.13966480446927373,
+  "n_folds": 5,
+  "n_pca": 100,
+  "seed": 42,
+  "target_band": [
+    0.73,
+    0.76
+  ],
+  "clinical_cols_full": [
+    "age",
+    "stage_ordinal",
+    "stage_I",
+    "stage_II",
+    "stage_III",
+    "stage_IV",
+    "er_signed",
+    "pr_signed",
+    "is_female",
+    "her2_signed"
+  ],
+  "clinical_cols_kept": [
+    "age",
+    "stage_ordinal",
+    "stage_I",
+    "stage_II",
+    "stage_III",
+    "stage_IV",
+    "er_signed",
+    "pr_signed",
+    "is_female",
+    "her2_signed"
+  ],
+  "clinical_cols_dropped": [],
+  "leaky_baseline_per_fold": [
+    {
+      "fold": 0,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "pca_variance_explained": 0.7649438381195068,
+      "cindex_lifelines": 0.7608,
+      "cindex_sksurv": 0.7608
+    },
+    {
+      "fold": 1,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "pca_variance_explained": 0.7713729739189148,
+      "cindex_lifelines": 0.7151875232083179,
+      "cindex_sksurv": 0.7151875232083179
+    },
+    {
+      "fold": 2,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "pca_variance_explained": 0.7728736996650696,
+      "cindex_lifelines": 0.7371232354063335,
+      "cindex_sksurv": 0.7371232354063335
+    },
+    {
+      "fold": 3,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "pca_variance_explained": 0.7729234099388123,
+      "cindex_lifelines": 0.7480916030534351,
+      "cindex_sksurv": 0.7480916030534351
+    },
+    {
+      "fold": 4,
+      "n_train": 860,
+      "n_val": 214,
+      "events_val": 30,
+      "pca_variance_explained": 0.7647729516029358,
+      "cindex_lifelines": 0.7196122296793438,
+      "cindex_sksurv": 0.7196122296793438
+    }
+  ],
+  "cindex_max_lifelines_sksurv_diff": 0.0,
+  "device_benchmark_seconds": {
+    "cpu": 0.05465078353881836,
+    "mps": 0.05081987380981445
+  }
+}
