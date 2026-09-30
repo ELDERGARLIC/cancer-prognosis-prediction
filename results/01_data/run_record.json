@@ -1,8 +1,6 @@
 {
- "git commit": "dd1d7ed957ea68620e522ee9a0146da504e69896",
- "tracked files changed since that commit": [
-  "M results/01_data/sources.csv"
- ],
+ "git commit": "6af8b60e74f1ff61e2ab4a33197e7dab319002d9",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
