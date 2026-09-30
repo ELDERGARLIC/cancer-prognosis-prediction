@@ -34,6 +34,8 @@ are written to `results/<notebook name>/`.
 
 - `01_data.ipynb` downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines the
   outcome and locks the train and test split.
+- `02_gene_selection.ipynb` compares gene selection methods under nested cross-validation on the
+  development set and measures what selection leakage costs.
 
 ## Data
 
