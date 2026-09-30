@@ -1,17 +1,6 @@
 {
- "git commit": "70b4dbebd690193d889259f25e86c13bb32edb6e",
- "tracked files changed since that commit": [
-  "M notebooks/01_data.ipynb",
-  " M results/01_data/run_record.json",
-  " M results/02_gene_selection/leakage_check_table.csv",
-  " M results/02_gene_selection/method_comparison_against_best.csv",
-  " M results/02_gene_selection/method_comparison_genes_plus_clinical_against_clinical_only.csv",
-  " M results/02_gene_selection/method_comparison_grid_edges.csv",
-  " M results/02_gene_selection/method_comparison_most_selected_genes.csv",
-  " M results/02_gene_selection/method_comparison_results.csv",
-  " M results/02_gene_selection/method_comparison_stability.csv",
-  " M results/02_gene_selection/shuffled_outcome_check_table.csv"
- ],
+ "git commit": "dd2817c2a86d635a12de8bf969b4c6dd85582039",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
