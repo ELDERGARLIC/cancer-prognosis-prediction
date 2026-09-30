@@ -1,0 +1,31 @@
+[project]
+name = "cancer-prognosis-prediction"
+version = "0.1.0"
+description = "Breast cancer prognosis from gene expression, rebuilt as readable notebooks."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # Tables, arrays and statistics.
+    "pandas==3.0.6",
+    "numpy==2.5.3",
+    "scipy==1.18.1",
+    # Models, cross-validation and survival analysis.
+    "scikit-learn==1.9.1",
+    "scikit-survival==0.28.0",
+    "joblib==1.6.0",
+    # Figures.
+    "matplotlib==3.11.2",
+    # Downloads and file formats: HTTP, Excel input, Parquet output.
+    "requests==2.34.2",
+    "openpyxl==3.1.5",
+    "pyarrow==25.0.1",
+    # Notebooks: the editor, the kernel, and execution and HTML export.
+    "jupyterlab==4.6.4",
+    "ipykernel==7.3.0",
+    "nbconvert==7.17.1",
+]
+
+[tool.uv]
+# The repository holds notebooks, not an installable package.
+package = false
+# Resolution ignores anything uploaded after this date, so the lock can be rebuilt unchanged.
+exclude-newer = "2026-09-23T00:00:00Z"

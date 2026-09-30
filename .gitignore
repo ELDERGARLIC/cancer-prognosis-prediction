@@ -1,0 +1,10 @@
+# Data never enters this repository. Patient-level files stay on the local disk.
+data/
+cache/
+exports/
+.env
+.ipynb_checkpoints/
+
+# Local environment and interpreter caches.
+.venv/
+__pycache__/
