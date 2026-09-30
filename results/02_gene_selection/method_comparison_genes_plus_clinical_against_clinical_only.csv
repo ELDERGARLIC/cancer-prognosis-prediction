@@ -1,5 +1,5 @@
-,method minus M1,interval low,interval high
-M2,-0.005,-0.032,0.022
-M3,-0.005,-0.06,0.05
-M4,0.001,-0.051,0.053
-M5,-0.005,-0.054,0.044
+,genes plus clinical minus clinical only,interval low,interval high
+most variable genes,-0.005,-0.032,0.022
+one-gene Cox ranking,-0.005,-0.06,0.05
+LASSO-Cox,0.001,-0.051,0.053
+elastic-net Cox,-0.005,-0.054,0.044

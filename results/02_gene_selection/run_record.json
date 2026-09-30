@@ -1,6 +1,17 @@
 {
- "git commit": "447e96cec6c203504abd93c00b83169c0856e0db",
- "tracked files changed since that commit": [],
+ "git commit": "70b4dbebd690193d889259f25e86c13bb32edb6e",
+ "tracked files changed since that commit": [
+  "M notebooks/01_data.ipynb",
+  " M results/01_data/run_record.json",
+  " M results/02_gene_selection/leakage_check_table.csv",
+  " M results/02_gene_selection/method_comparison_against_best.csv",
+  " M results/02_gene_selection/method_comparison_genes_plus_clinical_against_clinical_only.csv",
+  " M results/02_gene_selection/method_comparison_grid_edges.csv",
+  " M results/02_gene_selection/method_comparison_most_selected_genes.csv",
+  " M results/02_gene_selection/method_comparison_results.csv",
+  " M results/02_gene_selection/method_comparison_stability.csv",
+  " M results/02_gene_selection/shuffled_outcome_check_table.csv"
+ ],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
@@ -34,55 +45,55 @@
   "tcga_development.parquet": "0dd236e52bcbdc4c0a1a17a552158483da3eb3038e054768276e0e4f87d01127"
  },
  "saved runs": {
-  "e017_M1": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 6
-  },
-  "e017_M2": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 62
-  },
-  "e017_M3": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 95
-  },
-  "e017_M4": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 585
-  },
-  "e017_M5": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 1192
-  },
-  "e018_M3_clean": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 50
-  },
-  "e018_M3_leaky": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 34
-  },
-  "e018_M3_selected_on_all": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 3
-  },
-  "e018_M4_leaky": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 38
-  },
-  "e018_M4_selected_on_all": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 43
-  },
-  "e018_M5_leaky": {
-   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
-   "seconds": 36
-  },
-  "e018_M5_selected_on_all": {
+  "leakage_check_elastic_net_cox_list_selected_on_all_patients": {
    "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
    "seconds": 105
   },
-  "e019_negative_control": {
+  "leakage_check_elastic_net_cox_selection_on_all_patients": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 36
+  },
+  "leakage_check_lasso_cox_list_selected_on_all_patients": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 43
+  },
+  "leakage_check_lasso_cox_selection_on_all_patients": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 38
+  },
+  "leakage_check_one_gene_cox_ranking_list_selected_on_all_patients": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 3
+  },
+  "leakage_check_one_gene_cox_ranking_selection_inside_the_training_fold": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 50
+  },
+  "leakage_check_one_gene_cox_ranking_selection_on_all_patients": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 34
+  },
+  "method_comparison_clinical_only": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 6
+  },
+  "method_comparison_elastic_net_cox": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 1192
+  },
+  "method_comparison_lasso_cox": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 585
+  },
+  "method_comparison_most_variable_genes": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 62
+  },
+  "method_comparison_one_gene_cox_ranking": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 95
+  },
+  "shuffled_outcome_check": {
    "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
    "seconds": 116
   }

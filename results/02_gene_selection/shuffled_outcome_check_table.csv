@@ -1,3 +1,3 @@
 ,mean C,interval low,interval high
-clean,0.497,0.426,0.569
-leaky,0.677,0.597,0.756
+selection inside the training fold,0.497,0.426,0.569
+selection on all patients,0.677,0.597,0.756
