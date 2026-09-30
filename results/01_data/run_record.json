@@ -1,0 +1,29 @@
+{
+ "git commit": "c28661e87e64a58e1617d8c8de64167f0340c57c",
+ "tracked files changed since that commit": [],
+ "python": "3.12.14",
+ "packages": {
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "pyarrow": "25.0.1",
+  "openpyxl": "3.1.5",
+  "requests": "2.34.2",
+  "scikit-learn": "1.9.1",
+  "scikit-survival": "0.28.0",
+  "matplotlib": "3.11.2"
+ },
+ "seeds": {
+  "split": 0
+ },
+ "input manifests (sha256)": {
+  "TCGA-BRCA gene expression": "a4dc598e3a6b33a25b41f5b5a0333468c40608ccafcebcb8af691953b372ea57",
+  "TCGA outcomes (CDR)": "7aa992b9354a6cfb216484cc1cec50cf4ea21182e9a7ee4d877723464f6dcfeb",
+  "TCGA-BRCA clinical supplement": "5a46021ee4c699a7b97111b409baff876143ef8ff5ebd68156198b3faffff7fa",
+  "METABRIC": "8b70a304d2b057c343ee233f23e45972654eed7cb5343625c49f197a0be7bf15"
+ },
+ "output files (sha256)": {
+  "tcga_development": "0dd236e52bcbdc4c0a1a17a552158483da3eb3038e054768276e0e4f87d01127",
+  "tcga_test": "652f3b2a1419187f1b7a44ae485a33652e240402199ffa4250044ed010a64246",
+  "metabric": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
+ }
+}

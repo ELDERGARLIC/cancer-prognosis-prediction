@@ -1,0 +1,5 @@
+rule,patients,deaths
+METABRIC patients in the clinical table,2509,1144
+with a column in the expression matrix,1980,1143
+with OS status and OS time recorded,1980,1143
+with OS time above 0,1979,1143

@@ -1,0 +1,5 @@
+rule,patients,deaths
+TCGA-BRCA patients in the CDR,1097,151
+with a primary tumour RNA-seq file,1094,151
+with OS status and OS time recorded,1093,151
+with OS time above 0,1080,151

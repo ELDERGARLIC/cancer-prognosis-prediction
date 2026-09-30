@@ -1,0 +1,23 @@
+{
+ "tcga_development": {
+  "patients": 864,
+  "deaths": 121,
+  "deaths (%)": 14.0,
+  "patient list sha256": "f3cda8ee01afb0217a2d125049c7fffd4bb9588090ffac268e5a8773a2e3f8fd",
+  "file sha256": "0dd236e52bcbdc4c0a1a17a552158483da3eb3038e054768276e0e4f87d01127"
+ },
+ "tcga_test": {
+  "patients": 216,
+  "deaths": 30,
+  "deaths (%)": 13.9,
+  "patient list sha256": "c140f2a4591bb517aa2cdc1d6e3fc8a8f485530227b2e4063b3e6dd26512ce33",
+  "file sha256": "652f3b2a1419187f1b7a44ae485a33652e240402199ffa4250044ed010a64246"
+ },
+ "metabric": {
+  "patients": 1979,
+  "deaths": 1143,
+  "deaths (%)": 57.8,
+  "patient list sha256": "f98cc98b86345bfef60143af916b382da2e0d463740867603b0f44845d1f4c4d",
+  "file sha256": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
+ }
+}

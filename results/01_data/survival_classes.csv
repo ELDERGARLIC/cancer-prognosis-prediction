@@ -1,0 +1,5 @@
+OS time,patients,deaths,censored,censored (%)
+up to 1 year,166,20,146,88.0
+1 to 3 years,477,49,428,89.7
+3 to 5 years,185,30,155,83.8
+over 5 years,252,52,200,79.4

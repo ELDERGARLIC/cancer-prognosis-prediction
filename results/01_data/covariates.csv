@@ -1,0 +1,16 @@
+covariate,level,TCGA-BRCA,METABRIC
+er,negative,237,439
+er,positive,795,1498
+er,unknown,48,42
+her2,negative,555,1732
+her2,positive,160,247
+her2,unknown,365,0
+pr,negative,339,939
+pr,positive,690,1040
+pr,unknown,51,0
+stage,0,0,12
+stage,I,181,501
+stage,II,610,825
+stage,III,245,118
+stage,IV,20,10
+stage,unknown,24,513
