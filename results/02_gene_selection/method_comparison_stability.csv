@@ -1,0 +1,5 @@
+,mean pairwise Jaccard,stable genes,"genes, median","genes, range"
+most variable genes,0.5704340561104614,953,2000.0,100 to 2000
+one-gene Cox ranking,0.3276627951556863,462,2000.0,200 to 2000
+LASSO-Cox,0.13161213620453732,6,174.0,6 to 233
+elastic-net Cox,0.16633767537981228,35,384.0,14 to 1328

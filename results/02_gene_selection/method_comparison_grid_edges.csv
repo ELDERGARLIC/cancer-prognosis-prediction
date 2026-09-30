@@ -1,0 +1,11 @@
+method,form of the scoring model,outer folds,weakest ridge chosen,strongest ridge chosen,shortest list chosen,longest list chosen
+most variable genes,genes only,25,3,0,0,16
+most variable genes,genes plus clinical,25,0,1,2,4
+one-gene Cox ranking,genes only,25,4,0,0,19
+one-gene Cox ranking,genes plus clinical,25,1,16,16,6
+LASSO-Cox,genes only,25,5,0,0,1
+LASSO-Cox,genes plus clinical,25,0,5,1,2
+elastic-net Cox,genes only,25,9,0,0,3
+elastic-net Cox,genes plus clinical,25,0,4,1,2
+all genes,genes only,25,4,1,one list only,one list only
+all genes,genes plus clinical,25,1,19,one list only,one list only

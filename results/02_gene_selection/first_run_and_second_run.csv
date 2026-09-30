@@ -1,0 +1,15 @@
+,first run,second run
+"shuffled-outcome check, selection inside the training fold",0.49740082788910234,0.5237999765134378
+clinical only,0.7534484034783436,0.7397042761585864
+"most variable genes, genes only",0.6612269235406054,0.6569192947101468
+"one-gene Cox ranking, genes only",0.6814961595511388,0.651228722526129
+"LASSO-Cox, genes only",0.6766593511158707,0.6489745828436413
+"elastic-net Cox, genes only",0.6904893169807805,0.658717626101577
+"most variable genes, genes plus clinical",0.748424029167162,0.7303385669996035
+"one-gene Cox ranking, genes plus clinical",0.7484643650818412,0.7206408823713665
+"LASSO-Cox, genes plus clinical",0.7540587070694715,0.7330865021101203
+"elastic-net Cox, genes plus clinical",0.7485123558943522,0.7284438897518346
+"elastic-net Cox minus LASSO-Cox, genes only",0.013829965864909685,0.009743043257935758
+"leakage check, one-gene Cox ranking: difference",0.12415864825893969,0.11916100747007186
+"leakage check, LASSO-Cox: difference",0.2861128121119755,0.2549899959742291
+"leakage check, elastic-net Cox: difference",0.25523652032637556,0.3089267231628749
