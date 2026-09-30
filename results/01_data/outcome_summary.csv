@@ -1,3 +1,3 @@
 ,patients,deaths,censored (%),median observed time (years),longest observed time (years)
-TCGA-BRCA,1080,151,86.0,2.4,23.6
+TCGA-BRCA,1064,150,85.9,2.4,23.6
 METABRIC,1979,1143,42.2,9.7,29.6

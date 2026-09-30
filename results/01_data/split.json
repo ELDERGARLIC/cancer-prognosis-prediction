@@ -1,17 +1,17 @@
 {
  "tcga_development": {
-  "patients": 864,
-  "deaths": 121,
-  "deaths (%)": 14.0,
-  "patient list sha256": "f3cda8ee01afb0217a2d125049c7fffd4bb9588090ffac268e5a8773a2e3f8fd",
-  "file sha256": "0dd236e52bcbdc4c0a1a17a552158483da3eb3038e054768276e0e4f87d01127"
+  "patients": 851,
+  "deaths": 120,
+  "deaths (%)": 14.1,
+  "patient list sha256": "49cc4216590de37e84ebcb55a3556cbf0be4a6e846333bbe85345cd70aa15e35",
+  "file sha256": "bcbba03ca8e969ba807297f8b0fce1ba464b957ff124b6ff32f7141beaeda146"
  },
  "tcga_test": {
-  "patients": 216,
+  "patients": 213,
   "deaths": 30,
-  "deaths (%)": 13.9,
-  "patient list sha256": "c140f2a4591bb517aa2cdc1d6e3fc8a8f485530227b2e4063b3e6dd26512ce33",
-  "file sha256": "652f3b2a1419187f1b7a44ae485a33652e240402199ffa4250044ed010a64246"
+  "deaths (%)": 14.1,
+  "patient list sha256": "c5aa71eee5ad03d8f2e20b9570d2b1c5df31107aaaa24e8f64fb4fc889b4bf0b",
+  "file sha256": "a2019e6f25a45a06acf72f9b82d527e1c6f826944a0cb63bd2931943318abeb2"
  },
  "metabric": {
   "patients": 1979,

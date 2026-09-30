@@ -1,8 +1,8 @@
 cohort,endpoint,patients with a value,events
-TCGA-BRCA,OS: death from any cause,1080,151
-TCGA-BRCA,DSS: death from the disease,1061,83
-TCGA-BRCA,DFI: return after a disease-free period,938,84
-TCGA-BRCA,"PFI: progression, return or death from the disease",1080,145
+TCGA-BRCA,OS: death from any cause,1064,150
+TCGA-BRCA,DSS: death from the disease,1045,82
+TCGA-BRCA,DFI: return after a disease-free period,923,84
+TCGA-BRCA,"PFI: progression, return or death from the disease",1064,144
 METABRIC,OS: death from any cause,1979,1143
 METABRIC,death from the disease,1978,646
 METABRIC,relapse,1978,803
