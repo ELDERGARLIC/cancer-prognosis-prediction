@@ -1,0 +1,90 @@
+{
+ "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+ "tracked files changed since that commit": [],
+ "python": "3.12.14",
+ "packages": {
+  "numpy": "2.5.3",
+  "scipy": "1.18.1",
+  "pandas": "3.0.6",
+  "pyarrow": "25.0.1",
+  "scikit-learn": "1.9.1",
+  "scikit-survival": "0.28.0",
+  "joblib": "1.6.0",
+  "matplotlib": "3.11.2"
+ },
+ "seeds": {
+  "outer folds": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "inner folds": 0,
+  "shuffles": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "checks": 0
+ },
+ "input file (sha256)": {
+  "tcga_development.parquet": "0dd236e52bcbdc4c0a1a17a552158483da3eb3038e054768276e0e4f87d01127"
+ },
+ "saved runs": {
+  "e017_M1": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 6
+  },
+  "e017_M2": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 62
+  },
+  "e017_M3": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 95
+  },
+  "e017_M4": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 585
+  },
+  "e017_M5": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 1192
+  },
+  "e018_M3_clean": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 50
+  },
+  "e018_M3_leaky": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 34
+  },
+  "e018_M3_selected_on_all": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 3
+  },
+  "e018_M4_leaky": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 38
+  },
+  "e018_M4_selected_on_all": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 43
+  },
+  "e018_M5_leaky": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 36
+  },
+  "e018_M5_selected_on_all": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 105
+  },
+  "e019_negative_control": {
+   "git commit": "fe72de3902b6122d87542d4d907a0aa35c835f21",
+   "seconds": 116
+  }
+ }
+}
