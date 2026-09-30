@@ -5,10 +5,10 @@
   {
    "repeat": 1,
    "fold": 0,
-   "harrell": 0.747867298578199,
-   "uno": 0.7323829551653712,
-   "harrell_with_clinical": 0.7800947867298578,
-   "uno_with_clinical": 0.7406734291687419,
+   "harrell_genes_only": 0.747867298578199,
+   "uno_genes_only": 0.7323829551653712,
+   "harrell_genes_plus_clinical": 0.7800947867298578,
+   "uno_genes_plus_clinical": 0.7406734291687419,
    "genes": [
     "ENSG00000000003.15",
     "ENSG00000004961.15",
@@ -498,10 +498,10 @@
   {
    "repeat": 1,
    "fold": 1,
-   "harrell": 0.6472191930207197,
-   "uno": 0.6305393345059621,
-   "harrell_with_clinical": 0.7099236641221374,
-   "uno_with_clinical": 0.6594871898010375,
+   "harrell_genes_only": 0.6472191930207197,
+   "uno_genes_only": 0.6305393345059621,
+   "harrell_genes_plus_clinical": 0.7099236641221374,
+   "uno_genes_plus_clinical": 0.6594871898010375,
    "genes": [
     "ENSG00000006025.12",
     "ENSG00000007171.18",
@@ -936,10 +936,10 @@
   {
    "repeat": 1,
    "fold": 2,
-   "harrell": 0.7073938122705821,
-   "uno": 0.7705521960558324,
-   "harrell_with_clinical": 0.7482957524908233,
-   "uno_with_clinical": 0.832224828866071,
+   "harrell_genes_only": 0.7073938122705821,
+   "uno_genes_only": 0.7705521960558324,
+   "harrell_genes_plus_clinical": 0.7482957524908233,
+   "uno_genes_plus_clinical": 0.832224828866071,
    "genes": [
     "ENSG00000004399.13",
     "ENSG00000007171.18",
@@ -1057,10 +1057,10 @@
   {
    "repeat": 1,
    "fold": 3,
-   "harrell": 0.6802884615384616,
-   "uno": 0.6334040468894797,
-   "harrell_with_clinical": 0.7133413461538461,
-   "uno_with_clinical": 0.6892750642517192,
+   "harrell_genes_only": 0.6802884615384616,
+   "uno_genes_only": 0.6334040468894797,
+   "harrell_genes_plus_clinical": 0.7133413461538461,
+   "uno_genes_plus_clinical": 0.6892750642517192,
    "genes": [
     "ENSG00000004139.14",
     "ENSG00000005238.20",
@@ -1535,10 +1535,10 @@
   {
    "repeat": 1,
    "fold": 4,
-   "harrell": 0.7312348668280871,
-   "uno": 0.7506894852445788,
-   "harrell_with_clinical": 0.8177966101694916,
-   "uno_with_clinical": 0.8034130392718403,
+   "harrell_genes_only": 0.7312348668280871,
+   "uno_genes_only": 0.7506894852445788,
+   "harrell_genes_plus_clinical": 0.8177966101694916,
+   "uno_genes_plus_clinical": 0.8034130392718403,
    "genes": [
     "ENSG00000004139.14",
     "ENSG00000004961.15",
@@ -1698,10 +1698,10 @@
   {
    "repeat": 2,
    "fold": 0,
-   "harrell": 0.5992089650626236,
-   "uno": 0.650529612809657,
-   "harrell_with_clinical": 0.7231377719182597,
-   "uno_with_clinical": 0.7683605424888268,
+   "harrell_genes_only": 0.5992089650626236,
+   "uno_genes_only": 0.650529612809657,
+   "harrell_genes_plus_clinical": 0.7231377719182597,
+   "uno_genes_plus_clinical": 0.7683605424888268,
    "genes": [
     "ENSG00000005238.20",
     "ENSG00000005469.12",
@@ -1945,10 +1945,10 @@
   {
    "repeat": 2,
    "fold": 1,
-   "harrell": 0.7595078299776287,
-   "uno": 0.8193795111419712,
-   "harrell_with_clinical": 0.7802013422818792,
-   "uno_with_clinical": 0.817203266534529,
+   "harrell_genes_only": 0.7595078299776287,
+   "uno_genes_only": 0.8193795111419712,
+   "harrell_genes_plus_clinical": 0.7802013422818792,
+   "uno_genes_plus_clinical": 0.817203266534529,
    "genes": [
     "ENSG00000004961.15",
     "ENSG00000005238.20",
@@ -2377,10 +2377,10 @@
   {
    "repeat": 2,
    "fold": 2,
-   "harrell": 0.6837891927951968,
-   "uno": 0.6958225801059689,
-   "harrell_with_clinical": 0.7464976651100734,
-   "uno_with_clinical": 0.7482265996722204,
+   "harrell_genes_only": 0.6837891927951968,
+   "uno_genes_only": 0.6958225801059689,
+   "harrell_genes_plus_clinical": 0.7464976651100734,
+   "uno_genes_plus_clinical": 0.7482265996722204,
    "genes": [
     "ENSG00000004139.14",
     "ENSG00000005238.20",
@@ -2598,10 +2598,10 @@
   {
    "repeat": 2,
    "fold": 3,
-   "harrell": 0.6772784019975031,
-   "uno": 0.7079962168750676,
-   "harrell_with_clinical": 0.7247191011235955,
-   "uno_with_clinical": 0.7279110616534473,
+   "harrell_genes_only": 0.6772784019975031,
+   "uno_genes_only": 0.7079962168750676,
+   "harrell_genes_plus_clinical": 0.7247191011235955,
+   "uno_genes_plus_clinical": 0.7279110616534473,
    "genes": [
     "ENSG00000004399.13",
     "ENSG00000005238.20",
@@ -2927,10 +2927,10 @@
   {
    "repeat": 2,
    "fold": 4,
-   "harrell": 0.7966396292004635,
-   "uno": 0.7647290244728587,
-   "harrell_with_clinical": 0.8348783314020858,
-   "uno_with_clinical": 0.8081769117922474,
+   "harrell_genes_only": 0.7966396292004635,
+   "uno_genes_only": 0.7647290244728587,
+   "harrell_genes_plus_clinical": 0.8348783314020858,
+   "uno_genes_plus_clinical": 0.8081769117922474,
    "genes": [
     "ENSG00000007264.15",
     "ENSG00000018610.15",
@@ -3139,10 +3139,10 @@
   {
    "repeat": 3,
    "fold": 0,
-   "harrell": 0.7362428842504743,
-   "uno": 0.7534817342834135,
-   "harrell_with_clinical": 0.7868437697659709,
-   "uno_with_clinical": 0.8122764851184409,
+   "harrell_genes_only": 0.7362428842504743,
+   "uno_genes_only": 0.7534817342834135,
+   "harrell_genes_plus_clinical": 0.7868437697659709,
+   "uno_genes_plus_clinical": 0.8122764851184409,
    "genes": [
     "ENSG00000004961.15",
     "ENSG00000005238.20",
@@ -3400,10 +3400,10 @@
   {
    "repeat": 3,
    "fold": 1,
-   "harrell": 0.7701005025125628,
-   "uno": 0.789383807911223,
-   "harrell_with_clinical": 0.832286432160804,
-   "uno_with_clinical": 0.7396190126249519,
+   "harrell_genes_only": 0.7701005025125628,
+   "uno_genes_only": 0.789383807911223,
+   "harrell_genes_plus_clinical": 0.832286432160804,
+   "uno_genes_plus_clinical": 0.7396190126249519,
    "genes": [
     "ENSG00000005238.20",
     "ENSG00000005882.12",
@@ -3786,10 +3786,10 @@
   {
    "repeat": 3,
    "fold": 2,
-   "harrell": 0.6595744680851063,
-   "uno": 0.6399839151235915,
-   "harrell_with_clinical": 0.6838905775075987,
-   "uno_with_clinical": 0.6476558606287233,
+   "harrell_genes_only": 0.6595744680851063,
+   "uno_genes_only": 0.6399839151235915,
+   "harrell_genes_plus_clinical": 0.6838905775075987,
+   "uno_genes_plus_clinical": 0.6476558606287233,
    "genes": [
     "ENSG00000004399.13",
     "ENSG00000004961.15",
@@ -4130,10 +4130,10 @@
   {
    "repeat": 3,
    "fold": 3,
-   "harrell": 0.7203331020124913,
-   "uno": 0.7057761096738353,
-   "harrell_with_clinical": 0.7591950034698126,
-   "uno_with_clinical": 0.750810853167619,
+   "harrell_genes_only": 0.7203331020124913,
+   "uno_genes_only": 0.7057761096738353,
+   "harrell_genes_plus_clinical": 0.7591950034698126,
+   "uno_genes_plus_clinical": 0.750810853167619,
    "genes": [
     "ENSG00000004139.14",
     "ENSG00000005238.20",
@@ -4382,10 +4382,10 @@
   {
    "repeat": 3,
    "fold": 4,
-   "harrell": 0.7562666666666666,
-   "uno": 0.7361223149989891,
-   "harrell_with_clinical": 0.7957333333333333,
-   "uno_with_clinical": 0.7818780657413397,
+   "harrell_genes_only": 0.7562666666666666,
+   "uno_genes_only": 0.7361223149989891,
+   "harrell_genes_plus_clinical": 0.7957333333333333,
+   "uno_genes_plus_clinical": 0.7818780657413397,
    "genes": [
     "ENSG00000005238.20",
     "ENSG00000007171.18",
@@ -4604,10 +4604,10 @@
   {
    "repeat": 4,
    "fold": 0,
-   "harrell": 0.5980769230769231,
-   "uno": 0.5702533466024944,
-   "harrell_with_clinical": 0.8173076923076923,
-   "uno_with_clinical": 0.8401066363017067,
+   "harrell_genes_only": 0.5980769230769231,
+   "uno_genes_only": 0.5702533466024944,
+   "harrell_genes_plus_clinical": 0.8173076923076923,
+   "uno_genes_plus_clinical": 0.8401066363017067,
    "genes": [
     "ENSG00000102144.15",
     "ENSG00000111796.4"
@@ -4618,10 +4618,10 @@
   {
    "repeat": 4,
    "fold": 1,
-   "harrell": 0.7129892229154849,
-   "uno": 0.7403510517320058,
-   "harrell_with_clinical": 0.7538287010777085,
-   "uno_with_clinical": 0.7767658016832987,
+   "harrell_genes_only": 0.7129892229154849,
+   "uno_genes_only": 0.7403510517320058,
+   "harrell_genes_plus_clinical": 0.7538287010777085,
+   "uno_genes_plus_clinical": 0.7767658016832987,
    "genes": [
     "ENSG00000004961.15",
     "ENSG00000005238.20",
@@ -5125,10 +5125,10 @@
   {
    "repeat": 4,
    "fold": 2,
-   "harrell": 0.6570271833429728,
-   "uno": 0.6926939010996425,
-   "harrell_with_clinical": 0.6871023713128976,
-   "uno_with_clinical": 0.743774037205895,
+   "harrell_genes_only": 0.6570271833429728,
+   "uno_genes_only": 0.6926939010996425,
+   "harrell_genes_plus_clinical": 0.6871023713128976,
+   "uno_genes_plus_clinical": 0.743774037205895,
    "genes": [
     "ENSG00000002933.9",
     "ENSG00000004961.15",
@@ -5478,10 +5478,10 @@
   {
    "repeat": 4,
    "fold": 3,
-   "harrell": 0.5417386298215314,
-   "uno": 0.5855852108500109,
-   "harrell_with_clinical": 0.5826137017846862,
-   "uno_with_clinical": 0.5864937357505414,
+   "harrell_genes_only": 0.5417386298215314,
+   "uno_genes_only": 0.5855852108500109,
+   "harrell_genes_plus_clinical": 0.5826137017846862,
+   "uno_genes_plus_clinical": 0.5864937357505414,
    "genes": [
     "ENSG00000002933.9",
     "ENSG00000005238.20",
@@ -5942,10 +5942,10 @@
   {
    "repeat": 4,
    "fold": 4,
-   "harrell": 0.676923076923077,
-   "uno": 0.7420180628122713,
-   "harrell_with_clinical": 0.7582417582417582,
-   "uno_with_clinical": 0.7871243362498159,
+   "harrell_genes_only": 0.676923076923077,
+   "uno_genes_only": 0.7420180628122713,
+   "harrell_genes_plus_clinical": 0.7582417582417582,
+   "uno_genes_plus_clinical": 0.7871243362498159,
    "genes": [
     "ENSG00000004139.14",
     "ENSG00000005238.20",
@@ -6197,10 +6197,10 @@
   {
    "repeat": 5,
    "fold": 0,
-   "harrell": 0.6903390914907229,
-   "uno": 0.7425093654786918,
-   "harrell_with_clinical": 0.7492002559181062,
-   "uno_with_clinical": 0.7835160357382968,
+   "harrell_genes_only": 0.6903390914907229,
+   "uno_genes_only": 0.7425093654786918,
+   "harrell_genes_plus_clinical": 0.7492002559181062,
+   "uno_genes_plus_clinical": 0.7835160357382968,
    "genes": [
     "ENSG00000000003.15",
     "ENSG00000002933.9",
@@ -6674,10 +6674,10 @@
   {
    "repeat": 5,
    "fold": 1,
-   "harrell": 0.6147540983606558,
-   "uno": 0.5913118202906145,
-   "harrell_with_clinical": 0.694672131147541,
-   "uno_with_clinical": 0.6759673404174098,
+   "harrell_genes_only": 0.6147540983606558,
+   "uno_genes_only": 0.5913118202906145,
+   "harrell_genes_plus_clinical": 0.694672131147541,
+   "uno_genes_plus_clinical": 0.6759673404174098,
    "genes": [
     "ENSG00000012171.20",
     "ENSG00000059378.13",
@@ -6721,10 +6721,10 @@
   {
    "repeat": 5,
    "fold": 2,
-   "harrell": 0.7494117647058823,
-   "uno": 0.7027344824811276,
-   "harrell_with_clinical": 0.8135294117647058,
-   "uno_with_clinical": 0.78124307062352,
+   "harrell_genes_only": 0.7494117647058823,
+   "uno_genes_only": 0.7027344824811276,
+   "harrell_genes_plus_clinical": 0.8135294117647058,
+   "uno_genes_plus_clinical": 0.78124307062352,
    "genes": [
     "ENSG00000005238.20",
     "ENSG00000007264.15",
@@ -7025,10 +7025,10 @@
   {
    "repeat": 5,
    "fold": 3,
-   "harrell": 0.7066408768536429,
-   "uno": 0.6965543538165144,
-   "harrell_with_clinical": 0.7266279819471309,
-   "uno_with_clinical": 0.7038346269144511,
+   "harrell_genes_only": 0.7066408768536429,
+   "uno_genes_only": 0.6965543538165144,
+   "harrell_genes_plus_clinical": 0.7266279819471309,
+   "uno_genes_plus_clinical": 0.7038346269144511,
    "genes": [
     "ENSG00000004961.15",
     "ENSG00000007171.18",
@@ -7267,10 +7267,10 @@
   {
    "repeat": 5,
    "fold": 4,
-   "harrell": 0.6413867822318526,
-   "uno": 0.6525078186416341,
-   "harrell_with_clinical": 0.6928494041170098,
-   "uno_with_clinical": 0.7012321280372416,
+   "harrell_genes_only": 0.6413867822318526,
+   "uno_genes_only": 0.6525078186416341,
+   "harrell_genes_plus_clinical": 0.6928494041170098,
+   "uno_genes_plus_clinical": 0.7012321280372416,
    "genes": [
     "ENSG00000002933.9",
     "ENSG00000004399.13",
