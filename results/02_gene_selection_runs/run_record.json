@@ -1,6 +1,9 @@
 {
- "git commit": "7ba61f333e81293b48824fb84d5f84d52d5df8af",
- "tracked files changed since that commit": [],
+ "git commit": "1df98b1f78cb6c9e9def4bf8f787ad70756b4602",
+ "tracked files changed since that commit": [
+  "M notebooks/01_data.ipynb",
+  " M results/01_data/run_record.json"
+ ],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
@@ -9,8 +12,7 @@
   "pyarrow": "25.0.1",
   "scikit-learn": "1.9.1",
   "scikit-survival": "0.28.0",
-  "joblib": "1.6.0",
-  "matplotlib": "3.11.2"
+  "joblib": "1.6.0"
  },
  "seeds": {
   "outer folds": [
