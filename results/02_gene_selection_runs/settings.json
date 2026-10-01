@@ -1,0 +1,82 @@
+{
+ "outer folds": 5,
+ "outer seeds": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "inner folds": 5,
+ "inner seed": 0,
+ "list sizes": [
+  50,
+  100,
+  200,
+  500,
+  1000,
+  2000
+ ],
+ "L1 shares": [
+  0.25,
+  0.5,
+  0.75
+ ],
+ "path length": 50,
+ "path depth": 0.01,
+ "longest list": 2000,
+ "ridge grid": [
+  1.0,
+  10.0,
+  100.0,
+  1000.0,
+  10000.0
+ ],
+ "clinical ridge": 0.001,
+ "leakage list size": 100,
+ "shuffle seeds": [
+  1,
+  2,
+  3,
+  4,
+  5
+ ],
+ "confidence": 0.95,
+ "expressed log2": 1.0,
+ "expressed share": 0.2,
+ "Uno horizon (days)": 1826.25,
+ "clinical levels": {
+  "stage": [
+   "I",
+   "III",
+   "IV",
+   "unknown"
+  ],
+  "er": [
+   "negative",
+   "unknown"
+  ],
+  "pr": [
+   "negative",
+   "unknown"
+  ],
+  "her2": [
+   "positive",
+   "unknown"
+  ]
+ },
+ "forms": {
+  "genes only": "genes_only",
+  "genes plus clinical": "genes_plus_clinical"
+ },
+ "arms": {
+  "inside": "selection inside the training fold",
+  "on all": "selection on all patients"
+ },
+ "selection methods": [
+  "most variable genes",
+  "one-gene Cox ranking",
+  "LASSO-Cox",
+  "elastic-net Cox"
+ ]
+}

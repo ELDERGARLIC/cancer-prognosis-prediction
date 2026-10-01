@@ -1,0 +1,9 @@
+,what it does,uses patient outcomes to pick genes,role
+clinical only,"no gene: a Cox model on age, stage, ER, PR and HER2",picks no genes,reference
+"clinical only, unknown values replaced","as clinical only, with every unknown value replaced by the most common known level of the training part",picks no genes,reference
+most variable genes,ranks genes by the variance of their expression and keeps the top of the ranking,no,selection method
+one-gene Cox ranking,ranks genes by a test of each gene alone in a Cox model and keeps the top of the ranking,yes,selection method
+LASSO-Cox,fits one Cox model on all genes with a penalty that sets most coefficients to zero; the remaining genes are the list,yes,selection method
+elastic-net Cox,"as LASSO-Cox, with a mixed penalty that lets correlated genes enter together",yes,selection method
+all genes,no selection: the scoring model on every gene that passes the expression filter,picks no genes,reference
+the earlier pipeline's selector,"LASSO on survival classes; planned for the first run, and not run because its built-in cross-validation exceeded the compute limit","yes, as classes",not run
