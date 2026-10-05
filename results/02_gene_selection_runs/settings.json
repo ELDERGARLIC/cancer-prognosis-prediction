@@ -1,82 +1,145 @@
 {
- "outer folds": 5,
- "outer seeds": [
-  1,
-  2,
-  3,
-  4,
-  5
- ],
- "inner folds": 5,
- "inner seed": 0,
- "list sizes": [
-  50,
-  100,
-  200,
-  500,
-  1000,
-  2000
- ],
- "L1 shares": [
-  0.25,
-  0.5,
-  0.75
- ],
- "path length": 50,
- "path depth": 0.01,
- "longest list": 2000,
- "ridge grid": [
-  1.0,
-  10.0,
-  100.0,
-  1000.0,
-  10000.0
- ],
- "clinical ridge": 0.001,
- "leakage list size": 100,
- "shuffle seeds": [
-  1,
-  2,
-  3,
-  4,
-  5
- ],
- "confidence": 0.95,
- "expressed log2": 1.0,
- "expressed share": 0.2,
- "Uno horizon (days)": 1826.25,
+ "outer folds": {
+  "value": 5,
+  "what it is": "folds of the outer cross-validation; each is held out once per repeat"
+ },
+ "outer seeds": {
+  "value": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "what it is": "one seed per repeat of the outer cross-validation"
+ },
+ "inner folds": {
+  "value": 5,
+  "what it is": "folds inside each outer training part that choose the settings of a method"
+ },
+ "inner seed": {
+  "value": 0,
+  "what it is": "seed of the inner split"
+ },
+ "list sizes": {
+  "value": [
+   50,
+   100,
+   200,
+   500,
+   1000,
+   2000
+  ],
+  "what it is": "list lengths offered to the two ranking methods"
+ },
+ "L1 shares": {
+  "value": [
+   0.25,
+   0.5,
+   0.75
+  ],
+  "what it is": "mix of the elastic-net penalty; 1 is pure LASSO, 0 pure ridge"
+ },
+ "path length": {
+  "value": 50,
+  "what it is": "penalties per path of LASSO-Cox and elastic-net Cox"
+ },
+ "path depth": {
+  "value": 0.01,
+  "what it is": "smallest penalty of a path as a share of the largest"
+ },
+ "longest list": {
+  "value": 2000,
+  "what it is": "longest list a penalty path may offer"
+ },
+ "ridge grid": {
+  "value": [
+   1.0,
+   10.0,
+   100.0,
+   1000.0,
+   10000.0
+  ],
+  "what it is": "ridge penalties offered to the scoring model"
+ },
+ "clinical ridge": {
+  "value": 0.001,
+  "what it is": "ridge on the clinical columns of the scoring model, a numerical safeguard"
+ },
+ "leakage list size": {
+  "value": 100,
+  "what it is": "list length of the one-gene Cox ranking in the leakage and shuffled-outcome checks"
+ },
+ "shuffle seeds": {
+  "value": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ],
+  "what it is": "one seed per shuffle of the outcomes in the shuffled-outcome check"
+ },
+ "confidence": {
+  "value": 0.95,
+  "what it is": "level of every interval"
+ },
+ "expressed log2": {
+  "value": 1.0,
+  "what it is": "a gene is expressed in a patient at this log2(TPM + 1) or above"
+ },
+ "expressed share": {
+  "value": 0.2,
+  "what it is": "share of training patients in which a gene must be expressed to pass the filter"
+ },
+ "Uno horizon (years)": {
+  "value": 5.0,
+  "what it is": "Uno's C counts pairs up to this time after diagnosis"
+ },
  "clinical levels": {
-  "stage": [
-   "I",
-   "III",
-   "IV",
-   "unknown"
-  ],
-  "er": [
-   "negative",
-   "unknown"
-  ],
-  "pr": [
-   "negative",
-   "unknown"
-  ],
-  "her2": [
-   "positive",
-   "unknown"
-  ]
+  "value": {
+   "stage": [
+    "I",
+    "III",
+    "IV",
+    "unknown"
+   ],
+   "er": [
+    "negative",
+    "unknown"
+   ],
+   "pr": [
+    "negative",
+    "unknown"
+   ],
+   "her2": [
+    "positive",
+    "unknown"
+   ]
+  },
+  "what it is": "indicator columns of the clinical model per covariate; the most common level is the reference"
  },
  "forms": {
-  "genes only": "genes_only",
-  "genes plus clinical": "genes_plus_clinical"
+  "value": {
+   "genes only": "genes_only",
+   "genes plus clinical": "genes_plus_clinical"
+  },
+  "what it is": "the two forms of the scoring model and their key in the saved runs"
  },
  "arms": {
-  "inside": "selection inside the training fold",
-  "on all": "selection on all patients"
+  "value": {
+   "inside": "selection inside the training fold",
+   "on all": "selection on all patients"
+  },
+  "what it is": "the two ways of selecting that the leakage check contrasts"
  },
- "selection methods": [
-  "most variable genes",
-  "one-gene Cox ranking",
-  "LASSO-Cox",
-  "elastic-net Cox"
- ]
+ "selection methods": {
+  "value": [
+   "most variable genes",
+   "one-gene Cox ranking",
+   "LASSO-Cox",
+   "elastic-net Cox"
+  ],
+  "what it is": "the four methods that are candidates for the choice at the end"
+ }
 }

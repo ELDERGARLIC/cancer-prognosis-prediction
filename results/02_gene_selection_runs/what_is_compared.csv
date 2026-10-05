@@ -6,4 +6,4 @@ one-gene Cox ranking,ranks genes by a test of each gene alone in a Cox model and
 LASSO-Cox,fits one Cox model on all genes with a penalty that sets most coefficients to zero; the remaining genes are the list,yes,selection method
 elastic-net Cox,"as LASSO-Cox, with a mixed penalty that lets correlated genes enter together",yes,selection method
 all genes,no selection: the scoring model on every gene that passes the expression filter,picks no genes,reference
-the earlier pipeline's selector,"LASSO on survival classes; planned for the first run, and not run because its built-in cross-validation exceeded the compute limit","yes, as classes",not run
+the earlier pipeline's selector,"LASSO on survival classes, as in the earlier pipeline; not run, because its built-in cross-validation exceeds the compute budget of this study","yes, as classes",not run
