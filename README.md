@@ -37,12 +37,13 @@ are written to `results/<notebook name>/`.
 - `02_gene_selection_runs.ipynb` computes and saves the runs behind the gene selection study:
   a shuffled-outcome check, the comparison of selection methods under nested cross-validation on
   the development set, and a leakage check. The saved runs are in `results/02_gene_selection_runs/`;
-  the runs of the first version of the study, made on the previous cohort, are kept in
+  the runs of an earlier version of the study, made on the previous cohort, are kept in
   `results/02_gene_selection_runs/first_run/`. With the saved runs present the notebook runs in
   seconds; without them it recomputes every run, which takes hours on four cores.
 - `03_gene_selection_results.ipynb` reads the saved runs and shows the results: the tables, the
-  figure, the comparison with the first run and the answers to the questions raised at the
-  meeting. It holds no modelling code and writes its tables to `results/03_gene_selection_results/`.
+  figure, the paired comparisons, the answers to the questions from the first meeting, and an
+  earlier run of the study beside this one. It holds no modelling code and writes its tables to
+  `results/03_gene_selection_results/`.
 
 ## Data
 
