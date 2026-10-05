@@ -1,9 +1,6 @@
 {
- "git commit": "82a223873aaf555b985cbed9c6e918718326e01e",
- "tracked files changed since that commit": [
-  "M results/02_gene_selection_runs/settings.json",
-  " M results/02_gene_selection_runs/what_is_compared.csv"
- ],
+ "git commit": "ca6ff1a520a704e00c188de9f9ada9ca09a07b9a",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
