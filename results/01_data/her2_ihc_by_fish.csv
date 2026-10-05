@@ -1,0 +1,6 @@
+IHC result,positive,negative,equivocal,indeterminate,not done or missing
+positive,40,12,2,1,101
+negative,3,115,0,3,428
+equivocal,17,137,3,0,18
+indeterminate,2,6,0,0,4
+not done or missing,8,53,0,0,111

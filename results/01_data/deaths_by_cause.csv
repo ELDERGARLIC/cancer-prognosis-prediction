@@ -1,0 +1,7 @@
+cohort,cause of death,deaths
+TCGA-BRCA,from the disease,82
+TCGA-BRCA,"from another cause, as the CDR approximates it",49
+TCGA-BRCA,no value,19
+METABRIC,from the disease,646
+METABRIC,from other causes,496
+METABRIC,cause not recorded,1
