@@ -1,10 +1,8 @@
 {
- "git commit": "2580a9b560b54de0d65e419d6c135fd81520061a",
+ "git commit": "0515499052297b613f2e29a1c9b10b3161c45f8d",
  "tracked files changed since that commit": [
-  "M notebooks/01_data.ipynb",
-  " M notebooks/02_gene_selection_runs.ipynb",
-  " M results/01_data/run_record.json",
-  " M results/02_gene_selection_runs/run_record.json"
+  "M results/03_gene_selection_results/first_run_and_second_run.csv",
+  " M results/03_gene_selection_results/run_record.json"
  ],
  "python": "3.12.14",
  "packages": {

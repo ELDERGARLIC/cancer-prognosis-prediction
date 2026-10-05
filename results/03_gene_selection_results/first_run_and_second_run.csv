@@ -1,4 +1,4 @@
-,first run,second run
+,earlier run,this run
 "shuffled-outcome check, selection inside the training fold",0.49740082788910234,0.5237999765134378
 clinical only,0.7534484034783436,0.7397042761585864
 "most variable genes, genes only",0.6612269235406054,0.6569192947101468
