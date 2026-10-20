@@ -1,0 +1,83 @@
+{
+  "n_patients": 1074,
+  "event_rate": 0.13966480446927373,
+  "n_folds": 5,
+  "n_pca_target": 100,
+  "penalizer": 0.5,
+  "min_total_counts": 1000,
+  "lasso_inner_cv": 5,
+  "seed": 42,
+  "honest_baseline_per_fold": [
+    {
+      "fold": 0,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "n_genes_after_count_filter": 33967,
+      "n_genes_lasso_nonzero": 116,
+      "n_pca_used": 100,
+      "pca_variance_explained": 0.9641668200492859,
+      "lasso_seconds": 145.19081783294678,
+      "cindex_lifelines": 0.678,
+      "cindex_sksurv": 0.678
+    },
+    {
+      "fold": 1,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "n_genes_after_count_filter": 34175,
+      "n_genes_lasso_nonzero": 73,
+      "n_pca_used": 73,
+      "pca_variance_explained": 0.9999999403953552,
+      "lasso_seconds": 158.7685248851776,
+      "cindex_lifelines": 0.6658002227998515,
+      "cindex_sksurv": 0.6658002227998515
+    },
+    {
+      "fold": 2,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "n_genes_after_count_filter": 34293,
+      "n_genes_lasso_nonzero": 61,
+      "n_pca_used": 61,
+      "pca_variance_explained": 1.0000001192092896,
+      "lasso_seconds": 130.21597599983215,
+      "cindex_lifelines": 0.5978634109118657,
+      "cindex_sksurv": 0.5978634109118657
+    },
+    {
+      "fold": 3,
+      "n_train": 859,
+      "n_val": 215,
+      "events_val": 30,
+      "n_genes_after_count_filter": 34380,
+      "n_genes_lasso_nonzero": 102,
+      "n_pca_used": 100,
+      "pca_variance_explained": 0.9964748620986938,
+      "lasso_seconds": 139.4318871498108,
+      "cindex_lifelines": 0.7583969465648855,
+      "cindex_sksurv": 0.7583969465648855
+    },
+    {
+      "fold": 4,
+      "n_train": 860,
+      "n_val": 214,
+      "events_val": 30,
+      "n_genes_after_count_filter": 33856,
+      "n_genes_lasso_nonzero": 282,
+      "n_pca_used": 100,
+      "pca_variance_explained": 0.7286108732223511,
+      "lasso_seconds": 111.16238212585449,
+      "cindex_lifelines": 0.6308724832214765,
+      "cindex_sksurv": 0.6308724832214765
+    }
+  ],
+  "honest_baseline_mean": 0.6661866126996159,
+  "honest_baseline_std": 0.05395850022292399,
+  "leaky_baseline_mean": 0.7324,
+  "leaky_baseline_std": 0.0141,
+  "leakage_delta": 0.06621338730038417,
+  "total_seconds": 687.7991769313812
+}

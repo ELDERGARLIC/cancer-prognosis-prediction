@@ -1,0 +1,1699 @@
+{
+  "fold_results": [
+    {
+      "fold": 0,
+      "interpretability": {
+        "high_risk": [
+          {
+            "val_patient_local_idx": 136,
+            "log_hazard": 0.7752794027328491,
+            "T_days": 266.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.10375817120075226,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.1027732640504837,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.10259387642145157,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.1001347154378891,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.10008152574300766,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 173,
+            "log_hazard": 0.7720209360122681,
+            "T_days": 1266.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.11071712523698807,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.1058160588145256,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.1055632159113884,
+                "n_genes_in_pathway_in_fold": 7
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.10146983712911606,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.10146983712911606,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 142,
+            "log_hazard": 0.6698760390281677,
+            "T_days": 366.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.11004748195409775,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.10311176627874374,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.10298645496368408,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.10292110592126846,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.10014902055263519,
+                "n_genes_in_pathway_in_fold": 7
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 32,
+            "log_hazard": 0.66924649477005,
+            "T_days": 411.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.10261459648609161,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.10171309858560562,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.10167860984802246,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.10105745494365692,
+                "n_genes_in_pathway_in_fold": 7
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.10048490762710571,
+                "n_genes_in_pathway_in_fold": 5
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 112,
+            "log_hazard": 0.6053035259246826,
+            "T_days": 785.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.10870885103940964,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.10807435214519501,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.10628780722618103,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.10484130680561066,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.10243362188339233,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          }
+        ],
+        "low_risk": [
+          {
+            "val_patient_local_idx": 54,
+            "log_hazard": -1.2599186897277832,
+            "T_days": 1351.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.10692835599184036,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.10482694953680038,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.10127884894609451,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.10127884894609451,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.10075442492961884,
+                "n_genes_in_pathway_in_fold": 5
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 34,
+            "log_hazard": -1.1742621660232544,
+            "T_days": 1277.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.1073748990893364,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.10278206318616867,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.10257532447576523,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.10257532447576523,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.10172952711582184,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 151,
+            "log_hazard": -1.170253038406372,
+            "T_days": 439.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_PLATELET_ACTIVATION_SIGNALING_AND_AGGREGATION",
+                "weight": 0.10639116168022156,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.1046832725405693,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.10291130095720291,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.10291130095720291,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.09976490586996078,
+                "n_genes_in_pathway_in_fold": 5
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 134,
+            "log_hazard": -1.1303889751434326,
+            "T_days": 1220.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.10320205986499786,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.10287374258041382,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.10283805429935455,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.10210627317428589,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.10192866623401642,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 82,
+            "log_hazard": -1.118898630142212,
+            "T_days": 1620.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.10870333015918732,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.10279567539691925,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.1010127067565918,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.10098113864660263,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.09996915608644485,
+                "n_genes_in_pathway_in_fold": 7
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fold": 1,
+      "interpretability": {
+        "high_risk": [
+          {
+            "val_patient_local_idx": 43,
+            "log_hazard": 1.2778279781341553,
+            "T_days": 273.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12975667417049408,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.12809185683727264,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.12809185683727264,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12762391567230225,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12702614068984985,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 31,
+            "log_hazard": 0.8509628772735596,
+            "T_days": 297.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.1269528716802597,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.1269528716802597,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12636040151119232,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12626174092292786,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12576508522033691,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 199,
+            "log_hazard": 0.8268356919288635,
+            "T_days": 255.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.12728430330753326,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12675327062606812,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.12650927901268005,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.12650927901268005,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12629178166389465,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 40,
+            "log_hazard": 0.8146423101425171,
+            "T_days": 1631.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RHO_GTPASES_MIRO_GTPASES_AND_RHOBTB3",
+                "weight": 0.12700387835502625,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.12619608640670776,
+                "n_genes_in_pathway_in_fold": 11
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.1254006028175354,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.1254006028175354,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.1248917356133461,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 166,
+            "log_hazard": 0.7902673482894897,
+            "T_days": 792.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12776224315166473,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.12722009420394897,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.12722009420394897,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12658962607383728,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12547755241394043,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          }
+        ],
+        "low_risk": [
+          {
+            "val_patient_local_idx": 91,
+            "log_hazard": -0.7124309539794922,
+            "T_days": 258.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.1269170194864273,
+                "n_genes_in_pathway_in_fold": 11
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RHO_GTPASES_MIRO_GTPASES_AND_RHOBTB3",
+                "weight": 0.12601566314697266,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.1256057769060135,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12452413886785507,
+                "n_genes_in_pathway_in_fold": 9
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12445183098316193,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 208,
+            "log_hazard": -0.6457675099372864,
+            "T_days": 365.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.12688963115215302,
+                "n_genes_in_pathway_in_fold": 11
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.12666219472885132,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12643049657344818,
+                "n_genes_in_pathway_in_fold": 9
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12632019817829132,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12605415284633636,
+                "n_genes_in_pathway_in_fold": 6
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 190,
+            "log_hazard": -0.6312583684921265,
+            "T_days": 1855.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.12651829421520233,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.12651829421520233,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12592805922031403,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.1257971078157425,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12561213970184326,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 131,
+            "log_hazard": -0.5800249576568604,
+            "T_days": 1728.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.12754373252391815,
+                "n_genes_in_pathway_in_fold": 11
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.1271999478340149,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12626177072525024,
+                "n_genes_in_pathway_in_fold": 9
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.12543949484825134,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12482044845819473,
+                "n_genes_in_pathway_in_fold": 6
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 84,
+            "log_hazard": -0.5687919855117798,
+            "T_days": 598.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.12595006823539734,
+                "n_genes_in_pathway_in_fold": 11
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.12592174112796783,
+                "n_genes_in_pathway_in_fold": 9
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.12564991414546967,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.12564702332019806,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.12536516785621643,
+                "n_genes_in_pathway_in_fold": 5
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fold": 2,
+      "interpretability": {
+        "high_risk": [
+          {
+            "val_patient_local_idx": 111,
+            "log_hazard": 1.3782163858413696,
+            "T_days": 242.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.23124580085277557,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.218774676322937,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.2127278596162796,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.18192936480045319,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.15532228350639343,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 62,
+            "log_hazard": 1.294901728630066,
+            "T_days": 1365.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.22196242213249207,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.214030459523201,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.20966635644435883,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.19655707478523254,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.15778379142284393,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 198,
+            "log_hazard": 0.9818927049636841,
+            "T_days": 458.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.22811774909496307,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.20348204672336578,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.19765284657478333,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.18988272547721863,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.1808646023273468,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 6,
+            "log_hazard": 0.9430909156799316,
+            "T_days": 1471.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.23631539940834045,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.21700990200042725,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.19885532557964325,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.18802398443222046,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.15979540348052979,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 15,
+            "log_hazard": 0.9098646640777588,
+            "T_days": 149.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.22147519886493683,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.21055968105793,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.1944742500782013,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.19309966266155243,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.18039116263389587,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          }
+        ],
+        "low_risk": [
+          {
+            "val_patient_local_idx": 188,
+            "log_hazard": -1.8833670616149902,
+            "T_days": 1873.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.22747494280338287,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.21180875599384308,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.19075843691825867,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.1899203211069107,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.18003755807876587,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 37,
+            "log_hazard": -1.7559592723846436,
+            "T_days": 1611.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.24464520812034607,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.21716175973415375,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.19533176720142365,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.1867588758468628,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.15610235929489136,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 205,
+            "log_hazard": -1.6564966440200806,
+            "T_days": 2442.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.23726780712604523,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.1975736916065216,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.19037176668643951,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.18898752331733704,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.1857992261648178,
+                "n_genes_in_pathway_in_fold": 6
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 13,
+            "log_hazard": -1.6457449197769165,
+            "T_days": 428.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.2689191401004791,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.22482606768608093,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.19615806639194489,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.15959525108337402,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.15050145983695984,
+                "n_genes_in_pathway_in_fold": 8
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 147,
+            "log_hazard": -1.4746263027191162,
+            "T_days": 641.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.23139506578445435,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.2238956093788147,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.19331932067871094,
+                "n_genes_in_pathway_in_fold": 8
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.17695017158985138,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.17443986237049103,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fold": 3,
+      "interpretability": {
+        "high_risk": [
+          {
+            "val_patient_local_idx": 69,
+            "log_hazard": 1.7081228494644165,
+            "T_days": 213.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.059751421213150024,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.05892987176775932,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.05759713798761368,
+                "n_genes_in_pathway_in_fold": 6
+              },
+              {
+                "name": "REACTOME_INTERFERON_SIGNALING",
+                "weight": 0.057466186583042145,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.05729015916585922,
+                "n_genes_in_pathway_in_fold": 9
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 84,
+            "log_hazard": 1.4513684511184692,
+            "T_days": 584.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERFERON_SIGNALING",
+                "weight": 0.0640496090054512,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.06208355724811554,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.06208355724811554,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RHO_GTPASES_MIRO_GTPASES_AND_RHOBTB3",
+                "weight": 0.05719912424683571,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTERLEUKIN_4_AND_INTERLEUKIN_13_SIGNALING",
+                "weight": 0.057132743299007416,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 1,
+            "log_hazard": 1.4122607707977295,
+            "T_days": 1246.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERFERON_SIGNALING",
+                "weight": 0.05549812316894531,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.0551852285861969,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.0551852285861969,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_GPCR",
+                "weight": 0.05465046688914299,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_ESTROGEN_DEPENDENT_GENE_EXPRESSION",
+                "weight": 0.053729187697172165,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 197,
+            "log_hazard": 1.326568841934204,
+            "T_days": 879.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTERFERON_SIGNALING",
+                "weight": 0.05811429023742676,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.05480235442519188,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.05461648851633072,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.054476041346788406,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.054476041346788406,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 31,
+            "log_hazard": 1.2106455564498901,
+            "T_days": 484.6,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_ESR_MEDIATED_SIGNALING",
+                "weight": 0.056374333798885345,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NUCLEAR_RECEPTORS",
+                "weight": 0.056374333798885345,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.05472570285201073,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.05451298505067825,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.05451298505067825,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          }
+        ],
+        "low_risk": [
+          {
+            "val_patient_local_idx": 128,
+            "log_hazard": -2.2271690368652344,
+            "T_days": 727.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.08949068933725357,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.08949068933725357,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.08949068933725357,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.08949068933725357,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.08949068933725357,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 100,
+            "log_hazard": -1.4517178535461426,
+            "T_days": 1102.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.06618250906467438,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.06618250906467438,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.06618250906467438,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.06618250906467438,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.06618250906467438,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 60,
+            "log_hazard": -1.418485403060913,
+            "T_days": 1572.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.0694047063589096,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.0694047063589096,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.0694047063589096,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.0694047063589096,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.0694047063589096,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 190,
+            "log_hazard": -1.349515676498413,
+            "T_days": 1437.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.06167289614677429,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.06167289614677429,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.06167289614677429,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.06167289614677429,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.06167289614677429,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 145,
+            "log_hazard": -1.3238043785095215,
+            "T_days": 3709.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.05797393620014191,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.05797393620014191,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.05797393620014191,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.05797393620014191,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.05797393620014191,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fold": 4,
+      "interpretability": {
+        "high_risk": [
+          {
+            "val_patient_local_idx": 106,
+            "log_hazard": 1.8548110723495483,
+            "T_days": 304.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTRINSIC_PATHWAY_FOR_APOPTOSIS",
+                "weight": 0.19928030669689178,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_APOPTOSIS",
+                "weight": 0.19928030669689178,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.1782902181148529,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.17531651258468628,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.14001932740211487,
+                "n_genes_in_pathway_in_fold": 7
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 17,
+            "log_hazard": 1.5305202007293701,
+            "T_days": 825.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.08028676360845566,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.08028676360845566,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.07952014356851578,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.07952014356851578,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.07952014356851578,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 59,
+            "log_hazard": 1.419562816619873,
+            "T_days": 3364.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.08317609131336212,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTRINSIC_PATHWAY_FOR_APOPTOSIS",
+                "weight": 0.08036335557699203,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_APOPTOSIS",
+                "weight": 0.08036335557699203,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.08021017909049988,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.07931346446275711,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 67,
+            "log_hazard": 1.4035431146621704,
+            "T_days": 2361.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.11286789178848267,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_INTRINSIC_PATHWAY_FOR_APOPTOSIS",
+                "weight": 0.09939780831336975,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_APOPTOSIS",
+                "weight": 0.09939780831336975,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.09114573895931244,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.07409345358610153,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 14,
+            "log_hazard": 1.1887180805206299,
+            "T_days": 2965.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_CYTOKINE_SIGNALING_IN_IMMUNE_SYSTEM",
+                "weight": 0.08680794388055801,
+                "n_genes_in_pathway_in_fold": 7
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.08267995715141296,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.08199044317007065,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.08166288584470749,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.08166288584470749,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          }
+        ],
+        "low_risk": [
+          {
+            "val_patient_local_idx": 2,
+            "log_hazard": -1.5406962633132935,
+            "T_days": 172.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.08357495069503784,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.08108740299940109,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.07828786969184875,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTRINSIC_PATHWAY_FOR_APOPTOSIS",
+                "weight": 0.07809357345104218,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_APOPTOSIS",
+                "weight": 0.07809357345104218,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 102,
+            "log_hazard": -1.294737458229065,
+            "T_days": 1516.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_NOTCH",
+                "weight": 0.08153310418128967,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INTERLEUKINS",
+                "weight": 0.07992241531610489,
+                "n_genes_in_pathway_in_fold": 5
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.07929512858390808,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.07916086167097092,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.07916086167097092,
+                "n_genes_in_pathway_in_fold": 4
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 125,
+            "log_hazard": -1.226315975189209,
+            "T_days": 2763.0,
+            "event": 1,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.07893582433462143,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.07893582433462143,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.07893582433462143,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_NEGATIVE_REGULATION_OF_THE_PI3K_AKT_NETWORK",
+                "weight": 0.07893582433462143,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_PI3K_AKT_SIGNALING_IN_CANCER",
+                "weight": 0.07893582433462143,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 54,
+            "log_hazard": -1.190281867980957,
+            "T_days": 577.2,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTRACELLULAR_SIGNALING_BY_SECOND_MESSENGERS",
+                "weight": 0.08094685524702072,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_MAPK_FAMILY_SIGNALING_CASCADES",
+                "weight": 0.08094685524702072,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_RECEPTOR_TYROSINE_KINASES",
+                "weight": 0.08045416325330734,
+                "n_genes_in_pathway_in_fold": 4
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.08026767522096634,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.08026767522096634,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          },
+          {
+            "val_patient_local_idx": 165,
+            "log_hazard": -1.17874276638031,
+            "T_days": 3256.0,
+            "event": 0,
+            "top5_pathways": [
+              {
+                "name": "REACTOME_INTRINSIC_PATHWAY_FOR_APOPTOSIS",
+                "weight": 0.08166474103927612,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_APOPTOSIS",
+                "weight": 0.08166474103927612,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_INSULIN_RECEPTOR",
+                "weight": 0.0806138888001442,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_SIGNALING_BY_TYPE_1_INSULIN_LIKE_GROWTH_FACTOR_1_RECEPTOR_IGF1R",
+                "weight": 0.0806138888001442,
+                "n_genes_in_pathway_in_fold": 3
+              },
+              {
+                "name": "REACTOME_CONSTITUTIVE_SIGNALING_BY_ABERRANT_PI3K_IN_CANCER",
+                "weight": 0.0806138888001442,
+                "n_genes_in_pathway_in_fold": 3
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
