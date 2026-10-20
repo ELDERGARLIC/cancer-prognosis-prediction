@@ -1,60 +1,119 @@
 # Breast cancer prognosis from gene expression
 
-This repository holds the code of an MSc thesis on predicting overall survival in breast cancer
-from tumour gene expression and clinical variables. The models are developed on TCGA-BRCA, and
-METABRIC is kept as an independent cohort. The pipeline is written as Jupyter notebooks that are
-read in order, one block at a time.
+This repository holds the code of an MSc thesis at Ege University (Department of Computer
+Engineering) on predicting overall survival in breast cancer from tumour gene expression and
+clinical variables. The models are developed on the TCGA-BRCA cohort; METABRIC is kept as an
+independent cohort for the end. The work is written as Jupyter notebooks that a reader follows
+in order, one block at a time: each block says what it does, why, and what to look at in its
+output, and every number in the text is rendered from the variables that hold it.
 
-## Branches
+## Research question and current stage
 
-- `rebuild` is the current work. It starts from an empty tree and shares no history with the
-  other branches.
-- `deprecated` is the earlier version of the pipeline, written as Python scripts. It is kept as
-  a reference and is not developed further.
-- `main`, `jbi-pivot`, `cbc-pivot` and `figures-fonttype42` are earlier states of that same code.
+The thesis asks whether a model of tumour gene expression, with or without a gene graph, predicts
+overall survival better than the clinical variables alone, and whether it holds on an external
+cohort. The project is being rebuilt from the start after an earlier version (kept on the
+`depricated` branch) failed its defence; the question, title and data sources are unchanged.
+
+Three notebooks exist so far. They cover the data (cohorts, outcome, locked test split) and a
+study of how to choose a gene list under nested cross-validation. No prediction model has been
+evaluated on the test set or on METABRIC yet, and no graph model has been built yet. What the
+notebooks establish at this stage: on the development set, no selection method is shown to beat
+another, no selected gene list is shown to add to the clinical covariates, and selecting genes
+outside the cross-validation inflates the score by a wide margin. The exact numbers, with their
+intervals, are in notebook 3. The model part (clinical reference, gene models, then the graph
+model, then the test set and METABRIC once) comes next.
+
+## The notebooks, in reading order
+
+| Notebook | What it does | Writes to |
+|---|---|---|
+| `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool, locks the train and test split. | `data/` (ignored by git) and `results/01_data/` |
+| `notebooks/02_gene_selection_runs.ipynb` | The gene selection study: a shuffled-outcome check, four selection methods compared under nested cross-validation on the development set, and a leakage check. Walks once through the procedure with the library's models on one fold. Reads the saved runs by default. | `results/02_gene_selection_runs/` |
+| `notebooks/03_gene_selection_results.ipynb` | Reads the saved runs and shows the results: tables, figure, paired comparisons, and what the results do and do not support. No modelling code. | `results/03_gene_selection_results/` |
+
+The results folders hold aggregate tables and figures only (CSV, JSON, PNG). The saved runs of an
+earlier version of the study, made on the previous cohort definition, are kept in
+`results/02_gene_selection_runs/first_run/` and shown beside the current one in notebook 3.
+
+## Folders
+
+| Path | Contents |
+|---|---|
+| `notebooks/` | The three notebooks, numbered in reading order. |
+| `results/<notebook name>/` | Aggregate outputs of each notebook, committed with the notebook. |
+| `data/` | Downloaded sources and patient tables. Created by notebook 1, never committed. |
+| `pyproject.toml`, `uv.lock` | The pinned Python environment. |
 
 ## Setup
 
-The environment is pinned in `pyproject.toml` and `uv.lock`. It needs
-[uv](https://docs.astral.sh/uv/) and Python 3.12.
+The environment needs [uv](https://docs.astral.sh/uv/) and Python 3.12; uv installs the
+interpreter if it is missing. Every package is pinned in `uv.lock`.
 
     uv sync
 
-## Running
+To read a notebook, start Jupyter and open it from `notebooks/`:
 
-The notebooks are in `notebooks/` and are numbered in the order they run. Each one executes from
-a fresh kernel with one command and keeps its outputs. The last option leaves run times out of
-the file, so that a repeated run does not change it.
+    uv run jupyter lab
+
+## Running a notebook
+
+Each notebook runs from a fresh kernel with one command and keeps its outputs in the file. The
+last option leaves run times out, so a repeated run does not change the file.
 
     uv run jupyter nbconvert --to notebook --execute --inplace \
         --ExecutePreprocessor.record_timing=False notebooks/01_data.ipynb
 
-To read or edit a notebook, start `uv run jupyter lab`. The aggregate tables a notebook produces
-are written to `results/<notebook name>/`.
+Which steps need data:
 
-- `01_data.ipynb` downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines the
-  outcome and locks the train and test split.
-- `02_gene_selection_runs.ipynb` holds the gene selection study: a shuffled-outcome check, the
-  comparison of selection methods under nested cross-validation on the development set, and a
-  leakage check. By default it reads the saved runs in `results/02_gene_selection_runs/` and
-  never computes; a switch in its settings turns on the computation of missing runs, which takes
-  hours on four cores. It also walks through the procedure once on one outer fold with the
-  library's models, as a demonstration, and keeps the fast Cox fit that computed the saved runs
-  in an appendix with the checks that compare it with the library. The runs of an earlier
-  version of the study, made on the previous cohort, are kept in
-  `results/02_gene_selection_runs/first_run/`.
-- `03_gene_selection_results.ipynb` reads the saved runs and shows the results: the tables, the
-  figure, the paired comparisons, the answers to the questions from the first meeting, and an
-  earlier run of the study beside this one. It holds no modelling code and writes its tables to
-  `results/03_gene_selection_results/`.
+- Notebook 1 downloads about 5 GB into `data/` on its first run (about six minutes on a fast
+  connection) and records the version and checksum of every file. Later runs reuse the files and
+  take about two minutes.
+- Notebook 2 needs the development set written by notebook 1. By default it reads the saved runs
+  in `results/02_gene_selection_runs/` and finishes in about two minutes, most of it the one-fold
+  demonstration and the check of the reference implementation against the library. Computing a
+  run is a deliberate choice: the switch `READ_SAVED_RUNS` in its settings cell turns it on, only
+  runs whose saved file is missing are computed, and a full recompute takes about two and a half
+  hours on four cores.
+- Notebook 3 needs only the saved runs and two aggregate tables of notebook 1. It takes seconds.
 
-## Data
+Reading saved results therefore means running the notebooks as they are. Starting an experiment
+means changing a setting in notebook 2 after moving the saved runs aside, since the notebook
+refuses to run in read mode with settings that differ from the saved file.
 
-No data is stored in this repository. The first notebook downloads every source into `data/`
-(about 5 GB), which git ignores, and records the version and checksum of each file.
-Patient-level values never appear in a tracked file or in a notebook output.
+## Data and attribution
+
+No data is stored in this repository. Patient-level values never appear in a tracked file or in
+a notebook output; the notebooks show counts, summaries and plots.
 
 The sources are the TCGA-BRCA expression and clinical files of the NCI Genomic Data Commons, the
-TCGA Pan-Cancer Clinical Data Resource (Liu et al., 2018) and METABRIC from the cBioPortal
-datahub, which is used under the Open Database License. The results shown here are in whole or
-part based upon data generated by the TCGA Research Network: https://www.cancer.gov/tcga.
+TCGA Pan-Cancer Clinical Data Resource (Liu et al., 2018, Cell 173:400), and METABRIC from the
+cBioPortal datahub (Curtis et al., 2012, Nature 486:346; Pereira et al., 2016, Nature
+Communications 7:11479), used under the Open Database License. The results shown here are in
+whole or part based upon data generated by the TCGA Research Network: https://www.cancer.gov/tcga.
+
+No software licence has been declared for this repository yet.
+
+## Branches and weekly workflow
+
+| Branch | Purpose |
+|---|---|
+| `main` | The reviewed version. Each state of `main` is one that the author has explicitly approved after a weekly supervisor meeting. |
+| `develop` | Ongoing work. Everything is committed here first. |
+| `depricated` | The earlier pipeline, frozen as a labelled historical snapshot (see its `DEPRECATED.md`). Not developed. |
+
+Work happens on `develop`. After the author explicitly confirms approval of a particular weekly
+version, that reviewed version is merged into `main` and pushed. Nothing is merged because a
+week has passed or because checks have succeeded, and a merge into `main` records the author's
+approval of that version, not the supervisors' acceptance of its conclusions.
+
+    git switch develop                      # daily work
+    git add notebooks results && git commit
+    git push origin develop
+
+    # after the explicit approval of a reviewed version:
+    git switch main
+    git merge --ff-only develop             # or the approved commit
+    git push origin main
+    git switch develop
+
+Author: Mahdi Sarhangi.
