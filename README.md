@@ -34,12 +34,15 @@ are written to `results/<notebook name>/`.
 
 - `01_data.ipynb` downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines the
   outcome and locks the train and test split.
-- `02_gene_selection_runs.ipynb` computes and saves the runs behind the gene selection study:
-  a shuffled-outcome check, the comparison of selection methods under nested cross-validation on
-  the development set, and a leakage check. The saved runs are in `results/02_gene_selection_runs/`;
-  the runs of an earlier version of the study, made on the previous cohort, are kept in
-  `results/02_gene_selection_runs/first_run/`. With the saved runs present the notebook runs in
-  seconds; without them it recomputes every run, which takes hours on four cores.
+- `02_gene_selection_runs.ipynb` holds the gene selection study: a shuffled-outcome check, the
+  comparison of selection methods under nested cross-validation on the development set, and a
+  leakage check. By default it reads the saved runs in `results/02_gene_selection_runs/` and
+  never computes; a switch in its settings turns on the computation of missing runs, which takes
+  hours on four cores. It also walks through the procedure once on one outer fold with the
+  library's models, as a demonstration, and keeps the fast Cox fit that computed the saved runs
+  in an appendix with the checks that compare it with the library. The runs of an earlier
+  version of the study, made on the previous cohort, are kept in
+  `results/02_gene_selection_runs/first_run/`.
 - `03_gene_selection_results.ipynb` reads the saved runs and shows the results: the tables, the
   figure, the paired comparisons, the answers to the questions from the first meeting, and an
   earlier run of the study beside this one. It holds no modelling code and writes its tables to

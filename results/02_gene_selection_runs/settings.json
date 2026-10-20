@@ -117,7 +117,7 @@
     "unknown"
    ]
   },
-  "what it is": "indicator columns of the clinical model per covariate; the most common level is the reference"
+  "what it is": "indicator columns of the clinical model per covariate; the reference level of each covariate is fixed and gets no column"
  },
  "forms": {
   "value": {
