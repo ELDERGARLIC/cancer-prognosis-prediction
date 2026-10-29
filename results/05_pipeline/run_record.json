@@ -1,9 +1,6 @@
 {
- "git commit": "cecc5186d065c6c4c1fa4d7350ccdc961c45489a",
- "tracked files changed since that commit": [
-  "M notebooks/05_pipeline.ipynb",
-  " M results/05_pipeline/run_record.json"
- ],
+ "git commit": "563b19655f019dc32c757275c805ba5d93056624",
+ "tracked files changed since that commit": [],
  "mode": "read the saved results",
  "python": "3.12.14",
  "packages": {
