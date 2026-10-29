@@ -14,22 +14,25 @@ overall survival better than the clinical variables alone, and whether it holds 
 cohort. The project is being rebuilt from the start after an earlier version (kept on the
 `depricated` branch) failed its defence; the question, title and data sources are unchanged.
 
-Three notebooks exist so far. They cover the data (cohorts, outcome, locked test split) and a
-study of how to choose a gene list under nested cross-validation. No prediction model has been
-evaluated on the test set or on METABRIC yet, and no graph model has been built yet. What the
-notebooks establish at this stage: on the development set, no selection method is shown to beat
-another, no selected gene list is shown to add to the clinical covariates, and selecting genes
-outside the cross-validation inflates the score by a wide margin. The exact numbers, with their
-intervals, are in notebook 3. The model part (clinical reference, gene models, then the graph
-model, then the test set and METABRIC once) comes next.
+Five notebooks exist. Notebook 1 builds the data; notebooks 2 and 3 are the comparison study of
+four gene selection methods under nested cross-validation (they found the methods tied and are
+kept as evidence, unchanged); notebook 4 builds the STRING gene graph; notebook 5 implements the
+procedure agreed with the supervisors on 22 October 2026: elastic-net Cox selects the genes inside
+every training part, a GraphSAGE model is trained on the selected genes, both tuned by an inner
+five-fold loop and scored by an outer five-fold loop over every TCGA patient, with a clinical-only
+Cox and the selector itself as reference rows, and a final model trained on all patients and
+frozen. METABRIC has not been scored yet; the scoring cell is in notebook 5 and switched off until
+the procedure is confirmed. The numbers, with their intervals, are in notebook 5.
 
 ## The notebooks, in reading order
 
 | Notebook | What it does | Writes to |
 |---|---|---|
-| `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool, locks the train and test split. | `data/` (ignored by git) and `results/01_data/` |
+| `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool and writes one table per cohort. | `data/` (ignored by git) and `results/01_data/` |
 | `notebooks/02_gene_selection_runs.ipynb` | The gene selection study: a shuffled-outcome check, four selection methods compared under nested cross-validation on the development set, and a leakage check. Walks once through the procedure with the library's models on one fold. Reads the saved runs by default. | `results/02_gene_selection_runs/` |
 | `notebooks/03_gene_selection_results.ipynb` | Reads the saved runs and shows the results: tables, figure, paired comparisons, and what the results do and do not support. No modelling code. | `results/03_gene_selection_results/` |
+| `notebooks/04_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves the gene-level edge list at combined score 700 or more. | `results/04_gene_graph/` |
+| `notebooks/05_pipeline.ipynb` | The procedure of 22 October: stage A chooses the selector's settings and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows, part 2 trains and freezes the final model. Reads the saved fold files by default. | `results/05_pipeline/` |
 
 The results folders hold aggregate tables and figures only (CSV, JSON, PNG). The saved runs of an
 earlier version of the study, made on the previous cohort definition, are kept in
@@ -47,7 +50,8 @@ earlier version of the study, made on the previous cohort definition, are kept i
 ## Setup
 
 The environment needs [uv](https://docs.astral.sh/uv/) and Python 3.12; uv installs the
-interpreter if it is missing. Every package is pinned in `uv.lock`.
+interpreter if it is missing. Every package is pinned in `uv.lock`, including PyTorch (the CPU
+build), PyTorch Geometric and torchsurv for the graph model; no GPU is needed.
 
     uv sync
 
@@ -75,6 +79,11 @@ Which steps need data:
   runs whose saved file is missing are computed, and a full recompute takes about two and a half
   hours on four cores.
 - Notebook 3 needs only the saved runs and two aggregate tables of notebook 1. It takes seconds.
+- Notebook 4 downloads two STRING files (about 65 MB) on its first run and takes about a minute.
+- Notebook 5 needs the cohort table of notebook 1 and the edge list of notebook 4. By default it
+  reads the saved fold files in `results/05_pipeline/` and finishes in under a minute; the compute
+  switch in its settings computes the outer folds whose file is missing and then the final model,
+  which takes a few hours on four cores.
 
 Reading saved results therefore means running the notebooks as they are. Starting an experiment
 means changing a setting in notebook 2 after moving the saved runs aside, since the notebook
