@@ -1,0 +1,8 @@
+,final model
+L1 ratio,0.5
+penalty,0.0085
+hidden size,64
+dropout,0.5
+final genes,476
+model file sha256,6f7305d11b59ed63...
+minutes,25.3

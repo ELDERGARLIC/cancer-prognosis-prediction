@@ -1,0 +1,24 @@
+,value
+outer folds done,5
+clinical-only Cox mean C,0.73
+clinical-only Cox SD C,0.053
+clinical-only Cox mean Uno C,0.706
+graph model mean C,0.717
+graph model SD C,0.057
+graph model mean Uno C,0.711
+no-graph model mean C,0.714
+no-graph model SD C,0.056
+no-graph model mean Uno C,0.705
+selector as a model mean C,0.684
+selector as a model SD C,0.021
+selector as a model mean Uno C,0.694
+graph minus clinical mean,-0.013
+graph minus clinical lower,-0.098
+graph minus clinical upper,0.072
+graph minus selector mean,0.033
+graph minus selector lower,-0.051
+graph minus selector upper,0.117
+"genes selected, smallest",160
+"genes selected, largest",476
+final model trained,yes
+final genes,476

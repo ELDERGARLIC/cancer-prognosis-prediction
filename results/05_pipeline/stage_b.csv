@@ -1,0 +1,6 @@
+outer fold,hidden size,dropout,inner mean C,inner fit parts with fewer than 2 genes
+1,64,0.5,0.742,0
+2,128,0.2,0.723,0
+3,128,0.5,0.747,0
+4,64,0.5,0.702,0
+5,64,0.5,0.726,0

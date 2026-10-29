@@ -1,0 +1,3 @@
+comparison,mean difference,lower,upper,folds
+graph model minus clinical-only Cox,-0.013268785366656077,-0.09823208848978252,0.07169451775647037,5
+graph model minus selector as a model,0.03297884221520135,-0.05093209443739752,0.11688977886780022,5

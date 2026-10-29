@@ -1,0 +1,6 @@
+outer fold,L1 ratio,penalty,inner mean C,eligible settings of 75,genes selected,edges,genes with an edge
+1,0.5,0.0194,0.684,64,300,63,75
+2,0.5,0.0329,0.69,66,160,17,23
+3,0.5,0.0064,0.656,63,472,153,168
+4,0.5,0.0068,0.689,69,436,110,117
+5,0.5,0.0066,0.689,65,476,142,143

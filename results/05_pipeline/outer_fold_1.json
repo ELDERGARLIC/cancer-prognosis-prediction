@@ -1,0 +1,598 @@
+{
+ "fold": 1,
+ "patients": {
+  "training": 851,
+  "test": 213,
+  "training deaths": 120,
+  "test deaths": 30
+ },
+ "stage A": {
+  "l1 ratio": 0.5,
+  "penalty": 0.01941250165822553,
+  "inner mean C": 0.6837038404738776,
+  "eligible settings": 64,
+  "settings": [
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.12624821694736532,
+    "genes": 0,
+    "inner mean C": 0.53454031850386,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.11143347396717594,
+    "genes": 1,
+    "inner mean C": 0.6142953810090493,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.09835718413013529,
+    "genes": 4,
+    "inner mean C": 0.6084094877853036,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.08681534664223939,
+    "genes": 11,
+    "inner mean C": 0.6157442562604696,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.07662789941851315,
+    "genes": 17,
+    "inner mean C": 0.6316396530799276,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.0676359099675226,
+    "genes": 25,
+    "inner mean C": 0.6446197842230191,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.05969909591479163,
+    "genes": 49,
+    "inner mean C": 0.6618719080891842,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.05269363648326523,
+    "genes": 78,
+    "inner mean C": 0.6682432696064389,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.04651024078812788,
+    "genes": 98,
+    "inner mean C": 0.6705032395980162,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.04105244280979995,
+    "genes": 119,
+    "inner mean C": 0.6750199353751223,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.03623509644529906,
+    "genes": 159,
+    "inner mean C": 0.6742506596960769,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.03198304715953937,
+    "genes": 185,
+    "inner mean C": 0.6761644187317248,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.02822995951324497,
+    "genes": 223,
+    "inner mean C": 0.6780733778232625,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.024917282275955844,
+    "genes": 242,
+    "inner mean C": 0.6776500092419808,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.02199333497904459,
+    "genes": 268,
+    "inner mean C": 0.6790228852900768,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.01941250165822553,
+    "genes": 300,
+    "inner mean C": 0.6837038404738776,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.017134519207281193,
+    "genes": 335,
+    "inner mean C": 0.6798179895108614,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.015123849240743604,
+    "genes": 364,
+    "inner mean C": 0.6784710139725203,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.0133491236660754,
+    "genes": 382,
+    "inner mean C": 0.6769446497048164,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.011782655315824394,
+    "genes": 398,
+    "inner mean C": 0.6759721808632033,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.010400006005213727,
+    "genes": 425,
+    "inner mean C": 0.674171456838504,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.009179605276513512,
+    "genes": 432,
+    "inner mean C": 0.6737657195160842,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.008102413882294966,
+    "genes": 438,
+    "inner mean C": 0.6743161822333684,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.007151626757631155,
+    "genes": 456,
+    "inner mean C": 0.6746281392304994,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "penalty": 0.00631241084736826,
+    "genes": 477,
+    "inner mean C": 0.6771818784418278,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.08416547796491021,
+    "genes": 0,
+    "inner mean C": 0.5346840999560527,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.07428898264478395,
+    "genes": 1,
+    "inner mean C": 0.618185410732037,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.06557145608675685,
+    "genes": 4,
+    "inner mean C": 0.6131181086487838,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.057876897761492914,
+    "genes": 9,
+    "inner mean C": 0.6201938522502117,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.05108526627900876,
+    "genes": 16,
+    "inner mean C": 0.6363194919995925,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.045090606645015054,
+    "genes": 23,
+    "inner mean C": 0.6475341021829091,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.039799397276527745,
+    "genes": 43,
+    "inner mean C": 0.6636768209023822,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.035129090988843474,
+    "genes": 65,
+    "inner mean C": 0.6692288369804985,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.031006827192085244,
+    "genes": 83,
+    "inner mean C": 0.6665637661445765,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.027368295206533295,
+    "genes": 102,
+    "inner mean C": 0.667076904290397,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.024156730963532703,
+    "genes": 124,
+    "inner mean C": 0.6659693413234415,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.02132203143969291,
+    "genes": 159,
+    "inner mean C": 0.6652491171229764,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.018819973008829975,
+    "genes": 189,
+    "inner mean C": 0.6665084024637685,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.01661152151730389,
+    "genes": 211,
+    "inner mean C": 0.6675949789612121,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.014662223319363057,
+    "genes": 226,
+    "inner mean C": 0.6728910973907916,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.012941667772150348,
+    "genes": 242,
+    "inner mean C": 0.6748184215266744,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.011423012804854124,
+    "genes": 266,
+    "inner mean C": 0.6737783668150523,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.010082566160495732,
+    "genes": 288,
+    "inner mean C": 0.6700843376390923,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.008899415777383598,
+    "genes": 303,
+    "inner mean C": 0.6676759955572439,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.007855103543882927,
+    "genes": 325,
+    "inner mean C": 0.6652618986885569,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.0069333373368091495,
+    "genes": 328,
+    "inner mean C": 0.6657922730442309,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.006119736851009006,
+    "genes": 336,
+    "inner mean C": 0.6660159758746867,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.005401609254863308,
+    "genes": 345,
+    "inner mean C": 0.6654313054457762,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.004767751171754102,
+    "genes": 357,
+    "inner mean C": 0.6652328709072312,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "penalty": 0.004208273898245505,
+    "genes": 367,
+    "inner mean C": 0.666665488593614,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.06312410847368266,
+    "genes": 0,
+    "inner mean C": 0.5346840999560527,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.05571673698358797,
+    "genes": 1,
+    "inner mean C": 0.6174382795899317,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.049178592065067646,
+    "genes": 4,
+    "inner mean C": 0.616144641788966,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.043407673321119694,
+    "genes": 9,
+    "inner mean C": 0.623112118422646,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.03831394970925658,
+    "genes": 15,
+    "inner mean C": 0.63846796041143,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.0338179549837613,
+    "genes": 22,
+    "inner mean C": 0.6511938718199304,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.029849547957395816,
+    "genes": 39,
+    "inner mean C": 0.6612482136086439,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.026346818241632614,
+    "genes": 59,
+    "inner mean C": 0.6674455935894361,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.02325512039406394,
+    "genes": 75,
+    "inner mean C": 0.6623765994259716,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.020526221404899975,
+    "genes": 90,
+    "inner mean C": 0.6606109730411032,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.01811754822264953,
+    "genes": 114,
+    "inner mean C": 0.662635527739584,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.015991523579769684,
+    "genes": 144,
+    "inner mean C": 0.6608562888620545,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.014114979756622485,
+    "genes": 166,
+    "inner mean C": 0.6583387332792229,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.012458641137977922,
+    "genes": 181,
+    "inner mean C": 0.6584200899659965,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.010996667489522296,
+    "genes": 195,
+    "inner mean C": 0.6623708623930935,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.009706250829112764,
+    "genes": 209,
+    "inner mean C": 0.669424313614074,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.008567259603640597,
+    "genes": 224,
+    "inner mean C": 0.6677746741600866,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.007561924620371802,
+    "genes": 229,
+    "inner mean C": 0.6666728574151692,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.0066745618330377,
+    "genes": 238,
+    "inner mean C": 0.6645382804865387,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.005891327657912197,
+    "genes": 256,
+    "inner mean C": 0.6646323995547072,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.005200003002606863,
+    "genes": 261,
+    "inner mean C": 0.6626251223278075,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.004589802638256756,
+    "genes": 262,
+    "inner mean C": 0.6609419786722075,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.004051206941147483,
+    "genes": 271,
+    "inner mean C": 0.6610249602546454,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.0035758133788155776,
+    "genes": 271,
+    "inner mean C": 0.6604960666629209,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "penalty": 0.00315620542368413,
+    "genes": 271,
+    "inner mean C": 0.6622794558008585,
+    "eligible": true
+   }
+  ]
+ },
+ "stage B": {
+  "hidden size": 64,
+  "dropout": 0.5,
+  "inner mean C": 0.7415292025553395,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "inner mean C": 0.7415292025553395
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "inner mean C": 0.7387295547807574
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "inner mean C": 0.7383583010340413
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "inner mean C": 0.7332954013896082
+   }
+  ]
+ },
+ "stage C": {
+  "genes": 300,
+  "edges": 63,
+  "genes with an edge": 75,
+  "scores": {
+   "graph model": {
+    "Harrell's C": 0.7462494642091727,
+    "Uno's C (5 years)": 0.7494642485152846
+   },
+   "selector as a model": {
+    "Harrell's C": 0.6789541363051864,
+    "Uno's C (5 years)": 0.6758431827340402
+   },
+   "clinical-only Cox": {
+    "Harrell's C": 0.7631804543506215,
+    "Uno's C (5 years)": 0.7784866514073239
+   },
+   "no-graph model": {
+    "Harrell's C": 0.7406772396056579,
+    "Uno's C (5 years)": 0.7477880539986197
+   }
+  }
+ },
+ "minutes": {
+  "stage A": 1.3,
+  "stage B": 11.8,
+  "stage C": 0.6
+ }
+}
