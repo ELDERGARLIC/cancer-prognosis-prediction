@@ -1,8 +1,6 @@
 {
- "git commit": "e9f0795d63cfd47426297e3aeff8a29461c7b784",
- "tracked files changed since that commit": [
-  "M notebooks/05_pipeline.ipynb"
- ],
+ "git commit": "f80452a2bac0e6b42ca6016ad2e9df55a7bb114c",
+ "tracked files changed since that commit": [],
  "mode": "read the saved results",
  "python": "3.12.14",
  "packages": {
