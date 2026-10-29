@@ -1,8 +1,7 @@
 {
- "git commit": "1420ead0eb5b55c927fc753b76adf5c6310273a9",
+ "git commit": "f373fdca470a76c774aefa749de52e7a7a3b7831",
  "tracked files changed since that commit": [
-  "M notebooks/01_data.ipynb",
-  " M pyproject.toml",
+  "M pyproject.toml",
   " M uv.lock"
  ],
  "python": "3.12.14",
