@@ -1,11 +1,9 @@
 {
- "git commit": "61198544ab61f1dfda933954c2c0a49236019af3",
+ "git commit": "1420ead0eb5b55c927fc753b76adf5c6310273a9",
  "tracked files changed since that commit": [
   "M notebooks/01_data.ipynb",
-  " M notebooks/02_gene_selection_runs.ipynb",
-  " M notebooks/03_gene_selection_results.ipynb",
-  " M results/01_data/outcome_summary.csv",
-  " M results/02_gene_selection_runs/settings.json"
+  " M pyproject.toml",
+  " M uv.lock"
  ],
  "python": "3.12.14",
  "packages": {
@@ -18,9 +16,7 @@
   "scikit-survival": "0.28.0",
   "matplotlib": "3.11.2"
  },
- "seeds": {
-  "split": 0
- },
+ "seeds": "none: this notebook draws no random numbers",
  "input manifests (sha256)": {
   "TCGA-BRCA gene expression": "a4dc598e3a6b33a25b41f5b5a0333468c40608ccafcebcb8af691953b372ea57",
   "TCGA outcomes (CDR)": "7aa992b9354a6cfb216484cc1cec50cf4ea21182e9a7ee4d877723464f6dcfeb",
@@ -29,8 +25,7 @@
  },
  "preservation file (sha256)": "59a4bfdd29809001741d7f7f639ad2874981360142e662578c3f649e9ae9007e",
  "output files (sha256)": {
-  "tcga_development": "bcbba03ca8e969ba807297f8b0fce1ba464b957ff124b6ff32f7141beaeda146",
-  "tcga_test": "a2019e6f25a45a06acf72f9b82d527e1c6f826944a0cb63bd2931943318abeb2",
+  "tcga": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
   "metabric": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
  }
 }

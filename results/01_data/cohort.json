@@ -1,0 +1,16 @@
+{
+ "tcga": {
+  "patients": 1064,
+  "deaths": 150,
+  "deaths (%)": 14.1,
+  "genes": 19211,
+  "file sha256": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780"
+ },
+ "metabric": {
+  "patients": 1979,
+  "deaths": 1143,
+  "deaths (%)": 57.8,
+  "genes": 19211,
+  "file sha256": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
+ }
+}
