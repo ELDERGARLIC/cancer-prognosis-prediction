@@ -1,8 +1,6 @@
 {
- "git commit": "065ee6c6ff6d7a58bf14ec99eca91e419d729fe4",
- "tracked files changed since that commit": [
-  "M notebooks/02_gene_graph.ipynb"
- ],
+ "git commit": "ac4cc88bd25294a7e764d75840e9efbf815e0353",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
