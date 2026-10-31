@@ -15,7 +15,8 @@ cohort. The project is being rebuilt from the start after an earlier version (ke
 `depricated` branch) failed its defence; the question, title and data sources are unchanged.
 
 Three notebooks form the main line. Notebook 1 builds the data, notebook 2 the STRING gene graph,
-and notebook 3 implements the procedure agreed with the supervisors on 22 October 2026: elastic-net
+and notebook 3 implements the roadmap that Hüseyin Uyar shared at the supervisors' meeting of
+8 October 2026 and that the meeting of 22 October discussed again: elastic-net
 Cox selects the genes inside every training part, a GraphSAGE model is trained on the selected
 genes, both tuned by an inner five-fold loop and scored by an outer five-fold loop over every TCGA
 patient, with a clinical-only Cox and the selector itself as reference rows, and a final model
@@ -30,7 +31,7 @@ are in notebook 3.
 |---|---|---|
 | `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool and writes one table per cohort. | `data/` (ignored by git) and `results/01_data/` |
 | `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (an exploratory denser graph). | `results/02_gene_graph/` |
-| `notebooks/03_pipeline.ipynb` | The procedure of 22 October: stage A chooses the selector's settings and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; a section of exploratory rows on the same folds (a denser graph, a learnable gene identity, the selector plus the clinical covariates); part 2 trains and freezes the final model. Reads the saved fold files by default. | `results/03_pipeline/` |
+| `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; a section of exploratory rows on the same folds (a denser graph, a learnable gene identity, the selector plus the clinical covariates); part 2 trains and freezes the final model. Reads the saved fold files by default. | `results/03_pipeline/` |
 | `notebooks/appendix_gene_selection_comparison.ipynb` | Reads the saved tables of the earlier comparison of four selection methods (made on the previous data version) and shows what was compared, the results, the paired comparisons, the leakage check and the choice rule. No computation. | nothing (reads `results/appendix_gene_selection_comparison/`) |
 
 The results folders hold aggregate tables, figures and the frozen model only. The two notebooks

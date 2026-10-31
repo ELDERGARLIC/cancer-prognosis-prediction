@@ -9,6 +9,7 @@ ran last at commit f8c4a00 of this repository (20 October 2026), when they were 
 Their saved runs and tables now live in `results/appendix_gene_selection_comparison/` (`runs/` and
 `tables/`), and `notebooks/appendix_gene_selection_comparison.ipynb` reads those tables. The paths
 inside these two notebooks are not maintained, they are not executed again, and they are kept for
-provenance: the run record at the end of each names the commit, the package versions, the seeds
-and the input hashes of the runs. The supervisors chose elastic-net Cox as the selector on
-22 October 2026 after seeing this study; the current pipeline is `notebooks/03_pipeline.ipynb`.
+provenance: the run record at the end of each names the commit, the package versions, the seeds and
+the input hashes of the runs. The roadmap document shared at the supervisors' meeting of 8 October
+2026 names elastic-net Cox as the selector, confirmed on 22 October; the current pipeline is
+`notebooks/03_pipeline.ipynb`.
