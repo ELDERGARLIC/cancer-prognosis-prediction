@@ -1,8 +1,10 @@
 {
- "git commit": "38b3638b8066b2ad88e417a36e77ae07b436c6d2",
+ "git commit": "f9966dca795831a47c53c42acecb00936e504da6",
  "tracked files changed since that commit": [
   "M notebooks/01_data.ipynb",
-  " M results/01_data/run_record.json"
+  " M notebooks/02_gene_graph.ipynb",
+  " M results/01_data/run_record.json",
+  " M results/02_gene_graph/run_record.json"
  ],
  "python": "3.12.14",
  "packages": {
@@ -17,5 +19,6 @@
   "info": "144de4b0d98c6a7dfde6ddc2591cf88657f27b989eadff4f501450c3ed1f0f1c"
  },
  "gene pool (sha256)": "ce6e2da0262e3347d75f05f6b8701be92a915aa27ba6e99ab959671da4ea4426",
- "edge file (sha256)": "e8116725e93b7b20c03b5d83759a48541bf17fd51e179ea95894c382fcf5f79b"
+ "edge file (sha256)": "e8116725e93b7b20c03b5d83759a48541bf17fd51e179ea95894c382fcf5f79b",
+ "denser edge file (sha256)": "55f0b64e275007753ca3c77b1eedb0d899f85ef680f861dc73c8bb176b9586ed"
 }
