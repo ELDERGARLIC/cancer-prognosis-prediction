@@ -1,6 +1,12 @@
 {
- "git commit": "485abf5db71b9939e7bc15d5ca3c2c214e6f191a",
- "tracked files changed since that commit": [],
+ "git commit": "ab3018310d9ac4dd40c9f20942df31a7ab384d0b",
+ "tracked files changed since that commit": [
+  "M notebooks/01_data.ipynb",
+  " M notebooks/02_gene_graph.ipynb",
+  " M results/01_data/run_record.json",
+  " M results/02_gene_graph/run_record.json",
+  " M results/03_pipeline/run_record.json"
+ ],
  "mode": "read the saved results",
  "python": "3.12.14",
  "packages": {

@@ -1,0 +1,6 @@
+outer fold,genes,"nodes, every neighbour","edges, every neighbour","nodes, at most 5 per gene","edges, at most 5 per gene","minutes now, stages B and C","minutes estimated, at most 5 per gene"
+1,300,4093,95659,1248,6630,12.4,52
+2,160,2700,57067,712,2946,7.6,34
+3,472,5462,123041,1897,13977,19.5,78
+4,436,5067,115587,1744,11971,17.9,72
+5,476,5575,125320,1832,13020,18.5,71
