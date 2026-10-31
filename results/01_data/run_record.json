@@ -1,8 +1,7 @@
 {
- "git commit": "72ac2c8d67a9985b48e43c470167f5f4b282fd11",
+ "git commit": "333bc737bab07a4037123401387fabfb168d5424",
  "tracked files changed since that commit": [
-  " M notebooks/02_gene_graph.ipynb",
-  " M results/02_gene_graph/run_record.json"
+  " M notebooks/01_data.ipynb"
  ],
  "python": "3.12.14",
  "packages": {
