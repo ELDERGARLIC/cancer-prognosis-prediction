@@ -1,12 +1,6 @@
 {
- "git commit": "f9966dca795831a47c53c42acecb00936e504da6",
- "tracked files changed since that commit": [
-  " M README.md",
-  " M notebooks/01_data.ipynb",
-  " M notebooks/02_gene_graph.ipynb",
-  " M results/01_data/run_record.json",
-  " M results/02_gene_graph/run_record.json"
- ],
+ "git commit": "8e966af53bc8505dd1236d9ceb5d4c2b624321ae",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
