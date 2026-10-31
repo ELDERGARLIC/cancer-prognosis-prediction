@@ -18,6 +18,51 @@ graph minus clinical upper,0.072
 graph minus selector mean,0.033
 graph minus selector lower,-0.051
 graph minus selector upper,0.117
+"graph model, STRING 400 mean C",0.714
+"graph model, STRING 400 SD C",0.064
+"graph model, STRING 400 mean Uno C",0.703
+"graph model, STRING 400, gene identity mean C",0.726
+"graph model, STRING 400, gene identity SD C",0.043
+"graph model, STRING 400, gene identity mean Uno C",0.713
+"graph model, STRING 700, gene identity mean C",0.719
+"graph model, STRING 700, gene identity SD C",0.043
+"graph model, STRING 700, gene identity mean Uno C",0.709
+selector plus clinical covariates mean C,0.731
+selector plus clinical covariates SD C,0.037
+selector plus clinical covariates mean Uno C,0.738
+graph model minus no-graph model mean,0.002
+graph model minus no-graph model lower,-0.001
+graph model minus no-graph model upper,0.006
+"graph model, STRING 400 minus clinical-only Cox mean",-0.016
+"graph model, STRING 400 minus clinical-only Cox lower",-0.113
+"graph model, STRING 400 minus clinical-only Cox upper",0.081
+"graph model, STRING 400, gene identity minus clinical-only Cox mean",-0.004
+"graph model, STRING 400, gene identity minus clinical-only Cox lower",-0.079
+"graph model, STRING 400, gene identity minus clinical-only Cox upper",0.072
+"graph model, STRING 700, gene identity minus clinical-only Cox mean",-0.011
+"graph model, STRING 700, gene identity minus clinical-only Cox lower",-0.097
+"graph model, STRING 700, gene identity minus clinical-only Cox upper",0.075
+selector plus clinical covariates minus clinical-only Cox mean,0.001
+selector plus clinical covariates minus clinical-only Cox lower,-0.04
+selector plus clinical covariates minus clinical-only Cox upper,0.042
+"graph model, STRING 400 minus no-graph model mean",-0.0
+"graph model, STRING 400 minus no-graph model lower",-0.018
+"graph model, STRING 400 minus no-graph model upper",0.017
+"graph model, STRING 400, gene identity minus no-graph model mean",0.012
+"graph model, STRING 400, gene identity minus no-graph model lower",-0.022
+"graph model, STRING 400, gene identity minus no-graph model upper",0.046
+"graph model, STRING 400, gene identity minus graph model, STRING 400 mean",0.013
+"graph model, STRING 400, gene identity minus graph model, STRING 400 lower",-0.038
+"graph model, STRING 400, gene identity minus graph model, STRING 400 upper",0.063
+"graph model, STRING 700, gene identity minus no-graph model mean",0.005
+"graph model, STRING 700, gene identity minus no-graph model lower",-0.025
+"graph model, STRING 700, gene identity minus no-graph model upper",0.034
+"graph model, STRING 700, gene identity minus graph model mean",0.002
+"graph model, STRING 700, gene identity minus graph model lower",-0.03
+"graph model, STRING 700, gene identity minus graph model upper",0.035
+"graph model, STRING 400 minus graph model mean",-0.003
+"graph model, STRING 400 minus graph model lower",-0.018
+"graph model, STRING 400 minus graph model upper",0.012
 "genes selected, smallest",160
 "genes selected, largest",476
 final model trained,yes

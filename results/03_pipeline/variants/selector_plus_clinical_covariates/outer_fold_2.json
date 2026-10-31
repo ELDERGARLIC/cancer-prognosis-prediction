@@ -1,0 +1,14 @@
+{
+ "fold": 2,
+ "row": "selector plus clinical covariates",
+ "stage C": {
+  "genes": 142,
+  "scores": {
+   "Harrell's C": 0.7399851632047477,
+   "Uno's C (5 years)": 0.7470525126101867
+  }
+ },
+ "minutes": {
+  "stage C": 0.0
+ }
+}

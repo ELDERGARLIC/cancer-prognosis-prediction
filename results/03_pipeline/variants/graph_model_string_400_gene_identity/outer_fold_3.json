@@ -1,0 +1,44 @@
+{
+ "fold": 3,
+ "row": "graph model, STRING 400, gene identity",
+ "stage B": {
+  "hidden size": 128,
+  "dropout": 0.5,
+  "inner mean C": 0.7514859581934185,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "inner mean C": 0.7514859581934185
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "inner mean C": 0.7500493874776472
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "inner mean C": 0.7481692045685614
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "inner mean C": 0.7461909888713173
+   }
+  ]
+ },
+ "stage C": {
+  "genes": 472,
+  "edges": 663,
+  "scores": {
+   "Harrell's C": 0.6683168316831684,
+   "Uno's C (5 years)": 0.6803245451512595
+  }
+ },
+ "minutes": {
+  "stage B": 21.9,
+  "stage C": 2.1
+ }
+}

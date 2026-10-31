@@ -1,0 +1,52 @@
+{
+ "git commit": "ffc082322e3afba28e67c0c10a5fa2f46e4dd4b6",
+ "tracked files changed since that commit": [
+  "M notebooks/03_pipeline.ipynb",
+  " M results/03_pipeline/run_record.json",
+  " M results/03_pipeline/summary.csv"
+ ],
+ "mode": "computed",
+ "python": "3.12.14",
+ "packages": {
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "scikit-learn": "1.9.1",
+  "scikit-survival": "0.28.0",
+  "torch": "2.14.0+cpu",
+  "torch_geometric": "2.8.0.post1",
+  "torchsurv": "0.2.0"
+ },
+ "seeds": {
+  "folds": 0,
+  "torch": 0
+ },
+ "cohort table (sha256)": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
+ "edge list (sha256)": "e8116725e93b7b20c03b5d83759a48541bf17fd51e179ea95894c382fcf5f79b",
+ "minutes": {
+  "outer fold 1": "stage A 1.3, stage B 11.8, stage C 0.6",
+  "outer fold 2": "stage A 1.1, stage B 7.1, stage C 0.5",
+  "outer fold 3": "stage A 1.1, stage B 17.7, stage C 1.8",
+  "outer fold 4": "stage A 1.2, stage B 17.1, stage C 0.8",
+  "outer fold 5": "stage A 1.1, stage B 17.6, stage C 0.9",
+  "graph model, STRING 400, outer fold 1": "see the variant file",
+  "graph model, STRING 400, outer fold 2": "see the variant file",
+  "graph model, STRING 400, outer fold 3": "see the variant file",
+  "graph model, STRING 400, outer fold 4": "see the variant file",
+  "graph model, STRING 400, outer fold 5": "see the variant file",
+  "graph model, STRING 400, gene identity, outer fold 1": "see the variant file",
+  "graph model, STRING 400, gene identity, outer fold 2": "see the variant file",
+  "graph model, STRING 400, gene identity, outer fold 3": "see the variant file",
+  "graph model, STRING 400, gene identity, outer fold 4": "see the variant file",
+  "graph model, STRING 400, gene identity, outer fold 5": "see the variant file",
+  "graph model, STRING 700, gene identity, outer fold 1": "see the variant file",
+  "graph model, STRING 700, gene identity, outer fold 2": "see the variant file",
+  "graph model, STRING 700, gene identity, outer fold 3": "see the variant file",
+  "graph model, STRING 700, gene identity, outer fold 4": "see the variant file",
+  "graph model, STRING 700, gene identity, outer fold 5": "see the variant file",
+  "selector plus clinical covariates, outer fold 1": "see the variant file",
+  "selector plus clinical covariates, outer fold 2": "see the variant file",
+  "selector plus clinical covariates, outer fold 3": "see the variant file",
+  "selector plus clinical covariates, outer fold 4": "see the variant file",
+  "selector plus clinical covariates, outer fold 5": "see the variant file"
+ }
+}

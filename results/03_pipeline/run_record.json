@@ -1,10 +1,9 @@
 {
- "git commit": "38b3638b8066b2ad88e417a36e77ae07b436c6d2",
+ "git commit": "ffc082322e3afba28e67c0c10a5fa2f46e4dd4b6",
  "tracked files changed since that commit": [
-  "M notebooks/01_data.ipynb",
-  " M notebooks/02_gene_graph.ipynb",
-  " M results/01_data/run_record.json",
-  " M results/02_gene_graph/run_record.json"
+  "M notebooks/03_pipeline.ipynb",
+  " M results/03_pipeline/run_record.json",
+  " M results/03_pipeline/summary.csv"
  ],
  "mode": "read the saved results",
  "python": "3.12.14",
@@ -28,6 +27,7 @@
   "outer fold 2": "stage A 1.1, stage B 7.1, stage C 0.5",
   "outer fold 3": "stage A 1.1, stage B 17.7, stage C 1.8",
   "outer fold 4": "stage A 1.2, stage B 17.1, stage C 0.8",
-  "outer fold 5": "stage A 1.1, stage B 17.6, stage C 0.9"
+  "outer fold 5": "stage A 1.1, stage B 17.6, stage C 0.9",
+  "exploratory rows": "stage B and stage C minutes are in each variant file"
  }
 }
