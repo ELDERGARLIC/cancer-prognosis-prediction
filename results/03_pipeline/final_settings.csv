@@ -1,0 +1,9 @@
+,final model
+L1 ratio,0.5
+place on the path,21
+penalty,0.0096
+hidden size,64
+dropout,0.5
+final genes,450
+model file sha256,3fca65c483e0bed0...
+minutes,29.8

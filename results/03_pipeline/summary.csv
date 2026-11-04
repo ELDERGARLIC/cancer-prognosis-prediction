@@ -1,0 +1,117 @@
+,value
+outer folds done,5
+clinical-only Cox mean C,0.73
+clinical-only Cox SD C,0.053
+clinical-only Cox mean Uno C,0.706
+graph model mean C,0.721
+graph model SD C,0.049
+graph model mean Uno C,0.715
+no-graph model mean C,0.72
+no-graph model SD C,0.048
+no-graph model mean Uno C,0.713
+selector as a model mean C,0.686
+selector as a model SD C,0.017
+selector as a model mean Uno C,0.695
+graph minus clinical mean,-0.009
+graph minus clinical lower,-0.099
+graph minus clinical upper,0.082
+graph minus selector mean,0.036
+graph minus selector lower,-0.034
+graph minus selector upper,0.105
+clinical MLP mean C,0.718
+clinical MLP SD C,0.05
+clinical MLP mean Uno C,0.694
+gene MLP mean C,0.648
+gene MLP SD C,0.033
+gene MLP mean Uno C,0.662
+gene plus clinical MLP mean C,0.69
+gene plus clinical MLP SD C,0.024
+gene plus clinical MLP mean Uno C,0.699
+"graph model, STRING 400 mean C",0.715
+"graph model, STRING 400 SD C",0.062
+"graph model, STRING 400 mean Uno C",0.704
+"graph model, STRING 400, gene identity mean C",0.722
+"graph model, STRING 400, gene identity SD C",0.052
+"graph model, STRING 400, gene identity mean Uno C",0.715
+"graph model, STRING 700, gene identity mean C",0.723
+"graph model, STRING 700, gene identity SD C",0.05
+"graph model, STRING 700, gene identity mean Uno C",0.713
+"no-graph model, gene identity mean C",0.723
+"no-graph model, gene identity SD C",0.05
+"no-graph model, gene identity mean Uno C",0.714
+selector plus clinical covariates mean C,0.739
+selector plus clinical covariates SD C,0.074
+selector plus clinical covariates mean Uno C,0.736
+graph model minus no-graph model mean,0.001
+graph model minus no-graph model lower,-0.001
+graph model minus no-graph model upper,0.004
+"graph model, STRING 400 minus no-graph model mean",-0.005
+"graph model, STRING 400 minus no-graph model lower",-0.036
+"graph model, STRING 400 minus no-graph model upper",0.027
+"graph model, STRING 700, gene identity minus no-graph model, gene identity mean",-0.0
+"graph model, STRING 700, gene identity minus no-graph model, gene identity lower",-0.005
+"graph model, STRING 700, gene identity minus no-graph model, gene identity upper",0.004
+"graph model, STRING 400, gene identity minus no-graph model, gene identity mean",-0.002
+"graph model, STRING 400, gene identity minus no-graph model, gene identity lower",-0.025
+"graph model, STRING 400, gene identity minus no-graph model, gene identity upper",0.022
+"graph model, STRING 700, gene identity minus graph model mean",0.002
+"graph model, STRING 700, gene identity minus graph model lower",-0.012
+"graph model, STRING 700, gene identity minus graph model upper",0.015
+"graph model, STRING 400, gene identity minus graph model, STRING 400 mean",0.007
+"graph model, STRING 400, gene identity minus graph model, STRING 400 lower",-0.032
+"graph model, STRING 400, gene identity minus graph model, STRING 400 upper",0.045
+"graph model, STRING 400 minus graph model mean",-0.006
+"graph model, STRING 400 minus graph model lower",-0.038
+"graph model, STRING 400 minus graph model upper",0.025
+"no-graph model, gene identity minus no-graph model mean",0.003
+"no-graph model, gene identity minus no-graph model lower",-0.015
+"no-graph model, gene identity minus no-graph model upper",0.022
+graph model minus gene plus clinical MLP mean,0.032
+graph model minus gene plus clinical MLP lower,-0.027
+graph model minus gene plus clinical MLP upper,0.09
+gene plus clinical MLP minus clinical MLP mean,-0.029
+gene plus clinical MLP minus clinical MLP lower,-0.095
+gene plus clinical MLP minus clinical MLP upper,0.038
+gene MLP minus selector as a model mean,-0.038
+gene MLP minus selector as a model lower,-0.081
+gene MLP minus selector as a model upper,0.005
+gene plus clinical MLP minus selector plus clinical covariates mean,-0.05
+gene plus clinical MLP minus selector plus clinical covariates lower,-0.152
+gene plus clinical MLP minus selector plus clinical covariates upper,0.053
+graph model minus clinical-only Cox mean,-0.009
+graph model minus clinical-only Cox lower,-0.099
+graph model minus clinical-only Cox upper,0.082
+selector as a model minus clinical-only Cox mean,-0.044
+selector as a model minus clinical-only Cox lower,-0.143
+selector as a model minus clinical-only Cox upper,0.054
+no-graph model minus clinical-only Cox mean,-0.01
+no-graph model minus clinical-only Cox lower,-0.099
+no-graph model minus clinical-only Cox upper,0.079
+clinical MLP minus clinical-only Cox mean,-0.012
+clinical MLP minus clinical-only Cox lower,-0.105
+clinical MLP minus clinical-only Cox upper,0.081
+gene MLP minus clinical-only Cox mean,-0.082
+gene MLP minus clinical-only Cox lower,-0.155
+gene MLP minus clinical-only Cox upper,-0.01
+gene plus clinical MLP minus clinical-only Cox mean,-0.04
+gene plus clinical MLP minus clinical-only Cox lower,-0.11
+gene plus clinical MLP minus clinical-only Cox upper,0.029
+"graph model, STRING 400 minus clinical-only Cox mean",-0.015
+"graph model, STRING 400 minus clinical-only Cox lower",-0.104
+"graph model, STRING 400 minus clinical-only Cox upper",0.075
+"graph model, STRING 400, gene identity minus clinical-only Cox mean",-0.008
+"graph model, STRING 400, gene identity minus clinical-only Cox lower",-0.115
+"graph model, STRING 400, gene identity minus clinical-only Cox upper",0.098
+"graph model, STRING 700, gene identity minus clinical-only Cox mean",-0.007
+"graph model, STRING 700, gene identity minus clinical-only Cox lower",-0.101
+"graph model, STRING 700, gene identity minus clinical-only Cox upper",0.087
+"no-graph model, gene identity minus clinical-only Cox mean",-0.007
+"no-graph model, gene identity minus clinical-only Cox lower",-0.1
+"no-graph model, gene identity minus clinical-only Cox upper",0.087
+selector plus clinical covariates minus clinical-only Cox mean,0.009
+selector plus clinical covariates minus clinical-only Cox lower,-0.044
+selector plus clinical covariates minus clinical-only Cox upper,0.062
+"genes selected, smallest",198
+"genes selected, largest",481
+final model trained,yes
+final genes,450

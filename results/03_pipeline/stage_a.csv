@@ -1,0 +1,6 @@
+outer fold,L1 ratio,place on the path,inner mean C,eligible settings of 75,genes in the inner fit parts,penalty,genes selected,edges,genes with an edge
+1,0.5,16,0.684,63,261 to 318,0.0194,300,63,75
+2,0.5,13,0.691,60,158 to 195,0.0291,198,24,36
+3,0.5,25,0.656,63,399 to 440,0.0064,472,153,168
+4,0.5,24,0.689,66,406 to 432,0.0053,481,144,145
+5,0.5,25,0.687,63,376 to 442,0.0066,476,142,143

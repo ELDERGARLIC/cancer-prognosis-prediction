@@ -1,0 +1,39 @@
+{
+ "stage B": {
+  "hidden size": 64,
+  "dropout": 0.5,
+  "inner mean C": 0.7108228958112743,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "inner mean C": 0.7108228958112743
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "inner mean C": 0.7095844180619054
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "inner mean C": 0.7085277252893689
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "inner mean C": 0.7082991342890466
+   }
+  ]
+ },
+ "genes": 0,
+ "edges": 0,
+ "scores": {
+  "Harrell's C": 0.6952893175074184,
+  "Uno's C (5 years)": 0.6184220787543049
+ },
+ "fold": 2,
+ "row": "clinical MLP",
+ "minutes": 0.1
+}

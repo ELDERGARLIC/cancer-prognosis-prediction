@@ -1,0 +1,24 @@
+comparison,mean difference,lower,upper,folds,question,includes 0
+graph model minus no-graph model,0.0013441658906967469,-0.0010216933063855647,0.0037100250877790584,5,do the edges change the score,yes
+"graph model, STRING 400 minus no-graph model",-0.004729129507995822,-0.03609530086640156,0.026637041850409913,5,do the edges change the score,yes
+"graph model, STRING 700, gene identity minus no-graph model, gene identity",-0.000489651566565108,-0.005374332692091111,0.004395029558960895,5,do the edges change the score,yes
+"graph model, STRING 400, gene identity minus no-graph model, gene identity",-0.0016068945924944788,-0.025101465459464643,0.021887676274475687,5,do the edges change the score,yes
+"graph model, STRING 700, gene identity minus graph model",0.0015908368748080103,-0.012282200304253595,0.015463874053869616,5,do gene identity or a denser graph change it,yes
+"graph model, STRING 400, gene identity minus graph model, STRING 400",0.0065468892475712085,-0.032045484550192696,0.04513926304533511,5,do gene identity or a denser graph change it,yes
+"graph model, STRING 400 minus graph model",-0.006073295398692569,-0.03762730588077089,0.025480715083385747,5,do gene identity or a denser graph change it,yes
+"no-graph model, gene identity minus no-graph model",0.003424654332069865,-0.01493961907466519,0.02178892773880492,5,do gene identity or a denser graph change it,yes
+graph model minus gene plus clinical MLP,0.031607444891254735,-0.027038323298838658,0.09025321308134812,5,do the plain networks differ,yes
+gene plus clinical MLP minus clinical MLP,-0.02870415376785713,-0.09515017100338267,0.037741863467668404,5,do the plain networks differ,yes
+gene MLP minus selector as a model,-0.03769809514317111,-0.08085251765315743,0.005456327366815221,5,do the plain networks differ,yes
+gene plus clinical MLP minus selector plus clinical covariates,-0.04958050137728709,-0.1517949050995487,0.05263390234497453,5,do the plain networks differ,yes
+graph model minus clinical-only Cox,-0.00868013235836318,-0.09922377975263877,0.08186351503591241,5,does a row beat the clinical-only Cox,yes
+selector as a model minus clinical-only Cox,-0.044446528696511355,-0.14269142766665646,0.05379837027363376,5,does a row beat the clinical-only Cox,yes
+no-graph model minus clinical-only Cox,-0.010024298249059926,-0.09905873752864265,0.0790101410305228,5,does a row beat the clinical-only Cox,yes
+clinical MLP minus clinical-only Cox,-0.01158342348176078,-0.1046332812381851,0.08146643427466355,5,does a row beat the clinical-only Cox,yes
+gene MLP minus clinical-only Cox,-0.08214462383968246,-0.15465934764017086,-0.009629900039194048,5,does a row beat the clinical-only Cox,no
+gene plus clinical MLP minus clinical-only Cox,-0.040287577249617915,-0.10980729369726012,0.029232139198024296,5,does a row beat the clinical-only Cox,yes
+"graph model, STRING 400 minus clinical-only Cox",-0.014753427757055747,-0.1041031616892974,0.0745963061751859,5,does a row beat the clinical-only Cox,yes
+"graph model, STRING 400, gene identity minus clinical-only Cox",-0.00820653850948454,-0.1147249702440301,0.09831189322506102,5,does a row beat the clinical-only Cox,yes
+"graph model, STRING 700, gene identity minus clinical-only Cox",-0.007089295483555169,-0.10141382599562387,0.08723523502851355,5,does a row beat the clinical-only Cox,yes
+"no-graph model, gene identity minus clinical-only Cox",-0.006599643916990061,-0.10010303676439901,0.0869037489304189,5,does a row beat the clinical-only Cox,yes
+selector plus clinical covariates minus clinical-only Cox,0.009292924127669178,-0.043801626111804104,0.062387474367142454,5,does a row beat the clinical-only Cox,yes

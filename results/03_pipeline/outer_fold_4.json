@@ -1,0 +1,3678 @@
+{
+ "fold": 4,
+ "patients": {
+  "training": 851,
+  "test": 213,
+  "training deaths": 120,
+  "test deaths": 30
+ },
+ "stage A": {
+  "l1 ratio": 0.5,
+  "place": 24,
+  "inner mean C": 0.6894472400324793,
+  "fewest genes": 406,
+  "most genes": 432,
+  "eligible settings": 66,
+  "settings": [
+   {
+    "l1 ratio": 0.5,
+    "place": 1,
+    "inner mean C": 0.5,
+    "fewest genes": 0,
+    "most genes": 0,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 2,
+    "inner mean C": 0.4910654010983729,
+    "fewest genes": 2,
+    "most genes": 7,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 3,
+    "inner mean C": 0.4844462491586346,
+    "fewest genes": 8,
+    "most genes": 17,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 4,
+    "inner mean C": 0.4781901951106876,
+    "fewest genes": 18,
+    "most genes": 29,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 5,
+    "inner mean C": 0.488864952865627,
+    "fewest genes": 31,
+    "most genes": 53,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 6,
+    "inner mean C": 0.5265103280996463,
+    "fewest genes": 54,
+    "most genes": 76,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 7,
+    "inner mean C": 0.5573290156580348,
+    "fewest genes": 62,
+    "most genes": 105,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 8,
+    "inner mean C": 0.5820477360012326,
+    "fewest genes": 93,
+    "most genes": 145,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 9,
+    "inner mean C": 0.6018835577916898,
+    "fewest genes": 118,
+    "most genes": 161,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 10,
+    "inner mean C": 0.6120099358449421,
+    "fewest genes": 144,
+    "most genes": 185,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 11,
+    "inner mean C": 0.6199690688504527,
+    "fewest genes": 162,
+    "most genes": 205,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 12,
+    "inner mean C": 0.629424543268297,
+    "fewest genes": 194,
+    "most genes": 238,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 13,
+    "inner mean C": 0.6413252014813483,
+    "fewest genes": 222,
+    "most genes": 253,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 14,
+    "inner mean C": 0.6501982048056593,
+    "fewest genes": 247,
+    "most genes": 269,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 15,
+    "inner mean C": 0.6592606561868835,
+    "fewest genes": 258,
+    "most genes": 290,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 16,
+    "inner mean C": 0.6658474291781998,
+    "fewest genes": 276,
+    "most genes": 312,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 17,
+    "inner mean C": 0.6733370382399573,
+    "fewest genes": 294,
+    "most genes": 333,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 18,
+    "inner mean C": 0.677429548112715,
+    "fewest genes": 312,
+    "most genes": 342,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 19,
+    "inner mean C": 0.6827768103176913,
+    "fewest genes": 325,
+    "most genes": 359,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 20,
+    "inner mean C": 0.684732837339139,
+    "fewest genes": 343,
+    "most genes": 367,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 21,
+    "inner mean C": 0.6875634295628357,
+    "fewest genes": 361,
+    "most genes": 378,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 22,
+    "inner mean C": 0.6883693341806192,
+    "fewest genes": 376,
+    "most genes": 396,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 23,
+    "inner mean C": 0.6887187970368127,
+    "fewest genes": 385,
+    "most genes": 415,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 24,
+    "inner mean C": 0.6894472400324793,
+    "fewest genes": 406,
+    "most genes": 432,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.5,
+    "place": 25,
+    "inner mean C": 0.6878840682569752,
+    "fewest genes": 424,
+    "most genes": 451,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 1,
+    "inner mean C": 0.5,
+    "fewest genes": 0,
+    "most genes": 0,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 2,
+    "inner mean C": 0.49219347556629395,
+    "fewest genes": 2,
+    "most genes": 7,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 3,
+    "inner mean C": 0.481754761567639,
+    "fewest genes": 7,
+    "most genes": 16,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 4,
+    "inner mean C": 0.47293188778662865,
+    "fewest genes": 17,
+    "most genes": 27,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 5,
+    "inner mean C": 0.4819813932728783,
+    "fewest genes": 28,
+    "most genes": 49,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 6,
+    "inner mean C": 0.5225486097351195,
+    "fewest genes": 46,
+    "most genes": 69,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 7,
+    "inner mean C": 0.5538201769389248,
+    "fewest genes": 59,
+    "most genes": 93,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 8,
+    "inner mean C": 0.5832950065358714,
+    "fewest genes": 85,
+    "most genes": 118,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 9,
+    "inner mean C": 0.5986318089748444,
+    "fewest genes": 98,
+    "most genes": 142,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 10,
+    "inner mean C": 0.609037078417068,
+    "fewest genes": 114,
+    "most genes": 158,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 11,
+    "inner mean C": 0.6145295617716562,
+    "fewest genes": 133,
+    "most genes": 173,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 12,
+    "inner mean C": 0.6268454820062794,
+    "fewest genes": 159,
+    "most genes": 192,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 13,
+    "inner mean C": 0.6339076804807624,
+    "fewest genes": 179,
+    "most genes": 206,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 14,
+    "inner mean C": 0.6393471256954381,
+    "fewest genes": 197,
+    "most genes": 220,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 15,
+    "inner mean C": 0.6491090350010043,
+    "fewest genes": 208,
+    "most genes": 226,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 16,
+    "inner mean C": 0.6557693380372521,
+    "fewest genes": 213,
+    "most genes": 235,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 17,
+    "inner mean C": 0.6611023539739261,
+    "fewest genes": 223,
+    "most genes": 243,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 18,
+    "inner mean C": 0.6687066003510288,
+    "fewest genes": 236,
+    "most genes": 250,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 19,
+    "inner mean C": 0.6750004385429664,
+    "fewest genes": 240,
+    "most genes": 263,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 20,
+    "inner mean C": 0.6792218441811274,
+    "fewest genes": 244,
+    "most genes": 265,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 21,
+    "inner mean C": 0.6794802325726594,
+    "fewest genes": 252,
+    "most genes": 271,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 22,
+    "inner mean C": 0.679140091235845,
+    "fewest genes": 258,
+    "most genes": 277,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 23,
+    "inner mean C": 0.6802444048891347,
+    "fewest genes": 267,
+    "most genes": 292,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 24,
+    "inner mean C": 0.6818273229970611,
+    "fewest genes": 275,
+    "most genes": 300,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 0.75,
+    "place": 25,
+    "inner mean C": 0.6812494430245616,
+    "fewest genes": 282,
+    "most genes": 309,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 1,
+    "inner mean C": 0.5,
+    "fewest genes": 0,
+    "most genes": 0,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 2,
+    "inner mean C": 0.4915982924345424,
+    "fewest genes": 2,
+    "most genes": 7,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 3,
+    "inner mean C": 0.48245318834382755,
+    "fewest genes": 7,
+    "most genes": 15,
+    "eligible": false
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 4,
+    "inner mean C": 0.47238805310915194,
+    "fewest genes": 15,
+    "most genes": 23,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 5,
+    "inner mean C": 0.4798264500038232,
+    "fewest genes": 26,
+    "most genes": 43,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 6,
+    "inner mean C": 0.5203700432157405,
+    "fewest genes": 45,
+    "most genes": 65,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 7,
+    "inner mean C": 0.5513422834700151,
+    "fewest genes": 55,
+    "most genes": 85,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 8,
+    "inner mean C": 0.5799589807361059,
+    "fewest genes": 79,
+    "most genes": 106,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 9,
+    "inner mean C": 0.5938652040233545,
+    "fewest genes": 89,
+    "most genes": 121,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 10,
+    "inner mean C": 0.6020520332261842,
+    "fewest genes": 100,
+    "most genes": 142,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 11,
+    "inner mean C": 0.6119626564360121,
+    "fewest genes": 116,
+    "most genes": 154,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 12,
+    "inner mean C": 0.6227762270972159,
+    "fewest genes": 140,
+    "most genes": 171,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 13,
+    "inner mean C": 0.6316525912560774,
+    "fewest genes": 148,
+    "most genes": 181,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 14,
+    "inner mean C": 0.6368551927432042,
+    "fewest genes": 166,
+    "most genes": 186,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 15,
+    "inner mean C": 0.6415321350561654,
+    "fewest genes": 177,
+    "most genes": 193,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 16,
+    "inner mean C": 0.6466832937348094,
+    "fewest genes": 179,
+    "most genes": 201,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 17,
+    "inner mean C": 0.6542940587495949,
+    "fewest genes": 187,
+    "most genes": 196,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 18,
+    "inner mean C": 0.6629688555439616,
+    "fewest genes": 190,
+    "most genes": 202,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 19,
+    "inner mean C": 0.6658906424839235,
+    "fewest genes": 192,
+    "most genes": 205,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 20,
+    "inner mean C": 0.6686226734799823,
+    "fewest genes": 199,
+    "most genes": 210,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 21,
+    "inner mean C": 0.6692313660971829,
+    "fewest genes": 199,
+    "most genes": 214,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 22,
+    "inner mean C": 0.6673506615553755,
+    "fewest genes": 200,
+    "most genes": 221,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 23,
+    "inner mean C": 0.6692524664686079,
+    "fewest genes": 201,
+    "most genes": 213,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 24,
+    "inner mean C": 0.6708867668451866,
+    "fewest genes": 204,
+    "most genes": 213,
+    "eligible": true
+   },
+   {
+    "l1 ratio": 1.0,
+    "place": 25,
+    "inner mean C": 0.6713927514062734,
+    "fewest genes": 204,
+    "most genes": 213,
+    "eligible": true
+   }
+  ],
+  "inner folds": [
+   {
+    "place": 1,
+    "penalty": 0.10987383790596286,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 2,
+    "penalty": 0.0969805653657062,
+    "genes": 4,
+    "inner C": 0.47360594795539035,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 3,
+    "penalty": 0.08560026879830683,
+    "genes": 12,
+    "inner C": 0.4513011152416357,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 4,
+    "penalty": 0.07555540628899513,
+    "genes": 26,
+    "inner C": 0.45055762081784384,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 5,
+    "penalty": 0.0666892697842561,
+    "genes": 39,
+    "inner C": 0.4646840148698885,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 6,
+    "penalty": 0.05886354031829327,
+    "genes": 61,
+    "inner C": 0.5048327137546469,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 7,
+    "penalty": 0.0519561301242697,
+    "genes": 80,
+    "inner C": 0.5397769516728624,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 8,
+    "penalty": 0.04585927796550031,
+    "genes": 112,
+    "inner C": 0.5643122676579926,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 9,
+    "penalty": 0.0404778679722075,
+    "genes": 140,
+    "inner C": 0.5843866171003718,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 10,
+    "penalty": 0.03572794575632144,
+    "genes": 160,
+    "inner C": 0.59182156133829,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 11,
+    "penalty": 0.031535408654504604,
+    "genes": 192,
+    "inner C": 0.6044609665427509,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 12,
+    "penalty": 0.02783484966612298,
+    "genes": 212,
+    "inner C": 0.6096654275092936,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 13,
+    "penalty": 0.024568537050652588,
+    "genes": 234,
+    "inner C": 0.6230483271375464,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 14,
+    "penalty": 0.021685513665408062,
+    "genes": 252,
+    "inner C": 0.6356877323420075,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 15,
+    "penalty": 0.01914080199252681,
+    "genes": 276,
+    "inner C": 0.6475836431226766,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 16,
+    "penalty": 0.016894702452980803,
+    "genes": 288,
+    "inner C": 0.6535315985130111,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 17,
+    "penalty": 0.01491217406074192,
+    "genes": 307,
+    "inner C": 0.6609665427509294,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 18,
+    "penalty": 0.013162287754800321,
+    "genes": 317,
+    "inner C": 0.6661710037174721,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 19,
+    "penalty": 0.011617743880569152,
+    "genes": 328,
+    "inner C": 0.6713754646840149,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 20,
+    "penalty": 0.010254446292991683,
+    "genes": 343,
+    "inner C": 0.6713754646840149,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 21,
+    "penalty": 0.009051126437011746,
+    "genes": 361,
+    "inner C": 0.6736059479553903,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 22,
+    "penalty": 0.00798901154075598,
+    "genes": 376,
+    "inner C": 0.6743494423791822,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 23,
+    "penalty": 0.007051531744970741,
+    "genes": 385,
+    "inner C": 0.6788104089219331,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 24,
+    "penalty": 0.006224061599693826,
+    "genes": 406,
+    "inner C": 0.6728624535315985,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 25,
+    "penalty": 0.005493691895298134,
+    "genes": 424,
+    "inner C": 0.6713754646840149,
+    "l1 ratio": 0.5,
+    "inner fold": 1
+   },
+   {
+    "place": 1,
+    "penalty": 0.11115294358861633,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 2,
+    "penalty": 0.09810957291318434,
+    "genes": 4,
+    "inner C": 0.5225609756097561,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 3,
+    "penalty": 0.08659679164981847,
+    "genes": 11,
+    "inner C": 0.49085365853658536,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 4,
+    "penalty": 0.0764349910143613,
+    "genes": 23,
+    "inner C": 0.4823170731707317,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 5,
+    "penalty": 0.06746563862308795,
+    "genes": 46,
+    "inner C": 0.5067073170731707,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 6,
+    "penalty": 0.05954880525812973,
+    "genes": 63,
+    "inner C": 0.551219512195122,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 7,
+    "penalty": 0.0525609818574686,
+    "genes": 77,
+    "inner C": 0.5853658536585366,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 8,
+    "penalty": 0.04639315267276466,
+    "genes": 97,
+    "inner C": 0.6170731707317073,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 9,
+    "penalty": 0.04094909453470604,
+    "genes": 134,
+    "inner C": 0.6347560975609756,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 10,
+    "penalty": 0.036143875693032665,
+    "genes": 165,
+    "inner C": 0.6304878048780488,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 11,
+    "penalty": 0.031902530811912994,
+    "genes": 199,
+    "inner C": 0.6286585365853659,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 12,
+    "penalty": 0.028158891449520187,
+    "genes": 226,
+    "inner C": 0.6365853658536585,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 13,
+    "penalty": 0.02485455377633454,
+    "genes": 253,
+    "inner C": 0.6390243902439025,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 14,
+    "penalty": 0.021937967427735214,
+    "genes": 265,
+    "inner C": 0.6365853658536585,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 15,
+    "penalty": 0.019363631276238018,
+    "genes": 283,
+    "inner C": 0.6365853658536585,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 16,
+    "penalty": 0.01709138357676974,
+    "genes": 300,
+    "inner C": 0.6378048780487805,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 17,
+    "penalty": 0.015085775410665992,
+    "genes": 321,
+    "inner C": 0.6396341463414634,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 18,
+    "penalty": 0.013315517653607493,
+    "genes": 342,
+    "inner C": 0.6432926829268293,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 19,
+    "penalty": 0.01175299283974329,
+    "genes": 359,
+    "inner C": 0.6475609756097561,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 20,
+    "penalty": 0.01037382430668278,
+    "genes": 367,
+    "inner C": 0.6463414634146342,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 21,
+    "penalty": 0.00915649589966678,
+    "genes": 374,
+    "inner C": 0.65,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 22,
+    "penalty": 0.008082016301992333,
+    "genes": 390,
+    "inner C": 0.6481707317073171,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 23,
+    "penalty": 0.007133622754971898,
+    "genes": 409,
+    "inner C": 0.6475609756097561,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 24,
+    "penalty": 0.00629651954521647,
+    "genes": 432,
+    "inner C": 0.650609756097561,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 25,
+    "penalty": 0.00555764717943081,
+    "genes": 451,
+    "inner C": 0.649390243902439,
+    "l1 ratio": 0.5,
+    "inner fold": 2
+   },
+   {
+    "place": 1,
+    "penalty": 0.10079419448171431,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 2,
+    "penalty": 0.08896638319655079,
+    "genes": 7,
+    "inner C": 0.6154798761609908,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 3,
+    "penalty": 0.07852652010142733,
+    "genes": 17,
+    "inner C": 0.6179566563467492,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 4,
+    "penalty": 0.06931173481130051,
+    "genes": 29,
+    "inner C": 0.5919504643962848,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 5,
+    "penalty": 0.061178269154763244,
+    "genes": 53,
+    "inner C": 0.58328173374613,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 6,
+    "penalty": 0.05399923442923891,
+    "genes": 76,
+    "inner C": 0.5956656346749226,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 7,
+    "penalty": 0.04766263183365775,
+    "genes": 105,
+    "inner C": 0.6006191950464397,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 8,
+    "penalty": 0.04206960519574952,
+    "genes": 145,
+    "inner C": 0.6136222910216719,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 9,
+    "penalty": 0.03713289873507205,
+    "genes": 161,
+    "inner C": 0.6495356037151703,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 10,
+    "penalty": 0.03277549580162038,
+    "genes": 185,
+    "inner C": 0.6662538699690402,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 11,
+    "penalty": 0.028929417353227568,
+    "genes": 205,
+    "inner C": 0.6705882352941176,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 12,
+    "penalty": 0.02553466142702404,
+    "genes": 238,
+    "inner C": 0.676780185758514,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 13,
+    "penalty": 0.02253826705984473,
+    "genes": 251,
+    "inner C": 0.6792569659442724,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 14,
+    "penalty": 0.019893488053978253,
+    "genes": 269,
+    "inner C": 0.6873065015479877,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 15,
+    "penalty": 0.017559063698329512,
+    "genes": 290,
+    "inner C": 0.6959752321981424,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 16,
+    "penalty": 0.015498575067650644,
+    "genes": 312,
+    "inner C": 0.6996904024767802,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 17,
+    "penalty": 0.013679876857582915,
+    "genes": 333,
+    "inner C": 0.7095975232198143,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 18,
+    "penalty": 0.01207459589167252,
+    "genes": 339,
+    "inner C": 0.7108359133126935,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 19,
+    "penalty": 0.010657688476660413,
+    "genes": 347,
+    "inner C": 0.7145510835913312,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 20,
+    "penalty": 0.009407049700427422,
+    "genes": 358,
+    "inner C": 0.7151702786377709,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 21,
+    "penalty": 0.0083031685773237,
+    "genes": 372,
+    "inner C": 0.7176470588235294,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 22,
+    "penalty": 0.00732882366086821,
+    "genes": 388,
+    "inner C": 0.7201238390092879,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 23,
+    "penalty": 0.006468814375127885,
+    "genes": 402,
+    "inner C": 0.7232198142414861,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 24,
+    "penalty": 0.005709723873326751,
+    "genes": 420,
+    "inner C": 0.7238390092879257,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 25,
+    "penalty": 0.005039709724085711,
+    "genes": 442,
+    "inner C": 0.7226006191950465,
+    "l1 ratio": 0.5,
+    "inner fold": 3
+   },
+   {
+    "place": 1,
+    "penalty": 0.1138663748279269,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 2,
+    "penalty": 0.10050459342657106,
+    "genes": 2,
+    "inner C": 0.4378737541528239,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 3,
+    "penalty": 0.08871076571204702,
+    "genes": 11,
+    "inner C": 0.42857142857142855,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 4,
+    "penalty": 0.07830089834617607,
+    "genes": 20,
+    "inner C": 0.43322259136212626,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 5,
+    "penalty": 0.06911258890177292,
+    "genes": 31,
+    "inner C": 0.46578073089700994,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 6,
+    "penalty": 0.0610024922522327,
+    "genes": 55,
+    "inner C": 0.5176079734219269,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 7,
+    "penalty": 0.05384408427056114,
+    "genes": 72,
+    "inner C": 0.5415282392026578,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 8,
+    "penalty": 0.047525687949727655,
+    "genes": 97,
+    "inner C": 0.546843853820598,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 9,
+    "penalty": 0.041948731150207544,
+    "genes": 118,
+    "inner C": 0.5588039867109634,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 10,
+    "penalty": 0.037026208794153324,
+    "genes": 144,
+    "inner C": 0.573421926910299,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 11,
+    "penalty": 0.03268132551516887,
+    "genes": 162,
+    "inner C": 0.5780730897009967,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 12,
+    "penalty": 0.02884629758791515,
+    "genes": 194,
+    "inner C": 0.5853820598006645,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 13,
+    "penalty": 0.025461295446671535,
+    "genes": 222,
+    "inner C": 0.6046511627906976,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 14,
+    "penalty": 0.02247351029527913,
+    "genes": 247,
+    "inner C": 0.6152823920265781,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 15,
+    "penalty": 0.019836330246819456,
+    "genes": 258,
+    "inner C": 0.6232558139534884,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 16,
+    "penalty": 0.017508613140135045,
+    "genes": 276,
+    "inner C": 0.6272425249169435,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 17,
+    "penalty": 0.01545404468853617,
+    "genes": 294,
+    "inner C": 0.6345514950166113,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 18,
+    "penalty": 0.013640571947289647,
+    "genes": 312,
+    "inner C": 0.6358803986710964,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 19,
+    "penalty": 0.012039903261520182,
+    "genes": 325,
+    "inner C": 0.6358803986710964,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 20,
+    "penalty": 0.010627066893303358,
+    "genes": 344,
+    "inner C": 0.6378737541528239,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 21,
+    "penalty": 0.009380021442172695,
+    "genes": 365,
+    "inner C": 0.6372093023255814,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 22,
+    "penalty": 0.00827931198128273,
+    "genes": 388,
+    "inner C": 0.639202657807309,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 23,
+    "penalty": 0.007307766544671588,
+    "genes": 398,
+    "inner C": 0.6378737541528239,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 24,
+    "penalty": 0.006450228230576645,
+    "genes": 418,
+    "inner C": 0.641860465116279,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 25,
+    "penalty": 0.005693318741396339,
+    "genes": 439,
+    "inner C": 0.641860465116279,
+    "l1 ratio": 0.5,
+    "inner fold": 4
+   },
+   {
+    "place": 1,
+    "penalty": 0.11723726805516665,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 2,
+    "penalty": 0.10347992529078548,
+    "genes": 3,
+    "inner C": 0.40580645161290324,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 3,
+    "penalty": 0.09133695381871053,
+    "genes": 8,
+    "inner C": 0.4335483870967742,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 4,
+    "penalty": 0.08061891337318278,
+    "genes": 18,
+    "inner C": 0.43290322580645163,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 5,
+    "penalty": 0.07115859377545097,
+    "genes": 33,
+    "inner C": 0.4238709677419355,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 6,
+    "penalty": 0.06280840631851034,
+    "genes": 54,
+    "inner C": 0.4632258064516129,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 7,
+    "penalty": 0.05543808126281495,
+    "genes": 62,
+    "inner C": 0.5193548387096775,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 8,
+    "penalty": 0.048932635522017924,
+    "genes": 93,
+    "inner C": 0.5683870967741935,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 9,
+    "penalty": 0.04319057883297801,
+    "genes": 119,
+    "inner C": 0.5819354838709677,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 10,
+    "penalty": 0.03812233042482075,
+    "genes": 149,
+    "inner C": 0.5980645161290322,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 11,
+    "penalty": 0.03364882148579918,
+    "genes": 171,
+    "inner C": 0.6180645161290322,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 12,
+    "penalty": 0.029700261625296594,
+    "genes": 197,
+    "inner C": 0.6387096774193548,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 13,
+    "penalty": 0.026215050086771708,
+    "genes": 227,
+    "inner C": 0.6606451612903226,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 14,
+    "penalty": 0.02313881472567959,
+    "genes": 255,
+    "inner C": 0.6761290322580645,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 15,
+    "penalty": 0.020423563759639565,
+    "genes": 271,
+    "inner C": 0.6929032258064516,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 16,
+    "penalty": 0.01802693705746035,
+    "genes": 281,
+    "inner C": 0.7109677419354838,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 17,
+    "penalty": 0.015911545286520175,
+    "genes": 296,
+    "inner C": 0.7219354838709677,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 18,
+    "penalty": 0.01404438660866164,
+    "genes": 315,
+    "inner C": 0.7309677419354839,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 19,
+    "penalty": 0.012396331824581159,
+    "genes": 336,
+    "inner C": 0.7445161290322581,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 20,
+    "penalty": 0.010941669934545296,
+    "genes": 352,
+    "inner C": 0.7529032258064516,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 21,
+    "penalty": 0.009657707025810236,
+    "genes": 378,
+    "inner C": 0.7593548387096775,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 22,
+    "penalty": 0.008524412229060762,
+    "genes": 396,
+    "inner C": 0.76,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 23,
+    "penalty": 0.007524105220500243,
+    "genes": 415,
+    "inner C": 0.7561290322580645,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 24,
+    "penalty": 0.006641180394369155,
+    "genes": 427,
+    "inner C": 0.7580645161290323,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 25,
+    "penalty": 0.005861863402758328,
+    "genes": 448,
+    "inner C": 0.7541935483870967,
+    "l1 ratio": 0.5,
+    "inner fold": 5
+   },
+   {
+    "place": 1,
+    "penalty": 0.07324922527064191,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 2,
+    "penalty": 0.06465371024380415,
+    "genes": 4,
+    "inner C": 0.47806691449814126,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 3,
+    "penalty": 0.05706684586553789,
+    "genes": 12,
+    "inner C": 0.44609665427509293,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 4,
+    "penalty": 0.05037027085933009,
+    "genes": 24,
+    "inner C": 0.4468401486988848,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 5,
+    "penalty": 0.04445951318950407,
+    "genes": 35,
+    "inner C": 0.46022304832713756,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 6,
+    "penalty": 0.03924236021219552,
+    "genes": 57,
+    "inner C": 0.5026022304832714,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 7,
+    "penalty": 0.034637420082846475,
+    "genes": 79,
+    "inner C": 0.5412639405204461,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 8,
+    "penalty": 0.03057285197700021,
+    "genes": 102,
+    "inner C": 0.5695167286245353,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 9,
+    "penalty": 0.02698524531480501,
+    "genes": 120,
+    "inner C": 0.5814126394052045,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 10,
+    "penalty": 0.0238186305042143,
+    "genes": 137,
+    "inner C": 0.5858736059479553,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 11,
+    "penalty": 0.021023605769669742,
+    "genes": 158,
+    "inner C": 0.5992565055762081,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 12,
+    "penalty": 0.018556566444081993,
+    "genes": 176,
+    "inner C": 0.6059479553903345,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 13,
+    "penalty": 0.016379024700435063,
+    "genes": 191,
+    "inner C": 0.6052044609665428,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 14,
+    "penalty": 0.014457009110272047,
+    "genes": 199,
+    "inner C": 0.6096654275092936,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 15,
+    "penalty": 0.012760534661684546,
+    "genes": 208,
+    "inner C": 0.6223048327137547,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 16,
+    "penalty": 0.011263134968653875,
+    "genes": 222,
+    "inner C": 0.6379182156133829,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 17,
+    "penalty": 0.009941449373827953,
+    "genes": 239,
+    "inner C": 0.6475836431226766,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 18,
+    "penalty": 0.00877485850320022,
+    "genes": 247,
+    "inner C": 0.6520446096654275,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 19,
+    "penalty": 0.007745162587046106,
+    "genes": 253,
+    "inner C": 0.6579925650557621,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 20,
+    "penalty": 0.006836297528661126,
+    "genes": 263,
+    "inner C": 0.6587360594795539,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 21,
+    "penalty": 0.006034084291341167,
+    "genes": 270,
+    "inner C": 0.6579925650557621,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 22,
+    "penalty": 0.0053260076938373225,
+    "genes": 277,
+    "inner C": 0.6602230483271375,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 23,
+    "penalty": 0.004701021163313829,
+    "genes": 279,
+    "inner C": 0.6631970260223048,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 24,
+    "penalty": 0.004149374399795886,
+    "genes": 288,
+    "inner C": 0.6631970260223048,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 25,
+    "penalty": 0.0036624612635320908,
+    "genes": 305,
+    "inner C": 0.6639405204460966,
+    "l1 ratio": 0.75,
+    "inner fold": 1
+   },
+   {
+    "place": 1,
+    "penalty": 0.07410196239241089,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 2,
+    "penalty": 0.0654063819421229,
+    "genes": 4,
+    "inner C": 0.5280487804878049,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 3,
+    "penalty": 0.05773119443321231,
+    "genes": 10,
+    "inner C": 0.48597560975609755,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 4,
+    "penalty": 0.05095666067624087,
+    "genes": 21,
+    "inner C": 0.4768292682926829,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 5,
+    "penalty": 0.04497709241539197,
+    "genes": 44,
+    "inner C": 0.5054878048780488,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 6,
+    "penalty": 0.03969920350541982,
+    "genes": 58,
+    "inner C": 0.5579268292682927,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 7,
+    "penalty": 0.035040654571645735,
+    "genes": 72,
+    "inner C": 0.5859756097560975,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 8,
+    "penalty": 0.030928768448509773,
+    "genes": 87,
+    "inner C": 0.6176829268292683,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 9,
+    "penalty": 0.027299396356470693,
+    "genes": 113,
+    "inner C": 0.6280487804878049,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 10,
+    "penalty": 0.024095917128688443,
+    "genes": 146,
+    "inner C": 0.6310975609756098,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 11,
+    "penalty": 0.021268353874608664,
+    "genes": 170,
+    "inner C": 0.6176829268292683,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 12,
+    "penalty": 0.018772594299680125,
+    "genes": 192,
+    "inner C": 0.6286585365853659,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 13,
+    "penalty": 0.016569702517556358,
+    "genes": 206,
+    "inner C": 0.6341463414634146,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 14,
+    "penalty": 0.014625311618490141,
+    "genes": 218,
+    "inner C": 0.6335365853658537,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 15,
+    "penalty": 0.01290908751749201,
+    "genes": 221,
+    "inner C": 0.6365853658536585,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 16,
+    "penalty": 0.011394255717846493,
+    "genes": 233,
+    "inner C": 0.6371951219512195,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 17,
+    "penalty": 0.01005718360711066,
+    "genes": 239,
+    "inner C": 0.6347560975609756,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 18,
+    "penalty": 0.008877011769071661,
+    "genes": 249,
+    "inner C": 0.6347560975609756,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 19,
+    "penalty": 0.00783532855982886,
+    "genes": 263,
+    "inner C": 0.6359756097560976,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 20,
+    "penalty": 0.006915882871121852,
+    "genes": 262,
+    "inner C": 0.6390243902439025,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 21,
+    "penalty": 0.006104330599777851,
+    "genes": 271,
+    "inner C": 0.6384146341463415,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 22,
+    "penalty": 0.005388010867994887,
+    "genes": 277,
+    "inner C": 0.6402439024390244,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 23,
+    "penalty": 0.004755748503314598,
+    "genes": 292,
+    "inner C": 0.6390243902439025,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 24,
+    "penalty": 0.004197679696810979,
+    "genes": 300,
+    "inner C": 0.6414634146341464,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 25,
+    "penalty": 0.0037050981196205396,
+    "genes": 309,
+    "inner C": 0.6390243902439025,
+    "l1 ratio": 0.75,
+    "inner fold": 2
+   },
+   {
+    "place": 1,
+    "penalty": 0.0671961296544762,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 2,
+    "penalty": 0.05931092213103385,
+    "genes": 7,
+    "inner C": 0.6105263157894737,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 3,
+    "penalty": 0.052351013400951545,
+    "genes": 16,
+    "inner C": 0.6210526315789474,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 4,
+    "penalty": 0.046207823207533666,
+    "genes": 27,
+    "inner C": 0.5789473684210527,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 5,
+    "penalty": 0.04078551276984215,
+    "genes": 49,
+    "inner C": 0.5746130030959752,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 6,
+    "penalty": 0.0359994896194926,
+    "genes": 69,
+    "inner C": 0.5814241486068111,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 7,
+    "penalty": 0.03177508788910516,
+    "genes": 93,
+    "inner C": 0.5869969040247678,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 8,
+    "penalty": 0.028046403463833,
+    "genes": 118,
+    "inner C": 0.6030959752321982,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 9,
+    "penalty": 0.024755265823381355,
+    "genes": 142,
+    "inner C": 0.6371517027863777,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 10,
+    "penalty": 0.02185033053441358,
+    "genes": 158,
+    "inner C": 0.6575851393188854,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 11,
+    "penalty": 0.019286278235485038,
+    "genes": 173,
+    "inner C": 0.6662538699690402,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 12,
+    "penalty": 0.01702310761801602,
+    "genes": 187,
+    "inner C": 0.6749226006191951,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 13,
+    "penalty": 0.015025511373229813,
+    "genes": 205,
+    "inner C": 0.6755417956656347,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 14,
+    "penalty": 0.01326232536931883,
+    "genes": 220,
+    "inner C": 0.6804953560371517,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 15,
+    "penalty": 0.011706042465553002,
+    "genes": 226,
+    "inner C": 0.6817337461300309,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 16,
+    "penalty": 0.010332383378433757,
+    "genes": 235,
+    "inner C": 0.676780185758514,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 17,
+    "penalty": 0.009119917905055272,
+    "genes": 243,
+    "inner C": 0.6761609907120743,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 18,
+    "penalty": 0.008049730594448343,
+    "genes": 250,
+    "inner C": 0.6786377708978328,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 19,
+    "penalty": 0.007105125651106939,
+    "genes": 256,
+    "inner C": 0.6842105263157895,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 20,
+    "penalty": 0.0062713664669516115,
+    "genes": 265,
+    "inner C": 0.6885448916408669,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 21,
+    "penalty": 0.005535445718215798,
+    "genes": 267,
+    "inner C": 0.6879256965944273,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 22,
+    "penalty": 0.004885882440578805,
+    "genes": 272,
+    "inner C": 0.6854489164086688,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 23,
+    "penalty": 0.004312542916751922,
+    "genes": 281,
+    "inner C": 0.6879256965944273,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 24,
+    "penalty": 0.0038064825822178325,
+    "genes": 281,
+    "inner C": 0.6953560371517028,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 25,
+    "penalty": 0.0033598064827238057,
+    "genes": 290,
+    "inner C": 0.6953560371517028,
+    "l1 ratio": 0.75,
+    "inner fold": 3
+   },
+   {
+    "place": 1,
+    "penalty": 0.07591091655195127,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 2,
+    "penalty": 0.06700306228438072,
+    "genes": 2,
+    "inner C": 0.4378737541528239,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 3,
+    "penalty": 0.05914051047469802,
+    "genes": 9,
+    "inner C": 0.42790697674418604,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 4,
+    "penalty": 0.05220059889745072,
+    "genes": 18,
+    "inner C": 0.42591362126245846,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 5,
+    "penalty": 0.04607505926784862,
+    "genes": 28,
+    "inner C": 0.44119601328903657,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 6,
+    "penalty": 0.04066832816815513,
+    "genes": 49,
+    "inner C": 0.5049833887043189,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 7,
+    "penalty": 0.0358960561803741,
+    "genes": 67,
+    "inner C": 0.53421926910299,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 8,
+    "penalty": 0.0316837919664851,
+    "genes": 88,
+    "inner C": 0.5461794019933555,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 9,
+    "penalty": 0.027965820766805028,
+    "genes": 100,
+    "inner C": 0.5588039867109634,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 10,
+    "penalty": 0.024684139196102215,
+    "genes": 114,
+    "inner C": 0.5661129568106312,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 11,
+    "penalty": 0.021787550343445913,
+    "genes": 133,
+    "inner C": 0.5700996677740864,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 12,
+    "penalty": 0.0192308650586101,
+    "genes": 159,
+    "inner C": 0.5840531561461794,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 13,
+    "penalty": 0.01697419696444769,
+    "genes": 179,
+    "inner C": 0.5933554817275748,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 14,
+    "penalty": 0.014982340196852753,
+    "genes": 197,
+    "inner C": 0.6046511627906976,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 15,
+    "penalty": 0.013224220164546304,
+    "genes": 208,
+    "inner C": 0.6139534883720931,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 16,
+    "penalty": 0.01167240876009003,
+    "genes": 213,
+    "inner C": 0.6172757475083056,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 17,
+    "penalty": 0.010302696459024112,
+    "genes": 223,
+    "inner C": 0.6192691029900332,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 18,
+    "penalty": 0.009093714631526431,
+    "genes": 236,
+    "inner C": 0.6232558139534884,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 19,
+    "penalty": 0.008026602174346788,
+    "genes": 240,
+    "inner C": 0.6239202657807309,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 20,
+    "penalty": 0.007084711262202238,
+    "genes": 244,
+    "inner C": 0.626578073089701,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 21,
+    "penalty": 0.00625334762811513,
+    "genes": 252,
+    "inner C": 0.627906976744186,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 22,
+    "penalty": 0.0055195413208551525,
+    "genes": 258,
+    "inner C": 0.6259136212624584,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 23,
+    "penalty": 0.004871844363114391,
+    "genes": 267,
+    "inner C": 0.6259136212624584,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 24,
+    "penalty": 0.004300152153717762,
+    "genes": 275,
+    "inner C": 0.6252491694352159,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 25,
+    "penalty": 0.003795545827597558,
+    "genes": 282,
+    "inner C": 0.6285714285714286,
+    "l1 ratio": 0.75,
+    "inner fold": 4
+   },
+   {
+    "place": 1,
+    "penalty": 0.07815817870344444,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 2,
+    "penalty": 0.06898661686052365,
+    "genes": 2,
+    "inner C": 0.4064516129032258,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 3,
+    "penalty": 0.06089130254580702,
+    "genes": 7,
+    "inner C": 0.42774193548387096,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 4,
+    "penalty": 0.053745942248788516,
+    "genes": 17,
+    "inner C": 0.43612903225806454,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 5,
+    "penalty": 0.04743906251696732,
+    "genes": 29,
+    "inner C": 0.42838709677419357,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 6,
+    "penalty": 0.04187227087900689,
+    "genes": 46,
+    "inner C": 0.46580645161290324,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 7,
+    "penalty": 0.03695872084187663,
+    "genes": 59,
+    "inner C": 0.5206451612903226,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 8,
+    "penalty": 0.032621757014678614,
+    "genes": 85,
+    "inner C": 0.58,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 9,
+    "penalty": 0.02879371922198534,
+    "genes": 98,
+    "inner C": 0.587741935483871,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 10,
+    "penalty": 0.025414886949880495,
+    "genes": 122,
+    "inner C": 0.604516129032258,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 11,
+    "penalty": 0.022432547657199448,
+    "genes": 138,
+    "inner C": 0.6193548387096774,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 12,
+    "penalty": 0.01980017441686439,
+    "genes": 161,
+    "inner C": 0.6406451612903226,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 13,
+    "penalty": 0.0174767000578478,
+    "genes": 181,
+    "inner C": 0.6612903225806451,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 14,
+    "penalty": 0.01542587648378639,
+    "genes": 206,
+    "inner C": 0.6683870967741935,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 15,
+    "penalty": 0.013615709173093038,
+    "genes": 220,
+    "inner C": 0.6909677419354838,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 16,
+    "penalty": 0.012017958038306893,
+    "genes": 226,
+    "inner C": 0.7096774193548387,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 17,
+    "penalty": 0.01060769685768011,
+    "genes": 232,
+    "inner C": 0.727741935483871,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 18,
+    "penalty": 0.009362924405774421,
+    "genes": 239,
+    "inner C": 0.7548387096774194,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 19,
+    "penalty": 0.008264221216387434,
+    "genes": 243,
+    "inner C": 0.7729032258064517,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 20,
+    "penalty": 0.007294446623030194,
+    "genes": 249,
+    "inner C": 0.7832258064516129,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 21,
+    "penalty": 0.006438471350540154,
+    "genes": 263,
+    "inner C": 0.7851612903225806,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 22,
+    "penalty": 0.005682941486040504,
+    "genes": 272,
+    "inner C": 0.7838709677419354,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 23,
+    "penalty": 0.005016070147000159,
+    "genes": 278,
+    "inner C": 0.7851612903225806,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 24,
+    "penalty": 0.004427453596246101,
+    "genes": 290,
+    "inner C": 0.7838709677419354,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 25,
+    "penalty": 0.0039079089351722164,
+    "genes": 299,
+    "inner C": 0.7793548387096774,
+    "l1 ratio": 0.75,
+    "inner fold": 5
+   },
+   {
+    "place": 1,
+    "penalty": 0.05493691895298143,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 2,
+    "penalty": 0.0484902826828531,
+    "genes": 4,
+    "inner C": 0.475092936802974,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 3,
+    "penalty": 0.042800134399153415,
+    "genes": 12,
+    "inner C": 0.44758364312267657,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 4,
+    "penalty": 0.03777770314449756,
+    "genes": 23,
+    "inner C": 0.44609665427509293,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 5,
+    "penalty": 0.03334463489212805,
+    "genes": 33,
+    "inner C": 0.4617100371747212,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 6,
+    "penalty": 0.029431770159146636,
+    "genes": 52,
+    "inner C": 0.5063197026022305,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 7,
+    "penalty": 0.02597806506213485,
+    "genes": 72,
+    "inner C": 0.537546468401487,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 8,
+    "penalty": 0.022929638982750154,
+    "genes": 91,
+    "inner C": 0.5687732342007435,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 9,
+    "penalty": 0.02023893398610375,
+    "genes": 108,
+    "inner C": 0.5687732342007435,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 10,
+    "penalty": 0.01786397287816072,
+    "genes": 124,
+    "inner C": 0.5784386617100372,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 11,
+    "penalty": 0.015767704327252302,
+    "genes": 136,
+    "inner C": 0.5866171003717472,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 12,
+    "penalty": 0.01391742483306149,
+    "genes": 156,
+    "inner C": 0.5903345724907063,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 13,
+    "penalty": 0.012284268525326294,
+    "genes": 166,
+    "inner C": 0.5910780669144982,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 14,
+    "penalty": 0.010842756832704031,
+    "genes": 174,
+    "inner C": 0.6007434944237918,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 15,
+    "penalty": 0.009570400996263405,
+    "genes": 177,
+    "inner C": 0.6029739776951673,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 16,
+    "penalty": 0.008447351226490402,
+    "genes": 187,
+    "inner C": 0.61635687732342,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 17,
+    "penalty": 0.00745608703037096,
+    "genes": 187,
+    "inner C": 0.6245353159851301,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 18,
+    "penalty": 0.006581143877400161,
+    "genes": 194,
+    "inner C": 0.6349442379182156,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 19,
+    "penalty": 0.005808871940284576,
+    "genes": 192,
+    "inner C": 0.6379182156133829,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 20,
+    "penalty": 0.005127223146495842,
+    "genes": 201,
+    "inner C": 0.6394052044609665,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 21,
+    "penalty": 0.004525563218505873,
+    "genes": 207,
+    "inner C": 0.6371747211895911,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 22,
+    "penalty": 0.00399450577037799,
+    "genes": 205,
+    "inner C": 0.6364312267657992,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 23,
+    "penalty": 0.0035257658724853706,
+    "genes": 213,
+    "inner C": 0.6423791821561339,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 24,
+    "penalty": 0.003112030799846913,
+    "genes": 213,
+    "inner C": 0.6490706319702603,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 25,
+    "penalty": 0.002746845947649067,
+    "genes": 212,
+    "inner C": 0.6520446096654275,
+    "l1 ratio": 1.0,
+    "inner fold": 1
+   },
+   {
+    "place": 1,
+    "penalty": 0.05557647179430816,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 2,
+    "penalty": 0.04905478645659217,
+    "genes": 4,
+    "inner C": 0.5310975609756098,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 3,
+    "penalty": 0.043298395824909235,
+    "genes": 9,
+    "inner C": 0.48353658536585364,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 4,
+    "penalty": 0.03821749550718065,
+    "genes": 20,
+    "inner C": 0.47865853658536583,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 5,
+    "penalty": 0.033732819311543975,
+    "genes": 38,
+    "inner C": 0.5079268292682927,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 6,
+    "penalty": 0.029774402629064865,
+    "genes": 54,
+    "inner C": 0.5554878048780488,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 7,
+    "penalty": 0.0262804909287343,
+    "genes": 65,
+    "inner C": 0.5829268292682926,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 8,
+    "penalty": 0.02319657633638233,
+    "genes": 81,
+    "inner C": 0.6109756097560975,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 9,
+    "penalty": 0.02047454726735302,
+    "genes": 102,
+    "inner C": 0.626219512195122,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 10,
+    "penalty": 0.018071937846516332,
+    "genes": 126,
+    "inner C": 0.6219512195121951,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 11,
+    "penalty": 0.015951265405956497,
+    "genes": 142,
+    "inner C": 0.6146341463414634,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 12,
+    "penalty": 0.014079445724760093,
+    "genes": 166,
+    "inner C": 0.6274390243902439,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 13,
+    "penalty": 0.01242727688816727,
+    "genes": 181,
+    "inner C": 0.6304878048780488,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 14,
+    "penalty": 0.010968983713867607,
+    "genes": 186,
+    "inner C": 0.6317073170731707,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 15,
+    "penalty": 0.009681815638119009,
+    "genes": 192,
+    "inner C": 0.6329268292682927,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 16,
+    "penalty": 0.00854569178838487,
+    "genes": 195,
+    "inner C": 0.6280487804878049,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 17,
+    "penalty": 0.007542887705332996,
+    "genes": 196,
+    "inner C": 0.6298780487804878,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 18,
+    "penalty": 0.006657758826803747,
+    "genes": 195,
+    "inner C": 0.626219512195122,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 19,
+    "penalty": 0.005876496419871645,
+    "genes": 201,
+    "inner C": 0.625609756097561,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 20,
+    "penalty": 0.00518691215334139,
+    "genes": 201,
+    "inner C": 0.6268292682926829,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 21,
+    "penalty": 0.00457824794983339,
+    "genes": 206,
+    "inner C": 0.6286585365853659,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 22,
+    "penalty": 0.0040410081509961665,
+    "genes": 210,
+    "inner C": 0.6280487804878049,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 23,
+    "penalty": 0.003566811377485949,
+    "genes": 208,
+    "inner C": 0.625609756097561,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 24,
+    "penalty": 0.003148259772608235,
+    "genes": 213,
+    "inner C": 0.625,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 25,
+    "penalty": 0.002778823589715405,
+    "genes": 211,
+    "inner C": 0.6207317073170732,
+    "l1 ratio": 1.0,
+    "inner fold": 2
+   },
+   {
+    "place": 1,
+    "penalty": 0.050397097240857155,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 2,
+    "penalty": 0.04448319159827539,
+    "genes": 7,
+    "inner C": 0.6068111455108359,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 3,
+    "penalty": 0.039263260050713664,
+    "genes": 15,
+    "inner C": 0.6241486068111455,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 4,
+    "penalty": 0.034655867405650256,
+    "genes": 23,
+    "inner C": 0.5746130030959752,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 5,
+    "penalty": 0.030589134577381622,
+    "genes": 43,
+    "inner C": 0.5671826625386996,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 6,
+    "penalty": 0.026999617214619454,
+    "genes": 65,
+    "inner C": 0.573374613003096,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 7,
+    "penalty": 0.023831315916828875,
+    "genes": 85,
+    "inner C": 0.5789473684210527,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 8,
+    "penalty": 0.02103480259787476,
+    "genes": 106,
+    "inner C": 0.5919504643962848,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 9,
+    "penalty": 0.018566449367536025,
+    "genes": 121,
+    "inner C": 0.6260061919504644,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 10,
+    "penalty": 0.01638774790081019,
+    "genes": 142,
+    "inner C": 0.643343653250774,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 11,
+    "penalty": 0.014464708676613784,
+    "genes": 154,
+    "inner C": 0.6588235294117647,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 12,
+    "penalty": 0.01276733071351202,
+    "genes": 171,
+    "inner C": 0.6650154798761609,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 13,
+    "penalty": 0.011269133529922365,
+    "genes": 175,
+    "inner C": 0.6755417956656347,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 14,
+    "penalty": 0.009946744026989127,
+    "genes": 186,
+    "inner C": 0.6755417956656347,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 15,
+    "penalty": 0.008779531849164756,
+    "genes": 193,
+    "inner C": 0.6780185758513931,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 16,
+    "penalty": 0.007749287533825322,
+    "genes": 193,
+    "inner C": 0.6811145510835913,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 17,
+    "penalty": 0.0068399384287914575,
+    "genes": 193,
+    "inner C": 0.6761609907120743,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 18,
+    "penalty": 0.00603729794583626,
+    "genes": 190,
+    "inner C": 0.6829721362229102,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 19,
+    "penalty": 0.005328844238330206,
+    "genes": 199,
+    "inner C": 0.6842105263157895,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 20,
+    "penalty": 0.004703524850213711,
+    "genes": 204,
+    "inner C": 0.6873065015479877,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 21,
+    "penalty": 0.00415158428866185,
+    "genes": 207,
+    "inner C": 0.686687306501548,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 22,
+    "penalty": 0.003664411830434105,
+    "genes": 202,
+    "inner C": 0.6804953560371517,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 23,
+    "penalty": 0.0032344071875639426,
+    "genes": 201,
+    "inner C": 0.6786377708978328,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 24,
+    "penalty": 0.0028548619366633755,
+    "genes": 205,
+    "inner C": 0.6786377708978328,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 25,
+    "penalty": 0.0025198548620428557,
+    "genes": 213,
+    "inner C": 0.6829721362229102,
+    "l1 ratio": 1.0,
+    "inner fold": 3
+   },
+   {
+    "place": 1,
+    "penalty": 0.05693318741396345,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 2,
+    "penalty": 0.05025229671328553,
+    "genes": 2,
+    "inner C": 0.43853820598006643,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 3,
+    "penalty": 0.04435538285602351,
+    "genes": 7,
+    "inner C": 0.4299003322259136,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 4,
+    "penalty": 0.039150449173088034,
+    "genes": 18,
+    "inner C": 0.4219269102990033,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 5,
+    "penalty": 0.03455629445088646,
+    "genes": 26,
+    "inner C": 0.43521594684385384,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 6,
+    "penalty": 0.03050124612611635,
+    "genes": 45,
+    "inner C": 0.4963455149501661,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 7,
+    "penalty": 0.02692204213528057,
+    "genes": 62,
+    "inner C": 0.5289036544850498,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 8,
+    "penalty": 0.023762843974863827,
+    "genes": 82,
+    "inner C": 0.545514950166113,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 9,
+    "penalty": 0.020974365575103772,
+    "genes": 89,
+    "inner C": 0.5534883720930233,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 10,
+    "penalty": 0.018513104397076662,
+    "genes": 100,
+    "inner C": 0.5581395348837209,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 11,
+    "penalty": 0.016340662757584435,
+    "genes": 116,
+    "inner C": 0.5687707641196014,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 12,
+    "penalty": 0.014423148793957575,
+    "genes": 140,
+    "inner C": 0.5820598006644518,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 13,
+    "penalty": 0.012730647723335767,
+    "genes": 148,
+    "inner C": 0.5953488372093023,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 14,
+    "penalty": 0.011236755147639565,
+    "genes": 166,
+    "inner C": 0.6053156146179401,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 15,
+    "penalty": 0.009918165123409728,
+    "genes": 178,
+    "inner C": 0.6066445182724253,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 16,
+    "penalty": 0.008754306570067523,
+    "genes": 179,
+    "inner C": 0.6053156146179401,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 17,
+    "penalty": 0.007727022344268085,
+    "genes": 190,
+    "inner C": 0.6086378737541528,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 18,
+    "penalty": 0.006820285973644823,
+    "genes": 190,
+    "inner C": 0.6132890365448505,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 19,
+    "penalty": 0.006019951630760091,
+    "genes": 195,
+    "inner C": 0.6146179401993356,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 20,
+    "penalty": 0.005313533446651679,
+    "genes": 199,
+    "inner C": 0.6186046511627907,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 21,
+    "penalty": 0.004690010721086347,
+    "genes": 199,
+    "inner C": 0.6252491694352159,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 22,
+    "penalty": 0.004139655990641365,
+    "genes": 200,
+    "inner C": 0.627906976744186,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 23,
+    "penalty": 0.003653883272335794,
+    "genes": 203,
+    "inner C": 0.6318936877076412,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 24,
+    "penalty": 0.0032251141152883226,
+    "genes": 204,
+    "inner C": 0.6372093023255814,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 25,
+    "penalty": 0.0028466593706981693,
+    "genes": 204,
+    "inner C": 0.641860465116279,
+    "l1 ratio": 1.0,
+    "inner fold": 4
+   },
+   {
+    "place": 1,
+    "penalty": 0.05861863402758333,
+    "genes": 0,
+    "inner C": 0.5,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 2,
+    "penalty": 0.05173996264539274,
+    "genes": 2,
+    "inner C": 0.4064516129032258,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 3,
+    "penalty": 0.045668476909355264,
+    "genes": 7,
+    "inner C": 0.4270967741935484,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 4,
+    "penalty": 0.04030945668659139,
+    "genes": 15,
+    "inner C": 0.4406451612903226,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 5,
+    "penalty": 0.03557929688772549,
+    "genes": 27,
+    "inner C": 0.4270967741935484,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 6,
+    "penalty": 0.03140420315925517,
+    "genes": 46,
+    "inner C": 0.4703225806451613,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 7,
+    "penalty": 0.027719040631407475,
+    "genes": 55,
+    "inner C": 0.5283870967741936,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 8,
+    "penalty": 0.024466317761008962,
+    "genes": 79,
+    "inner C": 0.5825806451612904,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 9,
+    "penalty": 0.021595289416489007,
+    "genes": 92,
+    "inner C": 0.5948387096774194,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 10,
+    "penalty": 0.019061165212410375,
+    "genes": 105,
+    "inner C": 0.6083870967741936,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 11,
+    "penalty": 0.01682441074289959,
+    "genes": 123,
+    "inner C": 0.6309677419354839,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 12,
+    "penalty": 0.014850130812648297,
+    "genes": 144,
+    "inner C": 0.6490322580645161,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 13,
+    "penalty": 0.013107525043385854,
+    "genes": 158,
+    "inner C": 0.6658064516129032,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 14,
+    "penalty": 0.011569407362839795,
+    "genes": 168,
+    "inner C": 0.6709677419354839,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 15,
+    "penalty": 0.010211781879819783,
+    "genes": 186,
+    "inner C": 0.6870967741935484,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 16,
+    "penalty": 0.009013468528730174,
+    "genes": 201,
+    "inner C": 0.7025806451612904,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 17,
+    "penalty": 0.007955772643260087,
+    "genes": 194,
+    "inner C": 0.7322580645161291,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 18,
+    "penalty": 0.00702219330433082,
+    "genes": 202,
+    "inner C": 0.7574193548387097,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 19,
+    "penalty": 0.006198165912290579,
+    "genes": 205,
+    "inner C": 0.7670967741935484,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 20,
+    "penalty": 0.005470834967272648,
+    "genes": 210,
+    "inner C": 0.7709677419354839,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 21,
+    "penalty": 0.004828853512905118,
+    "genes": 214,
+    "inner C": 0.7683870967741936,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 22,
+    "penalty": 0.004262206114530381,
+    "genes": 221,
+    "inner C": 0.7638709677419355,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 23,
+    "penalty": 0.0037620526102501214,
+    "genes": 210,
+    "inner C": 0.7677419354838709,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 24,
+    "penalty": 0.0033205901971845777,
+    "genes": 207,
+    "inner C": 0.7645161290322581,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   },
+   {
+    "place": 25,
+    "penalty": 0.002930931701379164,
+    "genes": 204,
+    "inner C": 0.7593548387096775,
+    "l1 ratio": 1.0,
+    "inner fold": 5
+   }
+  ]
+ },
+ "stage B": {
+  "hidden size": 64,
+  "dropout": 0.5,
+  "inner mean C": 0.6984253119659443,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "inner mean C": 0.6984253119659443
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "inner mean C": 0.6971224592223457
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "inner mean C": 0.6949456294067454
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "inner mean C": 0.6941219719455877
+   }
+  ]
+ },
+ "stage C": {
+  "genes": 481,
+  "penalty": 0.00532663473411847,
+  "edges": 144,
+  "genes with an edge": 145,
+  "scores": {
+   "graph model": {
+    "Harrell's C": 0.7936507936507936,
+    "Uno's C (5 years)": 0.7981852613340772
+   },
+   "selector as a model": {
+    "Harrell's C": 0.7063492063492064,
+    "Uno's C (5 years)": 0.7165741567501187
+   },
+   "clinical-only Cox": {
+    "Harrell's C": 0.740855762594893,
+    "Uno's C (5 years)": 0.7262965766056848
+   },
+   "no-graph model": {
+    "Harrell's C": 0.790200138026225,
+    "Uno's C (5 years)": 0.7929740878656671
+   }
+  }
+ },
+ "minutes": {
+  "stage A": 0.5,
+  "stage B": 24.5,
+  "stage C": 1.4
+ }
+}

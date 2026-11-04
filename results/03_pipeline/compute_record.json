@@ -1,0 +1,29 @@
+{
+ "git commit": "496e79136f0f679e3c53d6283f2a38e6a44218ec",
+ "tracked files changed since that commit": [],
+ "mode": "computed",
+ "python": "3.12.14",
+ "packages": {
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "scikit-learn": "1.9.1",
+  "scikit-survival": "0.28.0",
+  "torch": "2.14.0+cpu",
+  "torch_geometric": "2.8.0.post1",
+  "torchsurv": "0.2.0"
+ },
+ "seeds": {
+  "folds": 0,
+  "torch": 0
+ },
+ "cohort table (sha256)": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
+ "edge list (sha256)": "e8116725e93b7b20c03b5d83759a48541bf17fd51e179ea95894c382fcf5f79b",
+ "minutes": {
+  "outer fold 1": "stage A 0.5, stage B 14.2, stage C 1.6",
+  "outer fold 2": "stage A 0.9, stage B 9.4, stage C 0.7",
+  "outer fold 3": "stage A 0.4, stage B 19.1, stage C 1.0",
+  "outer fold 4": "stage A 0.5, stage B 24.5, stage C 1.4",
+  "outer fold 5": "stage A 0.8, stage B 27.0, stage C 1.0",
+  "comparison rows": "the minutes of each row and fold are in its file"
+ }
+}
