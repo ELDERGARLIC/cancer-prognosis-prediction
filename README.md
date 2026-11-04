@@ -20,18 +20,22 @@ and notebook 3 implements the roadmap that Hüseyin Uyar shared at the superviso
 Cox selects the genes inside every training part, a GraphSAGE model is trained on the selected
 genes, both tuned by an inner five-fold loop and scored by an outer five-fold loop over every TCGA
 patient, with a clinical-only Cox and the selector itself as reference rows, and a final model
-trained on all patients and frozen. An appendix notebook shows the earlier comparison of four gene
-selection methods, which found them tied. METABRIC has not been scored yet; the scoring cell is in
-notebook 3 and switched off until the procedure is confirmed. The numbers, with their intervals,
-are in notebook 3.
+trained on all patients and frozen. After a code review by Hüseyin Uyar on 4 November 2026, every
+candidate penalty of the selector is computed on the inner fit part alone, and the comparison
+includes three plain networks (clinical, genes, genes plus clinical), a separately tuned Cox model
+on the genes plus the clinical covariates, and a gene-identity graph model without edges; the
+first run is kept unchanged in `results/03_pipeline/first_run/`. An appendix notebook shows the
+earlier comparison of four gene selection methods, which found them tied. METABRIC has not been
+scored yet; the scoring cell is in notebook 3 and switched off until the procedure is confirmed. The
+numbers, with their intervals, are in notebook 3.
 
 ## The notebooks, in reading order
 
 | Notebook | What it does | Writes to |
 |---|---|---|
 | `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool and writes one table per cohort. | `data/` (ignored by git) and `results/01_data/` |
-| `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (an exploratory denser graph). | `results/02_gene_graph/` |
-| `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; a section of exploratory rows on the same folds (a denser graph, a learnable gene identity, the selector plus the clinical covariates); part 2 trains and freezes the final model. Reads the saved fold files by default. | `results/03_pipeline/` |
+| `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (a denser graph for two comparison rows of notebook 3). | `results/02_gene_graph/` |
+| `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings (each inner fit part computes its own penalty path) and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; comparison rows on the same folds (three plain networks, the selector plus the clinical covariates with its own tuning, a denser graph, a learnable gene identity, and gene identity without edges); part 2 trains and freezes the final model. Reads the saved files by default. | `results/03_pipeline/` |
 | `notebooks/appendix_gene_selection_comparison.ipynb` | Reads the saved tables of the earlier comparison of four selection methods (made on the previous data version) and shows what was compared, the results, the paired comparisons, the leakage check and the choice rule. No computation. | nothing (reads `results/appendix_gene_selection_comparison/`) |
 
 The results folders hold aggregate tables, figures and the frozen model only. The two notebooks
@@ -43,7 +47,7 @@ for provenance, with a README.
 | Path | Contents |
 |---|---|
 | `notebooks/` | The three notebooks in reading order and the appendix. |
-| `results/<notebook name>/` | Aggregate outputs of each notebook, committed with the notebook; `results/03_pipeline/final_model/` holds the frozen model. |
+| `results/<notebook name>/` | Aggregate outputs of each notebook, committed with the notebook; `results/03_pipeline/final_model/` holds the frozen model and `results/03_pipeline/first_run/` the first run of notebook 3, kept unchanged. |
 | `archive/` | The comparison study's original notebooks, not maintained. |
 | `data/` | Downloaded sources and patient tables. Created by notebooks 1 and 2, never committed. |
 | `pyproject.toml`, `uv.lock` | The pinned Python environment. |
@@ -75,13 +79,14 @@ Which steps need data:
   take about two minutes.
 - Notebook 2 downloads two STRING files (about 65 MB) on its first run and takes about a minute.
 - Notebook 3 needs the cohort table of notebook 1 and the edge list of notebook 2. By default it
-  reads the saved fold files in `results/03_pipeline/` and finishes in under a minute; the compute
-  switch in its settings computes the outer folds whose file is missing and then the final model,
-  which takes about two hours on four cores.
+  reads the saved files in `results/03_pipeline/` and finishes in under a minute; the compute
+  switch in its settings computes the outer folds, the comparison rows and the final model whose
+  files are missing, which took about eight hours on four cores.
 - The appendix needs no data; it reads saved tables and takes seconds.
 
 Reading saved results therefore means running the notebooks as they are. Starting an experiment
-means turning the compute switch on in notebook 3 after moving its saved fold files aside.
+means turning the compute switch on in notebook 3 after moving its saved files aside, as was done
+with `results/03_pipeline/first_run/`.
 
 ## Data and attribution
 
