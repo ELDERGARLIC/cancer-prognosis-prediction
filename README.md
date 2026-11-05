@@ -41,6 +41,7 @@ are in notebook 3.
 | `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (a denser graph for comparison rows of notebook 3). | `results/02_gene_graph/` |
 | `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings (each inner fit part computes its own penalty path) and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; comparison rows on the same folds (three plain networks, the selector plus the clinical covariates with its own tuning, a denser graph, a learnable gene identity, and gene identity without edges); the four layer types at both cut-offs with their controls, the training-curve check and the learning-rate rows; part 2 trains and freezes the final model and the final models of the layer-type rows, and scores METABRIC once. Reads the saved files by default. | `results/03_pipeline/` |
 | `notebooks/appendix_gene_selection_comparison.ipynb` | Reads the saved tables of the earlier comparison of four selection methods (made on the previous data version) and shows what was compared, the results, the paired comparisons, the leakage check and the choice rule. No computation. | nothing (reads `results/appendix_gene_selection_comparison/`) |
+| `notebooks/appendix_figures_and_diagrams.ipynb` | Draws the study's figures and diagrams from the saved files only: the data flow, the cohorts, the nested cross-validation, the graph model's layers with the sizes read from the frozen model, the final gene graph at STRING 700 and 400, the scores by fold, the paired comparisons, the training curves, METABRIC and the follow-up of the two cohorts. No model is fitted. | `results/appendix_figures_and_diagrams/` |
 
 The results folders hold aggregate tables, figures and the frozen model only. The two notebooks
 that computed the comparison study are kept unexecuted in `archive/gene_selection_comparison/`
@@ -50,7 +51,7 @@ for provenance, with a README.
 
 | Path | Contents |
 |---|---|
-| `notebooks/` | The three notebooks in reading order and the appendix. |
+| `notebooks/` | The three notebooks in reading order and the two appendices. |
 | `results/<notebook name>/` | Aggregate outputs of each notebook, committed with the notebook; `results/03_pipeline/final_model/` holds the frozen model and `results/03_pipeline/first_run/` the first run of notebook 3, kept unchanged. |
 | `archive/` | The comparison study's original notebooks, not maintained. |
 | `data/` | Downloaded sources and patient tables. Created by notebooks 1 and 2, never committed. |
@@ -91,7 +92,9 @@ Which steps need data:
   switch in its settings computes the outer folds, the comparison rows and the final model whose
   files are missing, which took about eight hours on four cores; the rows added after 5 November,
   their final models and METABRIC took about five hours on one GPU.
-- The appendix needs no data; it reads saved tables and takes seconds.
+- The gene selection appendix needs no data; it reads saved tables and takes seconds. The figures
+  appendix reads the saved results and the follow-up columns of the two cohort tables, and takes
+  under a minute.
 
 Reading saved results therefore means running the notebooks as they are. Starting an experiment
 means turning the compute switch on in notebook 3 after moving its saved files aside, as was done
