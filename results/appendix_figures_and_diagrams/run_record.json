@@ -1,0 +1,44 @@
+{
+ "git commit": "0ddf0eb1714735fdb9583945b07810e1f08d1d03",
+ "tracked files changed since that commit": [],
+ "python": "3.12.14",
+ "packages": {
+  "matplotlib": "3.11.2",
+  "networkx": "3.7",
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "scikit-survival": "0.28.0",
+  "torch": "2.14.0+cpu"
+ },
+ "seeds": {
+  "spring layout": 0
+ },
+ "input files (sha256)": {
+  "results/01_data/cohort_tcga.csv": "75f3b771cabc960704c88059c6bc9db3e764154c52eac6db0f0a1463d59fece8",
+  "results/01_data/cohort_metabric.csv": "c55301cf24a18070765b9fcff66682054c62ec78ab88e47f8b20602c662d9a39",
+  "results/02_gene_graph/graph_summary.csv": "a9fd6ce0508cf9f9cd1e66abb7468947946d474076d6b51b6f8252b4532024b4",
+  "results/03_pipeline/summary.csv": "32b35db5fcb2966c4923ebb8b9acbb3b8b258e0bb66a30ac1ecc6c930dc49e1b",
+  "results/03_pipeline/comparison_paired.csv": "de0466925a3698694ebdaecd034fb7e4d077682f0565f1c936abc1be3e24d065",
+  "results/03_pipeline/comparison_by_fold.csv": "be00417de12f86029a85d3c683714a703135870b806bcf4768c7cf6601b0380a",
+  "results/03_pipeline/final_model/model.pt": "3fca65c483e0bed0093018cd8beae0fb138fa5c1eff263965a891455fca0d415",
+  "results/03_pipeline/metabric/scores.csv": "657e45d6d960ec97a9db2fe6ec1c7a2271ae70fd4076d2e81efe2d4914ff8141",
+  "results/03_pipeline/metabric/paired.csv": "86a3fc814666be8eca1de07486a956188c3c5af0cee1db4a41720fa24cd2cbb5",
+  "data/processed/tcga.parquet": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
+  "data/processed/metabric.parquet": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
+ },
+ "figures": [
+  "figure_01_data_flow.png",
+  "figure_02_cohorts.png",
+  "figure_03_nested_cross_validation.png",
+  "figure_04_model_architecture.png",
+  "figure_05_final_gene_graph.png",
+  "figure_06_string_cut_off.png",
+  "figure_07_scores_by_fold.png",
+  "figure_08_rows_against_clinical.png",
+  "figure_09_edges_and_layer_types.png",
+  "figure_10_training_curves.png",
+  "figure_11_learning_rate_rows.png",
+  "figure_12_metabric.png",
+  "figure_13_follow_up.png"
+ ]
+}
