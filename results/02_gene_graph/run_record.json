@@ -1,9 +1,6 @@
 {
- "git commit": "4d4d27e2cfaf39793001aa6827e99b6b78035c6e",
- "tracked files changed since that commit": [
-  "M notebooks/01_data.ipynb",
-  " M results/01_data/run_record.json"
- ],
+ "git commit": "c330f2a25d5f291d87e60e8a001bdb882dd1d3db",
+ "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",
