@@ -25,17 +25,21 @@ candidate penalty of the selector is computed on the inner fit part alone, and t
 includes three plain networks (clinical, genes, genes plus clinical), a separately tuned Cox model
 on the genes plus the clinical covariates, and a gene-identity graph model without edges; the
 first run is kept unchanged in `results/03_pipeline/first_run/`. An appendix notebook shows the
-earlier comparison of four gene selection methods, which found them tied. METABRIC has not been
-scored yet; the scoring cell is in notebook 3 and switched off until the procedure is confirmed. The
-numbers, with their intervals, are in notebook 3.
+earlier comparison of four gene selection methods, which found them tied. After the supervisors'
+meeting of 5 November 2026, notebook 3 adds the comparison asked for there: GCN, GIN and GATv2
+beside GraphSAGE at STRING 700 and 400, each with a control that removes the edges; a
+training-curve check whose rule, fixed before the run, decides whether rows that also choose their
+learning rate are computed; final models of these rows; and METABRIC, scored once with an alignment
+fixed before the run. These additions were computed on a GPU. The numbers, with their intervals,
+are in notebook 3.
 
 ## The notebooks, in reading order
 
 | Notebook | What it does | Writes to |
 |---|---|---|
 | `notebooks/01_data.ipynb` | Downloads the sources, builds the TCGA-BRCA and METABRIC cohorts, defines overall survival as time and event, builds the candidate gene pool and writes one table per cohort. | `data/` (ignored by git) and `results/01_data/` |
-| `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (a denser graph for two comparison rows of notebook 3). | `results/02_gene_graph/` |
-| `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings (each inner fit part computes its own penalty path) and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; comparison rows on the same folds (three plain networks, the selector plus the clinical covariates with its own tuning, a denser graph, a learnable gene identity, and gene identity without edges); part 2 trains and freezes the final model. Reads the saved files by default. | `results/03_pipeline/` |
+| `notebooks/02_gene_graph.ipynb` | Downloads STRING 12.5 with a record, maps proteins to the candidate gene pool and saves gene-level edge lists at combined score 700 or more (the graph model) and 400 or more (a denser graph for comparison rows of notebook 3). | `results/02_gene_graph/` |
+| `notebooks/03_pipeline.ipynb` | The roadmap procedure: stage A chooses the selector's settings (each inner fit part computes its own penalty path) and stage B the graph model's settings on the same inner folds, stage C fits one model per outer fold and scores its test part once beside the reference rows; comparison rows on the same folds (three plain networks, the selector plus the clinical covariates with its own tuning, a denser graph, a learnable gene identity, and gene identity without edges); the four layer types at both cut-offs with their controls, the training-curve check and the learning-rate rows; part 2 trains and freezes the final model and the final models of the layer-type rows, and scores METABRIC once. Reads the saved files by default. | `results/03_pipeline/` |
 | `notebooks/appendix_gene_selection_comparison.ipynb` | Reads the saved tables of the earlier comparison of four selection methods (made on the previous data version) and shows what was compared, the results, the paired comparisons, the leakage check and the choice rule. No computation. | nothing (reads `results/appendix_gene_selection_comparison/`) |
 
 The results folders hold aggregate tables, figures and the frozen model only. The two notebooks
@@ -56,7 +60,11 @@ for provenance, with a README.
 
 The environment needs [uv](https://docs.astral.sh/uv/) and Python 3.12; uv installs the
 interpreter if it is missing. Every package is pinned in `uv.lock`, including PyTorch (the CPU
-build), PyTorch Geometric and torchsurv for the graph model; no GPU is needed.
+build), PyTorch Geometric and torchsurv for the graph model; reading the saved results needs no
+GPU. The rows added after 5 November were computed on an NVIDIA GPU in a second environment with
+the same pinned packages and PyTorch 2.14.0 in its CUDA 13.0 build from the PyTorch package index.
+Notebook 3 uses a GPU when one is present, with deterministic algorithms; on the CPU it takes the
+registered single pass and reproduced the registered scores of the first outer fold to the last digit.
 
     uv sync
 
@@ -81,7 +89,8 @@ Which steps need data:
 - Notebook 3 needs the cohort table of notebook 1 and the edge list of notebook 2. By default it
   reads the saved files in `results/03_pipeline/` and finishes in under a minute; the compute
   switch in its settings computes the outer folds, the comparison rows and the final model whose
-  files are missing, which took about eight hours on four cores.
+  files are missing, which took about eight hours on four cores; the rows added after 5 November,
+  their final models and METABRIC took about five hours on one GPU.
 - The appendix needs no data; it reads saved tables and takes seconds.
 
 Reading saved results therefore means running the notebooks as they are. Starting an experiment
