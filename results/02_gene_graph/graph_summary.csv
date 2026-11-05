@@ -1,4 +1,4 @@
-,pool genes,pool genes with a STRING protein,edges,genes with an edge,mean degree,largest connected component (genes)
+,pool genes,pool genes with a STRING protein,edges,genes with an edge,mean degree among genes with an edge,largest connected component (genes)
 score >= 400,19211,18007,994865,17986,110.6,17986
 score >= 700,19211,18007,257653,16269,31.7,16158
 score >= 900,19211,18007,113848,13339,17.1,12800

@@ -1,6 +1,10 @@
 {
- "git commit": "ca9365030dd25bb6fa846b2f54a5fbf8e25812f3",
- "tracked files changed since that commit": [],
+ "git commit": "268aae32f9de62f72fc0843e8ffd0111b82038d0",
+ "tracked files changed since that commit": [
+  "M notebooks/01_data.ipynb",
+  " M results/01_data/run_record.json",
+  " M results/02_gene_graph/graph_summary.csv"
+ ],
  "python": "3.12.14",
  "packages": {
   "numpy": "2.5.3",

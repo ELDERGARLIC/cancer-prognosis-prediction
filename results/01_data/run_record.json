@@ -1,5 +1,5 @@
 {
- "git commit": "11b33d8b0528eab493ff7287bd28ac6d7bb54aae",
+ "git commit": "268aae32f9de62f72fc0843e8ffd0111b82038d0",
  "tracked files changed since that commit": [],
  "python": "3.12.14",
  "packages": {
@@ -22,6 +22,7 @@
  "preservation file (sha256)": "59a4bfdd29809001741d7f7f639ad2874981360142e662578c3f649e9ae9007e",
  "output files (sha256)": {
   "tcga": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
-  "metabric": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac"
+  "metabric": "cfb6f975b847e5593897f78868134d299b74e316c2961ac4817a2a42fcfb7dac",
+  "metabric disease-specific endpoint": "b49f0e56f86de535cbf4d220c077b6c357339a4e573e5d4f14326f34b2b9c342"
  }
 }
