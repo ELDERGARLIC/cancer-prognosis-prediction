@@ -18,6 +18,9 @@ graph minus clinical upper,0.082
 graph minus selector mean,0.036
 graph minus selector lower,-0.034
 graph minus selector upper,0.105
+graph minus clinical Uno mean,0.009
+graph minus clinical Uno lower,-0.067
+graph minus clinical Uno upper,0.085
 "GATv2, STRING 400 mean C",0.723
 "GATv2, STRING 400 SD C",0.048
 "GATv2, STRING 400 mean Uno C",0.72
@@ -36,6 +39,12 @@ graph minus selector upper,0.105
 "GCN, STRING 400, edges removed mean C",0.721
 "GCN, STRING 400, edges removed SD C",0.052
 "GCN, STRING 400, edges removed mean Uno C",0.713
+"GCN, STRING 400, learning rate chosen mean C",0.74
+"GCN, STRING 400, learning rate chosen SD C",0.059
+"GCN, STRING 400, learning rate chosen mean Uno C",0.73
+"GCN, STRING 400, learning rate chosen, edges removed mean C",0.74
+"GCN, STRING 400, learning rate chosen, edges removed SD C",0.056
+"GCN, STRING 400, learning rate chosen, edges removed mean Uno C",0.73
 "GCN, STRING 700 mean C",0.723
 "GCN, STRING 700 SD C",0.052
 "GCN, STRING 700 mean Uno C",0.712
@@ -48,6 +57,12 @@ graph minus selector upper,0.105
 "GIN, STRING 400, edges removed mean C",0.717
 "GIN, STRING 400, edges removed SD C",0.049
 "GIN, STRING 400, edges removed mean Uno C",0.708
+"GIN, STRING 400, learning rate chosen mean C",0.722
+"GIN, STRING 400, learning rate chosen SD C",0.075
+"GIN, STRING 400, learning rate chosen mean Uno C",0.696
+"GIN, STRING 400, learning rate chosen, edges removed mean C",0.734
+"GIN, STRING 400, learning rate chosen, edges removed SD C",0.057
+"GIN, STRING 400, learning rate chosen, edges removed mean Uno C",0.719
 "GIN, STRING 700 mean C",0.718
 "GIN, STRING 700 SD C",0.049
 "GIN, STRING 700 mean Uno C",0.705
@@ -60,12 +75,24 @@ graph minus selector upper,0.105
 "GraphSAGE, STRING 400, edges removed mean C",0.719
 "GraphSAGE, STRING 400, edges removed SD C",0.053
 "GraphSAGE, STRING 400, edges removed mean Uno C",0.71
+"GraphSAGE, STRING 400, learning rate chosen mean C",0.725
+"GraphSAGE, STRING 400, learning rate chosen SD C",0.057
+"GraphSAGE, STRING 400, learning rate chosen mean Uno C",0.707
+"GraphSAGE, STRING 400, learning rate chosen, edges removed mean C",0.731
+"GraphSAGE, STRING 400, learning rate chosen, edges removed SD C",0.065
+"GraphSAGE, STRING 400, learning rate chosen, edges removed mean Uno C",0.72
 "GraphSAGE, STRING 700 mean C",0.72
 "GraphSAGE, STRING 700 SD C",0.052
 "GraphSAGE, STRING 700 mean Uno C",0.713
 "GraphSAGE, STRING 700, edges removed mean C",0.72
 "GraphSAGE, STRING 700, edges removed SD C",0.051
 "GraphSAGE, STRING 700, edges removed mean Uno C",0.713
+"GraphSAGE, STRING 700, learning rate chosen mean C",0.737
+"GraphSAGE, STRING 700, learning rate chosen SD C",0.064
+"GraphSAGE, STRING 700, learning rate chosen mean Uno C",0.729
+"GraphSAGE, STRING 700, learning rate chosen, edges removed mean C",0.735
+"GraphSAGE, STRING 700, learning rate chosen, edges removed SD C",0.065
+"GraphSAGE, STRING 700, learning rate chosen, edges removed mean Uno C",0.723
 clinical MLP mean C,0.718
 clinical MLP SD C,0.05
 clinical MLP mean Uno C,0.694
@@ -174,6 +201,30 @@ gene plus clinical MLP minus selector plus clinical covariates upper,0.053
 "GATv2, STRING 400 minus GATv2, STRING 400, edges removed mean",-0.0
 "GATv2, STRING 400 minus GATv2, STRING 400, edges removed lower",-0.007
 "GATv2, STRING 400 minus GATv2, STRING 400, edges removed upper",0.006
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700, learning rate chosen, edges removed mean",0.002
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700, learning rate chosen, edges removed lower",-0.011
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700, learning rate chosen, edges removed upper",0.014
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400, learning rate chosen, edges removed mean",-0.006
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400, learning rate chosen, edges removed lower",-0.05
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400, learning rate chosen, edges removed upper",0.038
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400, learning rate chosen, edges removed mean",0.0
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400, learning rate chosen, edges removed lower",-0.012
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400, learning rate chosen, edges removed upper",0.012
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400, learning rate chosen, edges removed mean",-0.011
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400, learning rate chosen, edges removed lower",-0.055
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400, learning rate chosen, edges removed upper",0.033
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700 mean",0.017
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700 lower",-0.064
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700 upper",0.098
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400 mean",0.005
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400 lower",-0.057
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400 upper",0.066
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400 mean",0.019
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400 lower",-0.056
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400 upper",0.095
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400 mean",0.005
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400 lower",-0.1
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400 upper",0.11
 graph model minus clinical-only Cox mean,-0.009
 graph model minus clinical-only Cox lower,-0.099
 graph model minus clinical-only Cox upper,0.082
@@ -225,6 +276,12 @@ selector plus clinical covariates minus clinical-only Cox upper,0.062
 "GCN, STRING 400, edges removed minus clinical-only Cox mean",-0.009
 "GCN, STRING 400, edges removed minus clinical-only Cox lower",-0.084
 "GCN, STRING 400, edges removed minus clinical-only Cox upper",0.067
+"GCN, STRING 400, learning rate chosen minus clinical-only Cox mean",0.01
+"GCN, STRING 400, learning rate chosen minus clinical-only Cox lower",-0.034
+"GCN, STRING 400, learning rate chosen minus clinical-only Cox upper",0.053
+"GCN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox mean",0.01
+"GCN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox lower",-0.038
+"GCN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox upper",0.058
 "GCN, STRING 700 minus clinical-only Cox mean",-0.007
 "GCN, STRING 700 minus clinical-only Cox lower",-0.076
 "GCN, STRING 700 minus clinical-only Cox upper",0.062
@@ -237,6 +294,12 @@ selector plus clinical covariates minus clinical-only Cox upper,0.062
 "GIN, STRING 400, edges removed minus clinical-only Cox mean",-0.013
 "GIN, STRING 400, edges removed minus clinical-only Cox lower",-0.102
 "GIN, STRING 400, edges removed minus clinical-only Cox upper",0.076
+"GIN, STRING 400, learning rate chosen minus clinical-only Cox mean",-0.007
+"GIN, STRING 400, learning rate chosen minus clinical-only Cox lower",-0.063
+"GIN, STRING 400, learning rate chosen minus clinical-only Cox upper",0.048
+"GIN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox mean",0.004
+"GIN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox lower",-0.029
+"GIN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox upper",0.036
 "GIN, STRING 700 minus clinical-only Cox mean",-0.012
 "GIN, STRING 700 minus clinical-only Cox lower",-0.095
 "GIN, STRING 700 minus clinical-only Cox upper",0.071
@@ -249,17 +312,29 @@ selector plus clinical covariates minus clinical-only Cox upper,0.062
 "GraphSAGE, STRING 400, edges removed minus clinical-only Cox mean",-0.011
 "GraphSAGE, STRING 400, edges removed minus clinical-only Cox lower",-0.107
 "GraphSAGE, STRING 400, edges removed minus clinical-only Cox upper",0.086
+"GraphSAGE, STRING 400, learning rate chosen minus clinical-only Cox mean",-0.005
+"GraphSAGE, STRING 400, learning rate chosen minus clinical-only Cox lower",-0.053
+"GraphSAGE, STRING 400, learning rate chosen minus clinical-only Cox upper",0.044
+"GraphSAGE, STRING 400, learning rate chosen, edges removed minus clinical-only Cox mean",0.001
+"GraphSAGE, STRING 400, learning rate chosen, edges removed minus clinical-only Cox lower",-0.054
+"GraphSAGE, STRING 400, learning rate chosen, edges removed minus clinical-only Cox upper",0.057
 "GraphSAGE, STRING 700 minus clinical-only Cox mean",-0.01
 "GraphSAGE, STRING 700 minus clinical-only Cox lower",-0.104
 "GraphSAGE, STRING 700 minus clinical-only Cox upper",0.085
 "GraphSAGE, STRING 700, edges removed minus clinical-only Cox mean",-0.01
 "GraphSAGE, STRING 700, edges removed minus clinical-only Cox lower",-0.104
 "GraphSAGE, STRING 700, edges removed minus clinical-only Cox upper",0.084
+"GraphSAGE, STRING 700, learning rate chosen minus clinical-only Cox mean",0.007
+"GraphSAGE, STRING 700, learning rate chosen minus clinical-only Cox lower",-0.053
+"GraphSAGE, STRING 700, learning rate chosen minus clinical-only Cox upper",0.067
+"GraphSAGE, STRING 700, learning rate chosen, edges removed minus clinical-only Cox mean",0.005
+"GraphSAGE, STRING 700, learning rate chosen, edges removed minus clinical-only Cox lower",-0.049
+"GraphSAGE, STRING 700, learning rate chosen, edges removed minus clinical-only Cox upper",0.06
 "genes selected, smallest",198
 "genes selected, largest",481
 final model trained,yes
 final genes,450
-intervals read,55
+intervals read,71
 intervals excluding 0,2
 training curve: validation C after 40 updates,0.725
 training curve: highest mean validation C,0.743

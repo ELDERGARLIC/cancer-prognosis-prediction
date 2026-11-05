@@ -27,6 +27,14 @@ gene plus clinical MLP minus selector plus clinical covariates,-0.04958050137728
 "GIN, STRING 400 minus GIN, STRING 400, edges removed",0.0007833493448063278,-0.03349306348760933,0.03505976217722198,5,do the edges change the score of each layer type,yes
 "GATv2, STRING 700 minus GATv2, STRING 700, edges removed",-0.0018482935432373227,-0.007326165753162292,0.003629578666687646,5,do the edges change the score of each layer type,yes
 "GATv2, STRING 400 minus GATv2, STRING 400, edges removed",-0.0004206578543055617,-0.006771149934894626,0.0059298342262835025,5,do the edges change the score of each layer type,yes
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700, learning rate chosen, edges removed",0.0015714265062577893,-0.010861054206589019,0.014003907219104599,5,do the edges change the score of each layer type,yes
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400, learning rate chosen, edges removed",-0.006036817566711372,-0.05025281119701735,0.038179176063594604,5,do the edges change the score of each layer type,yes
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400, learning rate chosen, edges removed",9.41999498700108e-05,-0.011789344233410035,0.011977744133150055,5,do the edges change the score of each layer type,yes
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400, learning rate chosen, edges removed",-0.011039658492010962,-0.05461985464123093,0.03254053765720901,5,do the edges change the score of each layer type,yes
+"GraphSAGE, STRING 700, learning rate chosen minus GraphSAGE, STRING 700",0.01667684866126882,-0.06445676298437816,0.09781046030691581,5,does choosing the learning rate change the score,yes
+"GraphSAGE, STRING 400, learning rate chosen minus GraphSAGE, STRING 400",0.004562805793622493,-0.05675712598967244,0.06588273757691743,5,does choosing the learning rate change the score,yes
+"GCN, STRING 400, learning rate chosen minus GCN, STRING 400",0.019406585979208236,-0.05630483356459938,0.09511800552301584,5,does choosing the learning rate change the score,yes
+"GIN, STRING 400, learning rate chosen minus GIN, STRING 400",0.004780627477252941,-0.10049895900986058,0.11006021396436647,5,does choosing the learning rate change the score,yes
 graph model minus clinical-only Cox,-0.00868013235836318,-0.09922377975263877,0.08186351503591241,5,does a row beat the clinical-only Cox,yes
 selector as a model minus clinical-only Cox,-0.044446528696511355,-0.14269142766665646,0.05379837027363376,5,does a row beat the clinical-only Cox,yes
 no-graph model minus clinical-only Cox,-0.010024298249059926,-0.09905873752864265,0.0790101410305228,5,does a row beat the clinical-only Cox,yes
@@ -44,13 +52,21 @@ selector plus clinical covariates minus clinical-only Cox,0.009292924127669178,-
 "GATv2, STRING 700, edges removed minus clinical-only Cox",-0.008711914577075985,-0.09390757201996708,0.07648374286581511,5,does a row added after the review beat the clinical-only Cox,yes
 "GCN, STRING 400 minus clinical-only Cox",-0.009455528521461254,-0.08571007800701702,0.06679902096409451,5,does a row added after the review beat the clinical-only Cox,yes
 "GCN, STRING 400, edges removed minus clinical-only Cox",-0.008547724408195956,-0.08367001370601339,0.06657456488962148,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 400, learning rate chosen minus clinical-only Cox",0.009951057457746982,-0.033506510016607316,0.05340862493210129,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox",0.00985685750787697,-0.038345256098775884,0.05805897111452983,5,does a row added after the review beat the clinical-only Cox,yes
 "GCN, STRING 700 minus clinical-only Cox",-0.007222042836138342,-0.0760718621527361,0.061627776480459424,5,does a row added after the review beat the clinical-only Cox,yes
 "GCN, STRING 700, edges removed minus clinical-only Cox",-0.006396389096623256,-0.07760019865079844,0.06480742045755193,5,does a row added after the review beat the clinical-only Cox,yes
 "GIN, STRING 400 minus clinical-only Cox",-0.012277238701520133,-0.11109880045611371,0.08654432305307345,5,does a row added after the review beat the clinical-only Cox,yes
 "GIN, STRING 400, edges removed minus clinical-only Cox",-0.01306058804632646,-0.10162655781361886,0.07550538172096595,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 400, learning rate chosen minus clinical-only Cox",-0.007496611224267191,-0.06275379381255038,0.047760571364016,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 400, learning rate chosen, edges removed minus clinical-only Cox",0.003543047267743771,-0.029090984221512683,0.03617707875700023,5,does a row added after the review beat the clinical-only Cox,yes
 "GIN, STRING 700 minus clinical-only Cox",-0.01204110209632121,-0.0947396207440348,0.07065741655139238,5,does a row added after the review beat the clinical-only Cox,yes
 "GIN, STRING 700, edges removed minus clinical-only Cox",-0.007705969287152481,-0.08925605437202179,0.07384411579771684,5,does a row added after the review beat the clinical-only Cox,yes
 "GraphSAGE, STRING 400 minus clinical-only Cox",-0.009176658980855535,-0.1077865066363144,0.08943318867460331,5,does a row added after the review beat the clinical-only Cox,yes
 "GraphSAGE, STRING 400, edges removed minus clinical-only Cox",-0.010704944108969095,-0.1073840373664941,0.08597414914855592,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 400, learning rate chosen minus clinical-only Cox",-0.004613853187233041,-0.05288010635541174,0.04365239998094565,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 400, learning rate chosen, edges removed minus clinical-only Cox",0.0014229643794783308,-0.05430027845069152,0.05714620720964818,5,does a row added after the review beat the clinical-only Cox,yes
 "GraphSAGE, STRING 700 minus clinical-only Cox",-0.009630235649169806,-0.10424046963216599,0.08497999833382638,5,does a row added after the review beat the clinical-only Cox,yes
 "GraphSAGE, STRING 700, edges removed minus clinical-only Cox",-0.009903468511744794,-0.103800697786405,0.0839937607629154,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 700, learning rate chosen minus clinical-only Cox",0.007046613012099012,-0.052959612425179395,0.06705283844937741,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 700, learning rate chosen, edges removed minus clinical-only Cox",0.005475186505841223,-0.049340126852901886,0.06029049986458433,5,does a row added after the review beat the clinical-only Cox,yes

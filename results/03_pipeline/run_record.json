@@ -1,6 +1,10 @@
 {
- "git commit": "84eb1c958001299504f6e7546f5c6d6732937d70",
- "tracked files changed since that commit": [],
+ "git commit": "35f953f9899a2f9b50033661f5f6c265664649ed",
+ "tracked files changed since that commit": [
+  "M results/03_pipeline/comparison_by_fold.csv",
+  " M results/03_pipeline/comparison_paired.csv",
+  " M results/03_pipeline/summary.csv"
+ ],
  "mode": "read the saved results",
  "python": "3.12.14",
  "packages": {
@@ -12,12 +16,16 @@
   "torch_geometric": "2.8.0.post1",
   "torchsurv": "0.2.0"
  },
+ "device": "CPU",
+ "torch threads": 4,
  "seeds": {
   "folds": 0,
-  "torch": 0
+  "torch": 0,
+  "bootstrap": 0
  },
  "cohort table (sha256)": "5879c2e0d13c56b6404c750a2eb0d2491605ff59d245e5fbd8e8331eb847a780",
  "edge list (sha256)": "e8116725e93b7b20c03b5d83759a48541bf17fd51e179ea95894c382fcf5f79b",
+ "denser edge list (sha256)": "55f0b64e275007753ca3c77b1eedb0d899f85ef680f861dc73c8bb176b9586ed",
  "minutes": {
   "outer fold 1": "stage A 0.5, stage B 14.2, stage C 1.6",
   "outer fold 2": "stage A 0.9, stage B 9.4, stage C 0.7",
