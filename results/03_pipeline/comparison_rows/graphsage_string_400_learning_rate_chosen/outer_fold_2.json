@@ -1,0 +1,69 @@
+{
+ "stage B": {
+  "hidden size": 128,
+  "dropout": 0.5,
+  "learning rate": 0.01,
+  "inner mean C": 0.7314637598485689,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.01,
+    "inner mean C": 0.7314637598485689
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.01,
+    "inner mean C": 0.7296356066176993
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.01,
+    "inner mean C": 0.7274393339436276
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.01,
+    "inner mean C": 0.7200513088805329
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7034578285884512
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7014214074876857
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7006313984452627
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7000243756179845
+   }
+  ]
+ },
+ "genes": 198,
+ "edges": 98,
+ "scores": {
+  "Harrell's C": 0.7006676557863502,
+  "Uno's C (5 years)": 0.6461995193404728
+ },
+ "fold": 2,
+ "row": "GraphSAGE, STRING 400, learning rate chosen",
+ "minutes": 1.9,
+ "device": "NVIDIA GeForce RTX 3060"
+}

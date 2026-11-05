@@ -1,0 +1,45 @@
+{
+ "stage B": {
+  "hidden size": 128,
+  "dropout": 0.2,
+  "learning rate": 0.001,
+  "inner mean C": 0.7469656333196673,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7469656333196673
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.746466108155621
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7456271130428354
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7449393087032897
+   }
+  ]
+ },
+ "genes": 472,
+ "edges": 153,
+ "scores": {
+  "Harrell's C": 0.657920792079208,
+  "Uno's C (5 years)": 0.6779672025389407
+ },
+ "fold": 3,
+ "row": "GATv2, STRING 700",
+ "minutes": 12.0,
+ "device": "NVIDIA GeForce RTX 3060"
+}

@@ -1,0 +1,10 @@
+{
+ "patients": 1979,
+ "deaths": 1143,
+ "missing expression values filled": 16,
+ "stage 0 patients mapped": 12,
+ "disease-specific endpoint: patients": 1978,
+ "disease-specific endpoint: deaths": 646,
+ "device": "NVIDIA GeForce RTX 3060",
+ "minutes": 32.7
+}

@@ -1,0 +1,39 @@
+{
+ "row": "GraphSAGE, STRING 700",
+ "stage B": {
+  "hidden size": 64,
+  "dropout": 0.5,
+  "learning rate": 0.001,
+  "inner mean C": 0.7244188276719952,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7244188276719952
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7225739313249007
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.720923695806494
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7203318752163252
+   }
+  ]
+ },
+ "genes": 450,
+ "minutes": 1.6,
+ "model sha256": "5af59d2433618aad71801707eb3f268a40bb7b713f28d5ca3825daa2e6d68cc5"
+}

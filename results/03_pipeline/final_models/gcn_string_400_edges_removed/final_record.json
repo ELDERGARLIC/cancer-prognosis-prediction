@@ -1,0 +1,39 @@
+{
+ "row": "GCN, STRING 400, edges removed",
+ "stage B": {
+  "hidden size": 128,
+  "dropout": 0.5,
+  "learning rate": 0.001,
+  "inner mean C": 0.723899672882083,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.723899672882083
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7237069650242459
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7236951201309056
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7217838929907521
+   }
+  ]
+ },
+ "genes": 450,
+ "minutes": 0.1,
+ "model sha256": "0fc70cb7c207affb8abea1ac55694263daa103f510fbc573cc6d72bf89d16228"
+}

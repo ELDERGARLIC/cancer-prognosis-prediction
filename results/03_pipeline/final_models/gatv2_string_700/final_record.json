@@ -1,0 +1,39 @@
+{
+ "row": "GATv2, STRING 700",
+ "stage B": {
+  "hidden size": 128,
+  "dropout": 0.5,
+  "learning rate": 0.001,
+  "inner mean C": 0.7239417663052108,
+  "inner folds with fewer than 2 genes": 0,
+  "settings": [
+   {
+    "hidden size": 128,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7239417663052108
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.5,
+    "learning rate": 0.001,
+    "inner mean C": 0.7227529628802236
+   },
+   {
+    "hidden size": 128,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7220087211386443
+   },
+   {
+    "hidden size": 64,
+    "dropout": 0.2,
+    "learning rate": 0.001,
+    "inner mean C": 0.7202846266377605
+   }
+  ]
+ },
+ "genes": 450,
+ "minutes": 11.3,
+ "model sha256": "8ae383234cd589c0286807e8348e64ed819d1f0039b67ac3340c234522b35a45"
+}

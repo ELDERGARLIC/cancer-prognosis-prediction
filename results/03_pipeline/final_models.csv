@@ -1,0 +1,17 @@
+row,hidden size,dropout,learning rate,genes,minutes
+"GraphSAGE, STRING 700",64,0.5,0.001,450,1.6
+"GraphSAGE, STRING 700, edges removed",64,0.5,0.001,450,0.1
+"GraphSAGE, STRING 400",64,0.5,0.001,450,1.8
+"GraphSAGE, STRING 400, edges removed",64,0.5,0.001,450,0.1
+"GCN, STRING 700",64,0.5,0.001,450,1.9
+"GCN, STRING 700, edges removed",64,0.5,0.001,450,0.1
+"GCN, STRING 400",128,0.5,0.001,450,2.3
+"GCN, STRING 400, edges removed",128,0.5,0.001,450,0.1
+"GIN, STRING 700",128,0.2,0.001,450,1.5
+"GIN, STRING 700, edges removed",128,0.2,0.001,450,0.1
+"GIN, STRING 400",128,0.5,0.001,450,1.7
+"GIN, STRING 400, edges removed",128,0.5,0.001,450,0.1
+"GATv2, STRING 700",128,0.5,0.001,450,11.3
+"GATv2, STRING 700, edges removed",128,0.5,0.001,450,0.6
+"GATv2, STRING 400",128,0.5,0.001,450,19.3
+"GATv2, STRING 400, edges removed",128,0.5,0.001,450,0.6

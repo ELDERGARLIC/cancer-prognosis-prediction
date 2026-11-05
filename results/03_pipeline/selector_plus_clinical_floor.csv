@@ -1,0 +1,6 @@
+outer fold,best inner mean C,best setting's fewest genes,best setting eligible,chosen inner mean C,genes kept on the outer part
+1,0.773,50,yes,0.773,57
+2,0.76,91,yes,0.76,126
+3,0.769,0,no,0.759,14
+4,0.731,0,no,0.712,27
+5,0.75,0,no,0.749,65

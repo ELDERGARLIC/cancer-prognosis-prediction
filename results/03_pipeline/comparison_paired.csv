@@ -1,16 +1,32 @@
 comparison,mean difference,lower,upper,folds,question,includes 0
 graph model minus no-graph model,0.0013441658906967469,-0.0010216933063855647,0.0037100250877790584,5,do the edges change the score,yes
-"graph model, STRING 400 minus no-graph model",-0.004729129507995822,-0.03609530086640156,0.026637041850409913,5,do the edges change the score,yes
 "graph model, STRING 700, gene identity minus no-graph model, gene identity",-0.000489651566565108,-0.005374332692091111,0.004395029558960895,5,do the edges change the score,yes
-"graph model, STRING 400, gene identity minus no-graph model, gene identity",-0.0016068945924944788,-0.025101465459464643,0.021887676274475687,5,do the edges change the score,yes
 "graph model, STRING 700, gene identity minus graph model",0.0015908368748080103,-0.012282200304253595,0.015463874053869616,5,do gene identity or a denser graph change it,yes
 "graph model, STRING 400, gene identity minus graph model, STRING 400",0.0065468892475712085,-0.032045484550192696,0.04513926304533511,5,do gene identity or a denser graph change it,yes
 "graph model, STRING 400 minus graph model",-0.006073295398692569,-0.03762730588077089,0.025480715083385747,5,do gene identity or a denser graph change it,yes
 "no-graph model, gene identity minus no-graph model",0.003424654332069865,-0.01493961907466519,0.02178892773880492,5,do gene identity or a denser graph change it,yes
+"graph model, STRING 400 minus no-graph model",-0.004729129507995822,-0.03609530086640156,0.026637041850409913,5,do gene identity or a denser graph change it,yes
+"graph model, STRING 400, gene identity minus no-graph model, gene identity",-0.0016068945924944788,-0.025101465459464643,0.021887676274475687,5,do gene identity or a denser graph change it,yes
 graph model minus gene plus clinical MLP,0.031607444891254735,-0.027038323298838658,0.09025321308134812,5,do the plain networks differ,yes
 gene plus clinical MLP minus clinical MLP,-0.02870415376785713,-0.09515017100338267,0.037741863467668404,5,do the plain networks differ,yes
 gene MLP minus selector as a model,-0.03769809514317111,-0.08085251765315743,0.005456327366815221,5,do the plain networks differ,yes
 gene plus clinical MLP minus selector plus clinical covariates,-0.04958050137728709,-0.1517949050995487,0.05263390234497453,5,do the plain networks differ,yes
+"GraphSAGE, STRING 700 minus graph model",-0.0009501032908066254,-0.012671206355607284,0.010770999773994032,5,does the GPU reproduce the registered rows,yes
+"GraphSAGE, STRING 400 minus graph model, STRING 400",0.005576768776200214,-0.018141405970710917,0.029294943523111346,5,does the GPU reproduce the registered rows,yes
+"GCN, STRING 700 minus GraphSAGE, STRING 700",0.0024081928130314624,-0.03808139430548401,0.04289777993154694,5,does the layer type change the score,yes
+"GCN, STRING 400 minus GraphSAGE, STRING 400",-0.00027886954060571954,-0.034992857737416,0.03443511865620456,5,does the layer type change the score,yes
+"GIN, STRING 700 minus GraphSAGE, STRING 700",-0.002410866447151405,-0.02738342117329686,0.022561688278994053,5,does the layer type change the score,yes
+"GIN, STRING 400 minus GraphSAGE, STRING 400",-0.003100579720664598,-0.03651736171644489,0.030316202275115695,5,does the layer type change the score,yes
+"GATv2, STRING 700 minus GraphSAGE, STRING 700",-0.0009299724711435032,-0.026684544701176562,0.024824599758889555,5,does the layer type change the score,yes
+"GATv2, STRING 400 minus GraphSAGE, STRING 400",0.002499414814127765,-0.04075212096425336,0.04575095059250889,5,does the layer type change the score,yes
+"GraphSAGE, STRING 700 minus GraphSAGE, STRING 700, edges removed",0.00027323286257499026,-0.004613395276221272,0.005159861001371253,5,do the edges change the score of each layer type,yes
+"GraphSAGE, STRING 400 minus GraphSAGE, STRING 400, edges removed",0.00152828512811356,-0.007197449215959967,0.010254019472187088,5,do the edges change the score of each layer type,yes
+"GCN, STRING 700 minus GCN, STRING 700, edges removed",-0.0008256537395150865,-0.00445187940409444,0.0028005719250642665,5,do the edges change the score of each layer type,yes
+"GCN, STRING 400 minus GCN, STRING 400, edges removed",-0.0009078041132652981,-0.0077662844236254455,0.005950676197094849,5,do the edges change the score of each layer type,yes
+"GIN, STRING 700 minus GIN, STRING 700, edges removed",-0.004335132809168729,-0.008370781924002039,-0.0002994836943354196,5,do the edges change the score of each layer type,no
+"GIN, STRING 400 minus GIN, STRING 400, edges removed",0.0007833493448063278,-0.03349306348760933,0.03505976217722198,5,do the edges change the score of each layer type,yes
+"GATv2, STRING 700 minus GATv2, STRING 700, edges removed",-0.0018482935432373227,-0.007326165753162292,0.003629578666687646,5,do the edges change the score of each layer type,yes
+"GATv2, STRING 400 minus GATv2, STRING 400, edges removed",-0.0004206578543055617,-0.006771149934894626,0.0059298342262835025,5,do the edges change the score of each layer type,yes
 graph model minus clinical-only Cox,-0.00868013235836318,-0.09922377975263877,0.08186351503591241,5,does a row beat the clinical-only Cox,yes
 selector as a model minus clinical-only Cox,-0.044446528696511355,-0.14269142766665646,0.05379837027363376,5,does a row beat the clinical-only Cox,yes
 no-graph model minus clinical-only Cox,-0.010024298249059926,-0.09905873752864265,0.0790101410305228,5,does a row beat the clinical-only Cox,yes
@@ -22,3 +38,19 @@ gene plus clinical MLP minus clinical-only Cox,-0.040287577249617915,-0.10980729
 "graph model, STRING 700, gene identity minus clinical-only Cox",-0.007089295483555169,-0.10141382599562387,0.08723523502851355,5,does a row beat the clinical-only Cox,yes
 "no-graph model, gene identity minus clinical-only Cox",-0.006599643916990061,-0.10010303676439901,0.0869037489304189,5,does a row beat the clinical-only Cox,yes
 selector plus clinical covariates minus clinical-only Cox,0.009292924127669178,-0.043801626111804104,0.062387474367142454,5,does a row beat the clinical-only Cox,yes
+"GATv2, STRING 400 minus clinical-only Cox",-0.006677244166727769,-0.09081647632153599,0.07746198798808045,5,does a row added after the review beat the clinical-only Cox,yes
+"GATv2, STRING 400, edges removed minus clinical-only Cox",-0.006256586312422208,-0.08964059290329643,0.07712742027845201,5,does a row added after the review beat the clinical-only Cox,yes
+"GATv2, STRING 700 minus clinical-only Cox",-0.010560208120313308,-0.09557605258392868,0.07445563634330207,5,does a row added after the review beat the clinical-only Cox,yes
+"GATv2, STRING 700, edges removed minus clinical-only Cox",-0.008711914577075985,-0.09390757201996708,0.07648374286581511,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 400 minus clinical-only Cox",-0.009455528521461254,-0.08571007800701702,0.06679902096409451,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 400, edges removed minus clinical-only Cox",-0.008547724408195956,-0.08367001370601339,0.06657456488962148,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 700 minus clinical-only Cox",-0.007222042836138342,-0.0760718621527361,0.061627776480459424,5,does a row added after the review beat the clinical-only Cox,yes
+"GCN, STRING 700, edges removed minus clinical-only Cox",-0.006396389096623256,-0.07760019865079844,0.06480742045755193,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 400 minus clinical-only Cox",-0.012277238701520133,-0.11109880045611371,0.08654432305307345,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 400, edges removed minus clinical-only Cox",-0.01306058804632646,-0.10162655781361886,0.07550538172096595,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 700 minus clinical-only Cox",-0.01204110209632121,-0.0947396207440348,0.07065741655139238,5,does a row added after the review beat the clinical-only Cox,yes
+"GIN, STRING 700, edges removed minus clinical-only Cox",-0.007705969287152481,-0.08925605437202179,0.07384411579771684,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 400 minus clinical-only Cox",-0.009176658980855535,-0.1077865066363144,0.08943318867460331,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 400, edges removed minus clinical-only Cox",-0.010704944108969095,-0.1073840373664941,0.08597414914855592,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 700 minus clinical-only Cox",-0.009630235649169806,-0.10424046963216599,0.08497999833382638,5,does a row added after the review beat the clinical-only Cox,yes
+"GraphSAGE, STRING 700, edges removed minus clinical-only Cox",-0.009903468511744794,-0.103800697786405,0.0839937607629154,5,does a row added after the review beat the clinical-only Cox,yes
